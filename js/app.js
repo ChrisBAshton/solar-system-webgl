@@ -7,10 +7,38 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
         var canvas = document.getElementById('canvas_solar_system');
         initViewport(gl, canvas);
 
-        var square = new AstronomicalObject([0, -2, -7.333]);
-        var square2 = new AstronomicalObject([0, 2, -7.333]);
+        var theSun = new AstronomicalObject({
+            origin:  [0, -2, -12.333],
+            orbits:  false,
+            radius:  300,
+            axis:    0,
+            texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif',
+            faceColors: [
+                [1.0, 1.0, 1.0, 1.0], // Front face
+                [1.0, 1.0, 1.0, 1.0], // Back face
+                [1.0, 1.0, 1.0, 1.0], // Top face
+                [1.0, 1.0, 0.0, 1.0], // Bottom face
+                [1.0, 1.0, 1.0, 1.0], // Right face
+                [1.0, 1.0, 1.0, 1.0]  // Left face
+            ]
+        });
+        var earth = new AstronomicalObject({
+            origin:  [0, 2, -30.333],
+            orbits:  theSun,
+            radius:  100,
+            axis:    0,
+            texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+        });
 
-        var solarSystem = [square, square2];
+        var moon = new AstronomicalObject({
+            origin:  [0, 2, -50.333],
+            orbits:  earth,
+            radius:  50,
+            axis:    0,
+            texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+        });
+
+        var solarSystem = [theSun, earth, moon];
 
         initMatrices(canvas);
         shaderProgram = shaders.init();
@@ -35,9 +63,18 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
     }
 
     function run(gl, solarSystem) {
-        requestAnimationFrame(function() {
-            run(gl, solarSystem);
-        });
+
+        var test = false;
+
+        if (test) {
+            setTimeout(function () {
+                run(gl, solarSystem);
+            }, 1000);
+        } else {
+            requestAnimationFrame(function() {
+                run(gl, solarSystem);
+            });
+        }
         draw(gl, solarSystem);
         animate(solarSystem);
     }
@@ -62,6 +99,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
     function animate(solarSystem) {
         for (var i = 0; i < solarSystem.length; i++) {
             solarSystem[i].spin();
+            solarSystem[i].orbit();
         }
     }
 
