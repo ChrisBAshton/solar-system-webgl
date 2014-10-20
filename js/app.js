@@ -1,18 +1,20 @@
 define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders) {
 
     var shaderProgram,
-        projectionMatrix,
-        modelViewMatrix;
+        projectionMatrix;
 
     function init() {
         var canvas = document.getElementById('canvas_solar_system');
         initViewport(gl, canvas);
 
-        var square = new AstronomicalObject();
+        var square = new AstronomicalObject([0, -2, -7.333]);
+        var square2 = new AstronomicalObject([0, 2, -7.333]);
+
+        var solarSystem = [square, square2];
 
         initMatrices(canvas);
         shaderProgram = shaders.init();
-        run(gl, square);
+        run(gl, solarSystem);
     }
 
 
@@ -21,10 +23,6 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
     }
 
     function initMatrices(canvas) {
-        // Create a model view matrix with camera at 0, 0, −3.333
-        modelViewMatrix = glMatrix.mat4.create();
-        glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -4.333]);
-
         // Create a project matrix with 45 degree field of view
         projectionMatrix = glMatrix.mat4.create();
         glMatrix.mat4.perspective(
@@ -36,15 +34,15 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
         );
     }
 
-    function run(gl, cube) {
+    function run(gl, solarSystem) {
         requestAnimationFrame(function() {
-            run(gl, cube);
+            run(gl, solarSystem);
         });
-        draw(gl, cube);
-        animate();
+        draw(gl, solarSystem);
+        animate(solarSystem);
     }
 
-    function draw(gl, obj) {
+    function draw(gl, solarSystem) {
         // clear the background (with black)
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);
@@ -53,20 +51,18 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
         // set the shader to use
         gl.useProgram(shaderProgram);
 
-        shaders.getReadyToDraw(projectionMatrix, modelViewMatrix, obj);
 
-        obj.draw();
+        for (var i = 0; i < solarSystem.length; i++) {
+            var planet = solarSystem[i];
+            shaders.getReadyToDraw(projectionMatrix, planet.getModelViewMatrix(), planet);
+            planet.draw();
+        }
     }
 
-    var duration = 5000; // ms
-    var currentTime = Date.now();
-    function animate() {
-        var now = Date.now();
-        var deltat = now - currentTime;
-        currentTime = now;
-        var fract = deltat / duration;
-        var angle = Math.PI * 2 * fract;
-        glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, angle, [0, 1, 1]);
+    function animate(solarSystem) {
+        for (var i = 0; i < solarSystem.length; i++) {
+            solarSystem[i].spin();
+        }
     }
 
     return {

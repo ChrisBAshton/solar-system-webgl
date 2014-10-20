@@ -1,6 +1,10 @@
-define(['gl'], function (gl) {
+define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
-    var AstronomicalObject = function () {
+    var AstronomicalObject = function (originalPosition) {
+
+        this.modelViewMatrix = glMatrix.mat4.create();
+        glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, originalPosition);
+
         this.createCube();
     };
 
@@ -98,6 +102,24 @@ define(['gl'], function (gl) {
 
         draw: function () {
             gl.drawElements(this.primtype, this.nIndices, gl.UNSIGNED_SHORT, 0);
+        },
+
+        getModelViewMatrix: function () {
+            return this.modelViewMatrix;
+        },
+
+        spinDuration: 5000, // ms
+        
+        currentTime: Date.now(),
+
+        spin: function () {
+
+            var now = Date.now();
+            var deltat = now - this.currentTime;
+            this.currentTime = now;
+            var fract = deltat / this.spinDuration;
+            var angle = Math.PI * 2 * fract;
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, 1]);
         }
 
     };
