@@ -164,9 +164,22 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 var parentMatrix = this.orbits.modelViewMatrix;
 
                 // start off at parent planet's matrix
-                glMatrix.mat4.copy(rotationMatrix, parentMatrix);
-                // rotate
-                glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, 0.1, [0, 1, 0]);
+                //glMatrix.mat4.copy(rotationMatrix, parentMatrix);
+                
+                var orbitingOrigin = [
+                    this.orbits.origin[0],
+                    this.orbits.origin[1],
+                    this.orbits.origin[2]
+                ];
+                var orbitingOriginInverse = [
+                    -this.orbits.origin[0],
+                    -this.orbits.origin[1],
+                    -this.orbits.origin[2]
+                ];
+
+                glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOriginInverse);
+                glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, 0.05, [0, 1, 0]);
+                glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOrigin);
                 
                 // @TODO move back out to original orbit distance
                 
