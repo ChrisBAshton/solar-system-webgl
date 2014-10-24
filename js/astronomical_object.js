@@ -34,6 +34,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 this.origin[0] = this.orbits.origin[0];
                 this.origin[1] = this.orbits.origin[1];
                 this.origin[2] = this.orbits.origin[2] - (this.orbitDistance + this.orbits.radius + this.radius);
+
+                console.log(this.name + " does orbit, and its origin is ", this.origin);
+                console.log("Its parent (" + this.orbits.name + ") has an origin of: ", this.orbits.origin);
             }
             else {
                 this.origin = config.origin || [0, 0, 0];
@@ -162,15 +165,17 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                     orbitMatrix = glMatrix.mat4.create();
 
                 var orbitingOrigin = [
-                    this.origin[0],
-                    this.origin[1],
-                    this.origin[2]
+                    this.origin[0] - this.orbits.origin[0],
+                    this.origin[1] - this.orbits.origin[1],
+                    this.origin[2] - this.orbits.origin[2]
                 ];
                 var orbitingOriginInverse = [
-                    -this.origin[0],
-                    -this.origin[1],
-                    -this.origin[2]
+                    -orbitingOrigin[0],
+                    -orbitingOrigin[1],
+                    -orbitingOrigin[2]
                 ];
+
+                console.log(this.name, this.origin, orbitingOriginInverse);
 
                 // we like orbit distance of 1000 and radius of 0.05
                 // distances further than 1000 should have a smaller radius rotation matrix
@@ -188,6 +193,22 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
                 // move the planet according to its orbit matrix
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, orbitMatrix);
+
+
+                // need to update the origin
+ 
+                // var newOrigin = glMatrix.vec3.create();
+                // glMatrix.vec3.transformMat4(newOrigin, newOrigin, this.modelViewMatrix);
+
+                // newOrigin = orbitingOrigin;
+
+                // // var tmpMat3 = glMatrix.mat3.create();
+                // // glMatrix.mat3.normalFromMat4(tmpMat3, this.modelViewMatrix);
+                // // var newOrigin = glMatrix.vec3.create();
+                // // glMatrix.vec3.transformMat3(newOrigin, newOrigin, tmpMat3);
+
+                // console.log('origin for ' + this.name + ' went from', this.origin, 'to', newOrigin);
+                // this.origin = newOrigin;
             }
         }
 

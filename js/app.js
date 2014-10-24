@@ -1,6 +1,6 @@
 define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera', 'controls'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders, camera, controls) {
 
-    var test = false;
+    var test = true;
 
     var canvas = document.getElementById('canvas_solar_system'),
         projectionViewMatrix = glMatrix.mat4.create(),
@@ -66,25 +66,25 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             ]
         });
 
-        // var moon = new AstronomicalObject({
-        //     name:          "Moon",
-        //     orbits:        earth,
-        //     orbitDistance: 150,
-        //     radius:        90,
-        //     axis:          0,
-        //     texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
-        // });
+        var moon = new AstronomicalObject({
+            name:          "Moon",
+            orbits:        earth,
+            orbitDistance: 150,
+            radius:        90,
+            axis:          0,
+            texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+        });
 
-        var solarSystem = [theSun, mercury, mars, earth/*, moon*/];
+        var solarSystem = [theSun, mercury, mars, earth, moon];
 
         shaderProgram = shaders.init();
-        run(solarSystem);
         
         controls.bindToAnimation(function () {
             draw(solarSystem);
         });
 
-
+        draw(solarSystem);
+        
         if (test) {
             var stepButton = document.createElement('BUTTON');
             stepButton.id = 'stepButton';
@@ -94,6 +94,9 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
                 run(solarSystem);
             }
             document.body.appendChild(stepButton);
+        }
+        else {
+            run(solarSystem);
         }
     }
 
