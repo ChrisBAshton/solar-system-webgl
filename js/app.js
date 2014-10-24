@@ -13,15 +13,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             origin:  [0, 0, 0],
             radius:  1000,
             axis:    0,
-            texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'/*,
-            faceColors: [
-                [1.0, 1.0, 1.0, 1.0], // Front face
-                [1.0, 1.0, 1.0, 1.0], // Back face
-                [1.0, 1.0, 1.0, 1.0], // Top face
-                [1.0, 1.0, 0.0, 1.0], // Bottom face
-                [1.0, 1.0, 1.0, 1.0], // Right face
-                [1.0, 1.0, 1.0, 1.0]  // Left face
-            ]*/
+            texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
         });
 
         var mercury = new AstronomicalObject({
@@ -30,28 +22,58 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbitDistance: 1000,
             radius:        100,
             axis:          0,
-            texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+            faceColors: [
+                [1.0, 1.0, 1.0, 1.0], // Front face
+                [1.0, 1.0, 1.0, 1.0], // Back face
+                [1.0, 1.0, 1.0, 1.0], // Top face
+                [1.0, 1.0, 1.0, 1.0], // Bottom face
+                [1.0, 1.0, 1.0, 1.0], // Right face
+                [1.0, 1.0, 1.0, 1.0]  // Left face
+            ]
+        });
+
+        var mars = new AstronomicalObject({
+            name:          "Mars",
+            orbits:        theSun,
+            orbitDistance: 2200,
+            radius:        300,
+            axis:          0,
+            faceColors: [
+                [1.0, 0.0, 0.0, 1.0], // Front face
+                [1.0, 0.0, 0.0, 1.0], // Back face
+                [1.0, 0.0, 0.0, 1.0], // Top face
+                [1.0, 0.0, 0.0, 1.0], // Bottom face
+                [1.0, 0.0, 0.0, 1.0], // Right face
+                [1.0, 0.0, 0.0, 1.0]  // Left face
+            ]
         });
 
         var earth = new AstronomicalObject({
             name:          "Earth",
             orbits:        theSun,
-            orbitDistance: 2200,
+            orbitDistance: 4000,
             radius:        300,
             axis:          0,
-            texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+            faceColors: [
+                [0.0, 1.0, 0.0, 1.0], // Front face
+                [0.0, 1.0, 0.0, 1.0], // Back face
+                [0.0, 1.0, 0.0, 1.0], // Top face
+                [0.0, 1.0, 0.0, 1.0], // Bottom face
+                [0.0, 1.0, 0.0, 1.0], // Right face
+                [0.0, 1.0, 0.0, 1.0]  // Left face
+            ]
         });
 
-        var moon = new AstronomicalObject({
-            name:          "Moon",
-            orbits:        earth,
-            orbitDistance: 150,
-            radius:        90,
-            axis:          0,
-            texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
-        });
+        // var moon = new AstronomicalObject({
+        //     name:          "Moon",
+        //     orbits:        earth,
+        //     orbitDistance: 150,
+        //     radius:        90,
+        //     axis:          0,
+        //     texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+        // });
 
-        var solarSystem = [theSun, mercury, earth, moon];
+        var solarSystem = [theSun, mercury, mars, earth/*, moon*/];
 
         shaderProgram = shaders.init();
         run(gl, solarSystem);
