@@ -155,23 +155,27 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
         orbit: function () {
             if (this.orbits) {
-                // the temporary matrix we'll use to make our planet orbit
-                var translationMatrix = glMatrix.mat4.create();
+                // the temporary matrices we'll use to make our planet orbit
+                var rotationMatrix = glMatrix.mat4.create(),
+                    translationMatrix = glMatrix.mat4.create(),
+                    orbitMatrix = glMatrix.mat4.create();
 
                 // matrix of planet we're orbiting
                 var parentMatrix = this.orbits.modelViewMatrix;
 
                 // start off at parent planet's matrix
-                glMatrix.mat4.copy(translationMatrix, parentMatrix);
+                glMatrix.mat4.copy(rotationMatrix, parentMatrix);
                 // rotate
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, 0.1, [0, 1, 0]);
-
-                // move back by same distance, but at different angle (hence orbiting)
-                var inverseParentMatrix = glMatrix.mat4.create();
-                glMatrix.mat4.invert(inverseParentMatrix, parentMatrix);
-                glMatrix.mat4.multiply(translationMatrix, translationMatrix, inverseParentMatrix);
+                glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, 0.1, [0, 1, 0]);
                 
-                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
+                // @TODO move back out to original orbit distance
+                
+
+                // multiply translation and rotation matrices to get our orbit matrix
+                glMatrix.mat4.multiply(orbitMatrix, rotationMatrix, translationMatrix);
+
+                // move the planet according to its orbit matrix
+                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, orbitMatrix);
             }
         }
 

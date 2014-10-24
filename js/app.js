@@ -1,13 +1,12 @@
-define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders) {
+define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders, camera) {
 
-    var shaderProgram,
-        cameraMatrix,
-        projectionMatrix,
-        projectionViewMatrix;
+    var canvas = document.getElementById('canvas_solar_system'),
+        projectionViewMatrix = glMatrix.mat4.create(),
+        projectionMatrix = glMatrix.mat4.create(),
+        shaderProgram;
 
     function init() {
-        var canvas = document.getElementById('canvas_solar_system');
-        initViewport(gl, canvas);
+        initViewport(gl);
 
         var theSun = new AstronomicalObject({
             name:    "Sun",
@@ -54,31 +53,17 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
 
         var solarSystem = [theSun, mercury, earth, moon];
 
-        initMatrices(canvas);
         shaderProgram = shaders.init();
         run(gl, solarSystem);
     }
 
 
-    function initViewport(gl, canvas) {
+    function initViewport(gl) {
         gl.viewport(0, 0, canvas.width, canvas.height);
     }
 
-    function initMatrices(canvas) {
-
-        projectionViewMatrix = glMatrix.mat4.create();
-
-        cameraMatrix = glMatrix.mat4.create();
-
-        glMatrix.mat4.lookAt(
-            cameraMatrix, // the matrix we're writing to
-            [0, 10000, 10000], // position of the camera in World Space
-            [0, 0, 0], // where we're looking at in World Space
-            [0, 1, 0] // [0, -1, 0] would draw the world upside down
-        );
-
+    function getProjectionViewMatrix() {
         // Create a project matrix with 45 degree field of view
-        projectionMatrix = glMatrix.mat4.create();
         glMatrix.mat4.perspective(
             projectionMatrix,
             Math.PI / 4,        // 45 degree field of view
@@ -87,13 +72,15 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
             100000
         );
 
-        glMatrix.mat4.multiply(projectionViewMatrix, projectionMatrix, cameraMatrix);
+        glMatrix.mat4.multiply(projectionViewMatrix, projectionMatrix, camera.getMatrix());
+
+        return projectionViewMatrix;
     }
 
     function run(gl, solarSystem, timesRan) {
 
         var test = true,
-            numberOfFramesToRun = 3000;
+            numberOfFramesToRun = 5;
 
         timesRan = timesRan || 1;
 
@@ -101,7 +88,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
             if (timesRan < numberOfFramesToRun) {
                 setTimeout(function () {
                     run(gl, solarSystem, ++timesRan);
-                }, 100);
+                }, 500);
             }
         } else {
             requestAnimationFrame(function() {
@@ -124,7 +111,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders'], function
 
         for (var i = 0; i < solarSystem.length; i++) {
             var planet = solarSystem[i];
-            shaders.getReadyToDraw(projectionViewMatrix, planet.getModelViewMatrix(), planet);
+            shaders.getReadyToDraw(getProjectionViewMatrix(), planet.getModelViewMatrix(), planet);
             planet.draw();
         }
     }
