@@ -1,4 +1,4 @@
-define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders, camera) {
+define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera', 'controls'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders, camera, controls) {
 
     var canvas = document.getElementById('canvas_solar_system'),
         projectionViewMatrix = glMatrix.mat4.create(),
@@ -79,7 +79,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera']
 
     function run(gl, solarSystem, timesRan) {
 
-        var test = true,
+        var test = false,
             numberOfFramesToRun = 5;
 
         timesRan = timesRan || 1;

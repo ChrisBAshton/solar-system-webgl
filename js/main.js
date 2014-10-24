@@ -4,8 +4,9 @@ var version = '0.0.1';
 var requireconfig = {
     baseUrl: 'js/',
     paths: {
-        'glUtils':  'lib/webgl-utils',
-        'glMatrix': 'lib/glMatrix-2.2.1'
+        'glUtils':   'lib/webgl-utils',
+        'glMatrix':  'lib/glMatrix-2.2.1',
+        'Mousetrap': 'lib/mousetrap'
     }/*,
     urlArgs: "version=" + version
     */
