@@ -1,15 +1,10 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     var AstronomicalObject = function (config) {
-
         this.setAttributes(config);
         this.setOriginAccordingTo(config);
 
-        this.modelViewMatrix = glMatrix.mat4.create();
-        glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.origin);
-        glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [
-            0, 0, -(this.radius / 2)
-        ]);
+        this.initMatrix();
 
         this.createCube(this.radius);
     };
@@ -34,18 +29,24 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         },
 
         setOriginAccordingTo: function (config) {
-
-            console.log("Setting origin for the " + this.name);
-
             if (this.orbits) {
-                this.origin = this.orbits.origin;
-                this.origin[2] -= (this.orbitDistance + this.orbits.radius + this.radius);
+                this.origin = [];
+                this.origin[0] = this.orbits.origin[0];
+                this.origin[1] = this.orbits.origin[1];
+                this.origin[2] = this.orbits.origin[2] - (this.orbitDistance + this.orbits.radius + this.radius);
             }
             else {
                 this.origin = config.origin || [0, 0, 0];
             }
+        },
 
-            console.log('origin: ', this.origin);
+        initMatrix: function () {
+            this.modelViewMatrix = glMatrix.mat4.create();
+            glMatrix.mat4.identity(this.modelViewMatrix);
+            glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.origin);     
+            // glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [
+            //     0, 0, -(this.radius / 2)
+            // ]);
         },
 
         // Create the vertex, color and index data for a multi-colored cube
@@ -160,28 +161,26 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                     translationMatrix = glMatrix.mat4.create(),
                     orbitMatrix = glMatrix.mat4.create();
 
-                // matrix of planet we're orbiting
-                var parentMatrix = this.orbits.modelViewMatrix;
-
-                // start off at parent planet's matrix
-                //glMatrix.mat4.copy(rotationMatrix, parentMatrix);
-                
                 var orbitingOrigin = [
-                    this.orbits.origin[0],
-                    this.orbits.origin[1],
-                    this.orbits.origin[2]
+                    this.origin[0],
+                    this.origin[1],
+                    this.origin[2]
                 ];
                 var orbitingOriginInverse = [
-                    -this.orbits.origin[0],
-                    -this.orbits.origin[1],
-                    -this.orbits.origin[2]
+                    -this.origin[0],
+                    -this.origin[1],
+                    -this.origin[2]
                 ];
 
+                // we like orbit distance of 1000 and radius of 0.05
+                // distances further than 1000 should have a smaller radius rotation matrix
+                
+                var rotation = 50 / this.orbitDistance;
+
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOriginInverse);
-                glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, 0.05, [0, 1, 0]);
+                glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, rotation, [0, 1, 0]);
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOrigin);
                 
-                // @TODO move back out to original orbit distance
                 
 
                 // multiply translation and rotation matrices to get our orbit matrix

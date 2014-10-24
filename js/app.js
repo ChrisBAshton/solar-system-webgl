@@ -1,12 +1,14 @@
 define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera', 'controls'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders, camera, controls) {
 
+    var test = false;
+
     var canvas = document.getElementById('canvas_solar_system'),
         projectionViewMatrix = glMatrix.mat4.create(),
         projectionMatrix = glMatrix.mat4.create(),
         shaderProgram;
 
     function init() {
-        initViewport(gl);
+        initViewport();
 
         var theSun = new AstronomicalObject({
             name:    "Sun",
@@ -76,11 +78,27 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
         var solarSystem = [theSun, mercury, mars, earth/*, moon*/];
 
         shaderProgram = shaders.init();
-        run(gl, solarSystem);
+        run(solarSystem);
+        
+        controls.bindToAnimation(function () {
+            draw(solarSystem);
+        });
+
+
+        if (test) {
+            var stepButton = document.createElement('BUTTON');
+            stepButton.id = 'stepButton';
+            var buttonText = document.createTextNode("Step through animation");
+            stepButton.appendChild(buttonText);
+            stepButton.onclick = function () {
+                run(solarSystem);
+            }
+            document.body.appendChild(stepButton);
+        }
     }
 
 
-    function initViewport(gl) {
+    function initViewport() {
         gl.viewport(0, 0, canvas.width, canvas.height);
     }
 
@@ -99,29 +117,28 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
         return projectionViewMatrix;
     }
 
-    function run(gl, solarSystem, timesRan) {
+    function run(solarSystem, timesRan) {
 
-        var test = false,
-            numberOfFramesToRun = 5;
+        var numberOfFramesToRun = 5;
 
         timesRan = timesRan || 1;
 
         if (test) {
-            if (timesRan < numberOfFramesToRun) {
-                setTimeout(function () {
-                    run(gl, solarSystem, ++timesRan);
-                }, 500);
-            }
+            // if (timesRan < numberOfFramesToRun) {
+            //     setTimeout(function () {
+            //         run(solarSystem, ++timesRan);
+            //     }, 500);
+            // }
         } else {
             requestAnimationFrame(function() {
-                run(gl, solarSystem);
+                run(solarSystem);
             });
         }
-        draw(gl, solarSystem);
+        draw(solarSystem);
         animate(solarSystem);
     }
 
-    function draw(gl, solarSystem) {
+    function draw(solarSystem) {
         // clear the background (with black)
         gl.clearColor(0.0, 0.0, 0.0, 1.0);
         gl.enable(gl.DEPTH_TEST);

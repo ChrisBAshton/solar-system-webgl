@@ -3,24 +3,21 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     var cameraMatrix = glMatrix.mat4.create(),
         x = 0,
-        y = 10000,
-        z = 20000;
+        y = 20000,
+        z = 0;
 
     function updateCameraMatrix() {
-
-        console.log('camera matrix [x,y,z]', x, y, z);
-
         glMatrix.mat4.lookAt(
             cameraMatrix, // the matrix we're writing to
-            [x, y, z], // position of the camera in World Space
-            [0, 0, 0], // where we're looking at in World Space
+            [0, 10000, y], // position of the camera in World Space
+            [x, 0, z], // where we're looking at in World Space
             [0, 1, 0] // [0, -1, 0] would draw the world upside down
         );
     }
 
     updateCameraMatrix();
 
-    var movementSpeed = 300;
+    var movementSpeed = 500;
 
     return {
         getMatrix: function () {
@@ -28,12 +25,12 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         },
 
         goForwards: function () {
-            z -= movementSpeed;
+            y -= movementSpeed;
             updateCameraMatrix();
         },
 
         goBackwards: function () {
-            z += movementSpeed;
+            y += movementSpeed;
             updateCameraMatrix();
         },
 
