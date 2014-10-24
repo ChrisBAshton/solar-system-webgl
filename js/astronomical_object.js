@@ -2,39 +2,60 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     var AstronomicalObject = function (config) {
 
-        this.origin        = config.origin        || [0, 0, -4];
-        this.orbits        = config.orbits        || false;
-        this.orbitDistance = config.orbitDistance || 0;
-        this.radius        = config.radius        || 10;
-        this.axis          = config.axis          || 0;
-        this.texture       = config.texture       || false;
-        this.faceColors    = config.faceColors || [
-            [1.0, 0.0, 0.0, 1.0], // Front face
-            [0.0, 1.0, 0.0, 1.0], // Back face
-            [0.0, 0.0, 1.0, 1.0], // Top face
-            [1.0, 1.0, 0.0, 1.0], // Bottom face
-            [1.0, 0.0, 1.0, 1.0], // Right face
-            [0.0, 1.0, 1.0, 1.0]  // Left face
-        ];
+        this.setAttributes(config);
+        this.setOriginAccordingTo(config);
 
         this.modelViewMatrix = glMatrix.mat4.create();
         glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.origin);
+        glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [
+            0, 0, -(this.radius / 2)
+        ]);
 
-        this.createCube();
+        this.createCube(this.radius);
     };
 
     AstronomicalObject.prototype = {
 
+        setAttributes: function (config) {
+            this.name          = config.name          || 'name not set';
+            this.orbits        = config.orbits        || false;
+            this.orbitDistance = config.orbitDistance || 0;
+            this.radius        = config.radius        || 10;
+            this.axis          = config.axis          || 0;
+            this.texture       = config.texture       || false;
+            this.faceColors    = config.faceColors    || [
+                [1.0, 0.0, 0.0, 1.0], // Front face
+                [0.0, 1.0, 0.0, 1.0], // Back face
+                [0.0, 0.0, 1.0, 1.0], // Top face
+                [1.0, 1.0, 0.0, 1.0], // Bottom face
+                [1.0, 0.0, 1.0, 1.0], // Right face
+                [0.0, 1.0, 1.0, 1.0]  // Left face
+            ];
+        },
+
+        setOriginAccordingTo: function (config) {
+
+            console.log("Setting origin for the " + this.name);
+
+            if (this.orbits) {
+                this.origin = this.orbits.origin;
+                this.origin[2] -= (this.orbitDistance + this.orbits.radius + this.radius);
+            }
+            else {
+                this.origin = config.origin || [0, 0, 0];
+            }
+
+            console.log('origin: ', this.origin);
+        },
+
         // Create the vertex, color and index data for a multi-colored cube
-        createCube: function () {
+        createCube: function (scaleFactor) {
 
             // Vertex Data
             var vertexBuffer;
             vertexBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
             
-            var scaleFactor = this.radius / 300;
-
             var verts = [
                // Front face
                -1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
@@ -124,38 +145,33 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         currentTime: Date.now(),
 
         spin: function () {
-            var now = Date.now();
-            var deltat = now - this.currentTime;
-            this.currentTime = now;
-            var fract = deltat / this.spinDuration;
-            var angle = Math.PI * 2 * fract;
-            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, 1]);
+            // var now = Date.now();
+            // var deltat = now - this.currentTime;
+            // this.currentTime = now;
+            // var fract = deltat / this.spinDuration;
+            // var angle = Math.PI * 2 * fract; // @TODO use this.axis somewhere
+            // glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, 1]);
         },
 
         orbit: function () {
             if (this.orbits) {
-                
-                var matrixOfCurrentPlanet       = this.modelViewMatrix;
-                var matrixOfPlanetWeAreOrbiting = this.orbits.modelViewMatrix;
+                // the temporary matrix we'll use to make our planet orbit
+                var translationMatrix = glMatrix.mat4.create();
 
-                var orbitMatrix = glMatrix.mat4.create();
-                var inverseMatrixOfPlanetWeAreOrbiting = glMatrix.mat4.create();
+                // matrix of planet we're orbiting
+                var parentMatrix = this.orbits.modelViewMatrix;
 
-                // start with clean identity matrix
-                glMatrix.mat4.identity(orbitMatrix);
-                glMatrix.mat4.identity(orbitMatrix);
-
-                // move to matrix of planet we're orbiting
-                glMatrix.mat4.multiply(orbitMatrix, orbitMatrix, matrixOfPlanetWeAreOrbiting);
-
-                // rorate
-                glMatrix.mat4.rotate(orbitMatrix, orbitMatrix, 0.1, [1, 0, 0]);
+                // start off at parent planet's matrix
+                glMatrix.mat4.copy(translationMatrix, parentMatrix);
+                // rotate
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, 0.1, [0, 1, 0]);
 
                 // move back by same distance, but at different angle (hence orbiting)
-                glMatrix.mat4.invert(inverseMatrixOfPlanetWeAreOrbiting, matrixOfPlanetWeAreOrbiting);
-                glMatrix.mat4.multiply(orbitMatrix, orbitMatrix, inverseMatrixOfPlanetWeAreOrbiting);
-
-                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, orbitMatrix);
+                var inverseParentMatrix = glMatrix.mat4.create();
+                glMatrix.mat4.invert(inverseParentMatrix, parentMatrix);
+                glMatrix.mat4.multiply(translationMatrix, translationMatrix, inverseParentMatrix);
+                
+                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
             }
         }
 
