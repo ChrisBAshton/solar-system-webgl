@@ -164,8 +164,8 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
 
     function animate(solarSystem) {
         for (var i = 0; i < solarSystem.length; i++) {
-            solarSystem[i].spin();
-            //solarSystem[i].orbit();
+            //solarSystem[i].spin();
+            solarSystem[i].orbit();
         }
     }
 

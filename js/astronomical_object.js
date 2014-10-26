@@ -154,7 +154,10 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             this.currentTime = now;
             var fract = deltat / this.spinDuration;
             var angle = Math.PI * 2 * fract; // @TODO use this.axis somewhere
-            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, this.axis]);
+
+            var tmpMatrix = glMatrix.mat4.create();
+            glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, angle, [0, 1, this.axis]);
+            return tmpMatrix;
         },
 
         orbit: function () {
@@ -175,8 +178,6 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                     -orbitingOrigin[2]
                 ];
 
-                console.log(this.name, this.origin, orbitingOriginInverse);
-
                 // we like orbit distance of 1000 and radius of 0.05
                 // distances further than 1000 should have a smaller radius rotation matrix
                 
@@ -184,8 +185,8 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOriginInverse);
                 glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, rotation, [0, 1, 0]);
+                //glMatrix.mat4.multiply(rotationMatrix, rotationMatrix, this.spin());
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOrigin);
-                
                 
 
                 // multiply translation and rotation matrices to get our orbit matrix
@@ -194,22 +195,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 // move the planet according to its orbit matrix
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, orbitMatrix);
 
-
-                // need to update the origin
- 
-                // var newOrigin = glMatrix.vec3.create();
-                // glMatrix.vec3.transformMat4(newOrigin, newOrigin, this.modelViewMatrix);
-
-                // newOrigin = orbitingOrigin;
-
-                // // var tmpMat3 = glMatrix.mat3.create();
-                // // glMatrix.mat3.normalFromMat4(tmpMat3, this.modelViewMatrix);
-                // // var newOrigin = glMatrix.vec3.create();
-                // // glMatrix.vec3.transformMat3(newOrigin, newOrigin, tmpMat3);
-
-                // console.log('origin for ' + this.name + ' went from', this.origin, 'to', newOrigin);
-                // this.origin = newOrigin;
-            }
+            }/* else {
+                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, this.spin());
+            }*/
         }
 
     };
