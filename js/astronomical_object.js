@@ -5,9 +5,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         this.setOriginAccordingTo(config);
 
         this.initMatrix();
-
         this.initBuffers(this.radius);
-
         this.initTexture();
     };
 
@@ -19,15 +17,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             this.orbitDistance = config.orbitDistance || 0;
             this.radius        = config.radius        || 10;
             this.axis          = config.axis          || 0;
-            this.texture       = config.texture       || false;
-            this.faceColors    = config.faceColors    || [
-                [1.0, 0.0, 0.0, 1.0], // Front face
-                [0.0, 1.0, 0.0, 1.0], // Back face
-                [0.0, 0.0, 1.0, 1.0], // Top face
-                [1.0, 1.0, 0.0, 1.0], // Bottom face
-                [1.0, 0.0, 1.0, 1.0], // Right face
-                [0.0, 1.0, 1.0, 1.0]  // Left face
-            ];
+            this.texture       = config.texture       || "textures/moon.gif";
         },
 
         setOriginAccordingTo: function (config) {
@@ -55,7 +45,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         },
 
         initTexture: function() {
-            moonTexture = gl.createTexture();
+            var moonTexture = gl.createTexture();
             moonTexture.image = new Image();
             moonTexture.image.crossOrigin = "anonymous";
 
@@ -65,7 +55,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 self.handleLoadedTexture(moonTexture);
             }
 
-            moonTexture.image.src = "textures/moon.gif";
+            moonTexture.image.src = this.texture;
         },
 
         handleLoadedTexture: function (texture) {

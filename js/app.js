@@ -19,7 +19,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             origin:  [0, 0, 0],
             radius:  1000,
             axis:    degreesToRadians(7.25),
-            texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+            texture: "textures/sunmap.jpg"
         });
 
         var mercury = new AstronomicalObject({
@@ -28,14 +28,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbitDistance: 1000,
             radius:        100,
             axis:          degreesToRadians(0),
-            faceColors: [
-                [1.0, 1.0, 1.0, 1.0], // Front face
-                [1.0, 1.0, 1.0, 1.0], // Back face
-                [1.0, 1.0, 1.0, 1.0], // Top face
-                [1.0, 1.0, 1.0, 1.0], // Bottom face
-                [1.0, 1.0, 1.0, 1.0], // Right face
-                [1.0, 1.0, 1.0, 1.0]  // Left face
-            ]
+            texture:       "textures/mercurymap.jpg"
         });
 
         var mars = new AstronomicalObject({
@@ -44,14 +37,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbitDistance: 2200,
             radius:        300,
             axis:          degreesToRadians(25.19),
-            faceColors: [
-                [1.0, 0.0, 0.0, 1.0], // Front face
-                [1.0, 0.0, 0.0, 1.0], // Back face
-                [1.0, 0.0, 0.0, 1.0], // Top face
-                [1.0, 0.0, 0.0, 1.0], // Bottom face
-                [1.0, 0.0, 0.0, 1.0], // Right face
-                [1.0, 0.0, 0.0, 1.0]  // Left face
-            ]
+            texture:       "textures/marsmap1k.jpg"
         });
 
         var earth = new AstronomicalObject({
@@ -60,14 +46,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbitDistance: 4000,
             radius:        300,
             axis:          degreesToRadians(23.4),
-            faceColors: [
-                [0.0, 1.0, 0.0, 1.0], // Front face
-                [0.0, 1.0, 0.0, 1.0], // Back face
-                [0.0, 1.0, 0.0, 1.0], // Top face
-                [0.0, 1.0, 0.0, 1.0], // Bottom face
-                [0.0, 1.0, 0.0, 1.0], // Right face
-                [0.0, 1.0, 0.0, 1.0]  // Left face
-            ]
+            texture:       "textures/earthmap1k.jpg"
         });
 
         var moon = new AstronomicalObject({
@@ -75,8 +54,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbits:        earth,
             orbitDistance: 150,
             radius:        90,
-            axis:          degreesToRadians(6.68),
-            texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
+            axis:          degreesToRadians(6.68)
         });
 
         var solarSystem = [theSun, mercury, mars, earth, moon];
