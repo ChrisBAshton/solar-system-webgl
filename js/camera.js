@@ -1,13 +1,12 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
-    var canvas = document.getElementById('canvas_solar_system'),
-        projectionViewMatrix = glMatrix.mat4.create(),
-        projectionMatrix = glMatrix.mat4.create();
-        
-    var cameraMatrix = glMatrix.mat4.create(),
-        x = 0,
-        y = 20000,
-        z = 0;
+    var canvas           = document.getElementById('canvas_solar_system'),
+        projectionMatrix = glMatrix.mat4.create(),
+        cameraMatrix     = glMatrix.mat4.create(),
+        x                = 0,
+        y                = 20000,
+        z                = 0,
+        movementSpeed    = 500;
 
     function updateCameraMatrix() {
         glMatrix.mat4.lookAt(
@@ -20,11 +19,12 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     updateCameraMatrix();
 
-    var movementSpeed = 500;
-
     return {
 
         getProjectionViewMatrix: function () {
+
+            var projectionViewMatrix = glMatrix.mat4.create();
+
             // Create a project matrix with 45 degree field of view
             glMatrix.mat4.perspective(
                 projectionMatrix,
@@ -37,6 +37,10 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             glMatrix.mat4.multiply(projectionViewMatrix, projectionMatrix, cameraMatrix);
 
             return projectionViewMatrix;
+        },
+
+        rotateView: function (rotationMatrix) {
+            glMatrix.mat4.multiply(cameraMatrix, cameraMatrix, rotationMatrix);
         },
 
         goForwards: function () {
