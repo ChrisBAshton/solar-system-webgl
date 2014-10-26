@@ -6,7 +6,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
         this.initMatrix();
 
-        this.createCube(this.radius);
+        this.initBuffers(this.radius);
+
+        this.initTexture();
     };
 
     AstronomicalObject.prototype = {
@@ -52,92 +54,137 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             // ]);
         },
 
-        // Create the vertex, color and index data for a multi-colored cube
-        createCube: function (scaleFactor) {
+        initTexture: function() {
+            moonTexture = gl.createTexture();
+            moonTexture.image = new Image();
+            moonTexture.image.crossOrigin = "anonymous";
 
-            // Vertex Data
-            var vertexBuffer;
-            vertexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, vertexBuffer);
-            
-            var verts = [
-               // Front face
-               -1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
-                1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
-                1.0 * scaleFactor,  1.0 * scaleFactor,  1.0 * scaleFactor,
-               -1.0 * scaleFactor,  1.0 * scaleFactor,  1.0 * scaleFactor,
+            var self = this;
 
-               // Back face
-               -1.0 * scaleFactor, -1.0 * scaleFactor, -1.0 * scaleFactor,
-               -1.0 * scaleFactor,  1.0 * scaleFactor, -1.0 * scaleFactor,
-                1.0 * scaleFactor,  1.0 * scaleFactor, -1.0 * scaleFactor,
-                1.0 * scaleFactor, -1.0 * scaleFactor, -1.0 * scaleFactor,
-
-               // Top face
-               -1.0 * scaleFactor,  1.0 * scaleFactor, -1.0 * scaleFactor,
-               -1.0 * scaleFactor,  1.0 * scaleFactor,  1.0 * scaleFactor,
-                1.0 * scaleFactor,  1.0 * scaleFactor,  1.0 * scaleFactor,
-                1.0 * scaleFactor,  1.0 * scaleFactor, -1.0 * scaleFactor,
-
-               // Bottom face
-               -1.0 * scaleFactor, -1.0 * scaleFactor, -1.0 * scaleFactor,
-                1.0 * scaleFactor, -1.0 * scaleFactor, -1.0 * scaleFactor,
-                1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
-               -1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
-
-               // Right face
-                1.0 * scaleFactor, -1.0 * scaleFactor, -1.0 * scaleFactor,
-                1.0 * scaleFactor,  1.0 * scaleFactor, -1.0 * scaleFactor,
-                1.0 * scaleFactor,  1.0 * scaleFactor,  1.0 * scaleFactor,
-                1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
-
-               // Left face
-               -1.0 * scaleFactor, -1.0 * scaleFactor, -1.0 * scaleFactor,
-               -1.0 * scaleFactor, -1.0 * scaleFactor,  1.0 * scaleFactor,
-               -1.0 * scaleFactor,  1.0 * scaleFactor,  1.0 * scaleFactor,
-               -1.0 * scaleFactor,  1.0 * scaleFactor, -1.0 * scaleFactor
-               ];
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(verts), gl.STATIC_DRAW);
-
-            // Color data
-            var colorBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
-
-            var vertexColors = [];
-            for (var i in this.faceColors) {
-                var color = this.faceColors[i];
-                for (var j=0; j < 4; j++) {
-                    vertexColors = vertexColors.concat(color);
-                }
+            moonTexture.image.onload = function () {
+                self.handleLoadedTexture(moonTexture);
             }
-            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexColors), gl.STATIC_DRAW);
 
-            // Index data (defines the triangles to be drawn)
-            var cubeIndexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, cubeIndexBuffer);
-            var cubeIndices = [
-                0, 1, 2,      0, 2, 3,    // Front face
-                4, 5, 6,      4, 6, 7,    // Back face
-                8, 9, 10,     8, 10, 11,  // Top face
-                12, 13, 14,   12, 14, 15, // Bottom face
-                16, 17, 18,   16, 18, 19, // Right face
-                20, 21, 22,   20, 22, 23  // Left face
-            ];
-            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(cubeIndices), gl.STATIC_DRAW);
-
-            this.buffer      = vertexBuffer;
-            this.colorBuffer = colorBuffer;
-            this.indices     = cubeIndexBuffer;
-            this.vertSize    = 3;
-            this.nVerts      = 24;
-            this.colorSize   = 4;
-            this.nColors     = 24;
-            this.nIndices    = 36;
-            this.primtype    = gl.TRIANGLES;
+            moonTexture.image.src = "textures/moon.gif";
         },
 
-        draw: function () {
-            gl.drawElements(this.primtype, this.nIndices, gl.UNSIGNED_SHORT, 0);
+        handleLoadedTexture: function (texture) {
+            gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
+            gl.bindTexture(gl.TEXTURE_2D, texture);
+            gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+            gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
+            gl.generateMipmap(gl.TEXTURE_2D);
+
+            gl.bindTexture(gl.TEXTURE_2D, null);
+
+            this.moonTexture = texture;
+        },
+
+        // Create the vertex, color and index data for a multi-colored cube
+        initBuffers: function (radius) {
+
+            var latitudeBands = 30;
+            var longitudeBands = 30;
+
+            var vertexPositionData = [];
+            var normalData = [];
+            var textureCoordData = [];
+            for (var latNumber = 0; latNumber <= latitudeBands; latNumber++) {
+                var theta = latNumber * Math.PI / latitudeBands;
+                var sinTheta = Math.sin(theta);
+                var cosTheta = Math.cos(theta);
+
+                for (var longNumber = 0; longNumber <= longitudeBands; longNumber++) {
+                    var phi = longNumber * 2 * Math.PI / longitudeBands;
+                    var sinPhi = Math.sin(phi);
+                    var cosPhi = Math.cos(phi);
+
+                    var x = cosPhi * sinTheta;
+                    var y = cosTheta;
+                    var z = sinPhi * sinTheta;
+                    var u = 1 - (longNumber / longitudeBands);
+                    var v = 1 - (latNumber / latitudeBands);
+
+                    normalData.push(x);
+                    normalData.push(y);
+                    normalData.push(z);
+                    textureCoordData.push(u);
+                    textureCoordData.push(v);
+                    vertexPositionData.push(radius * x);
+                    vertexPositionData.push(radius * y);
+                    vertexPositionData.push(radius * z);
+                }
+            }
+
+            var indexData = [];
+            for (var latNumber = 0; latNumber < latitudeBands; latNumber++) {
+                for (var longNumber = 0; longNumber < longitudeBands; longNumber++) {
+                    var first = (latNumber * (longitudeBands + 1)) + longNumber;
+                    var second = first + longitudeBands + 1;
+                    indexData.push(first);
+                    indexData.push(second);
+                    indexData.push(first + 1);
+
+                    indexData.push(second);
+                    indexData.push(second + 1);
+                    indexData.push(first + 1);
+                }
+            }
+
+            this.moonVertexNormalBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexNormalBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalData), gl.STATIC_DRAW);
+            this.moonVertexNormalBuffer.itemSize = 3;
+            this.moonVertexNormalBuffer.numItems = normalData.length / 3;
+
+            this.moonVertexTextureCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexTextureCoordBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordData), gl.STATIC_DRAW);
+            this.moonVertexTextureCoordBuffer.itemSize = 2;
+            this.moonVertexTextureCoordBuffer.numItems = textureCoordData.length / 2;
+
+            this.moonVertexPositionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexPositionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexPositionData), gl.STATIC_DRAW);
+            this.moonVertexPositionBuffer.itemSize = 3;
+            this.moonVertexPositionBuffer.numItems = vertexPositionData.length / 3;
+
+            this.moonVertexIndexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.moonVertexIndexBuffer);
+            gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
+            this.moonVertexIndexBuffer.itemSize = 1;
+            this.moonVertexIndexBuffer.numItems = indexData.length;
+        },
+
+        draw: function (shaderProgram, projectionMatrix) {
+
+            var lighting = false;
+            gl.uniform1i(shaderProgram.useLightingUniform, lighting);
+
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.moonTexture);
+            gl.uniform1i(shaderProgram.samplerUniform, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexPositionBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.moonVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexTextureCoordBuffer);
+            gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.moonVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexNormalBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.moonVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.moonVertexIndexBuffer);
+
+            gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projectionMatrix);
+            gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, this.modelViewMatrix);
+            
+            var normalMatrix = glMatrix.mat3.create();
+            glMatrix.mat3.normalFromMat4(normalMatrix, this.modelViewMatrix);
+            gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+
+            gl.drawElements(gl.TRIANGLES, this.moonVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         },
 
         getModelViewMatrix: function () {

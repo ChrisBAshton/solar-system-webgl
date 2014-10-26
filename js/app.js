@@ -125,7 +125,6 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
     }
 
     function run(solarSystem, timesRan) {
-
         var numberOfFramesToRun = 5;
 
         timesRan = timesRan || 1;
@@ -157,8 +156,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
 
         for (var i = 0; i < solarSystem.length; i++) {
             var planet = solarSystem[i];
-            shaders.getReadyToDraw(getProjectionViewMatrix(), planet.getModelViewMatrix(), planet);
-            planet.draw();
+            planet.draw(shaderProgram, getProjectionViewMatrix());
         }
     }
 
