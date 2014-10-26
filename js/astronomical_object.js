@@ -1,5 +1,11 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
+    /**
+     * [AstronomicalObject description]
+     * @param {Object} config The config object.
+     * @param {int} config.orbitDistance X thousand miles from whatever it is orbiting. This is then automatically reduced for presentation purposes.
+     * @param {int} config.radius X thousand. This is then automatically increased for presentation purposes.
+     */
     var AstronomicalObject = function (config) {
         this.setAttributes(config);
         this.setOriginAccordingTo(config);
@@ -18,6 +24,11 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             this.radius        = config.radius        || 10;
             this.axis          = config.axis          || 0;
             this.texture       = config.texture       || "textures/moon.gif";
+
+            this.orbitDistance /= 100;
+            if (this.orbits) {
+                this.radius *= 10;
+            }
         },
 
         setOriginAccordingTo: function (config) {

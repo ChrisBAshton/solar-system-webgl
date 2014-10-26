@@ -14,3 +14,17 @@ python -m SimpleHTTPServer
 ```
 
 Then go to [http://localhost:8000/](http://localhost:8000/) to see the solar system.
+
+# Acknowledgements
+
+Orbit distances taken from:
+
+http://www.northern-stars.com/solar_system_distance_scal.htm
+
+Planet sizes taken from:
+
+http://www.universetoday.com/36649/planets-in-order-of-size/
+
+Planet axes taken from:
+
+http://www.astronomynotes.com/tables/tablesb.htm

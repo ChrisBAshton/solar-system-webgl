@@ -17,7 +17,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
         var theSun = new AstronomicalObject({
             name:    "Sun",
             origin:  [0, 0, 0],
-            radius:  1000,
+            radius:  432.45,
             axis:    degreesToRadians(7.25),
             texture: "textures/sunmap.jpg"
         });
@@ -25,39 +25,84 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
         var mercury = new AstronomicalObject({
             name:          "Mercury",
             orbits:        theSun,
-            orbitDistance: 1000,
-            radius:        100,
+            orbitDistance: 36000,
+            radius:        1.516,
             axis:          degreesToRadians(0),
             texture:       "textures/mercurymap.jpg"
         });
 
-        var mars = new AstronomicalObject({
-            name:          "Mars",
+        var venus = new AstronomicalObject({
+            name:          "Venus",
             orbits:        theSun,
-            orbitDistance: 2200,
-            radius:        300,
-            axis:          degreesToRadians(25.19),
-            texture:       "textures/marsmap1k.jpg"
+            orbitDistance: 67000,
+            radius:        3.761,
+            axis:          degreesToRadians(177.36),
+            texture:       "textures/venusmap.jpg"
         });
 
         var earth = new AstronomicalObject({
             name:          "Earth",
             orbits:        theSun,
-            orbitDistance: 4000,
-            radius:        300,
-            axis:          degreesToRadians(23.4),
+            orbitDistance: 93000,
+            radius:        3.959,
+            axis:          degreesToRadians(23.45),
             texture:       "textures/earthmap1k.jpg"
         });
 
-        var moon = new AstronomicalObject({
-            name:          "Moon",
-            orbits:        earth,
-            orbitDistance: 150,
-            radius:        90,
-            axis:          degreesToRadians(6.68)
+        var mars = new AstronomicalObject({
+            name:          "Mars",
+            orbits:        theSun,
+            orbitDistance: 141000,
+            radius:        2.460,
+            axis:          degreesToRadians(25.19),
+            texture:       "textures/marsmap1k.jpg"
         });
 
-        var solarSystem = [theSun, mercury, mars, earth, moon];
+        var jupiter = new AstronomicalObject({
+            name:          "Jupiter",
+            orbits:        theSun,
+            orbitDistance: 483000,
+            radius:        43.441,
+            axis:          degreesToRadians(3.13),
+            texture:       "textures/jupitermap.jpg"
+        });
+
+        var saturn = new AstronomicalObject({
+            name:          "Saturn",
+            orbits:        theSun,
+            orbitDistance: 886000,
+            radius:        36.184,
+            axis:          degreesToRadians(26.73),
+            texture:       "textures/saturnmap.jpg"
+        });
+
+        var uranus = new AstronomicalObject({
+            name:          "Uranus",
+            orbits:        theSun,
+            orbitDistance: 1782000,
+            radius:        15.759,
+            axis:          degreesToRadians(97.77),
+            texture:       "textures/uranusmap.jpg"
+        });
+
+        var neptune = new AstronomicalObject({
+            name:          "Neptune",
+            orbits:        theSun,
+            orbitDistance: 2794000,
+            radius:        15.299,
+            axis:          degreesToRadians(28.32),
+            texture:       "textures/neptunemap.jpg"
+        });
+
+        var earthsMoon = new AstronomicalObject({
+            name:          "Earth's Moon",
+            orbits:        earth,
+            orbitDistance: 240,
+            radius:        1,
+            axis:          degreesToRadians(1.5)
+        });
+
+        var solarSystem = [theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune/*, earthsMoon*/];
 
         shaderProgram = shaders.init();
         
