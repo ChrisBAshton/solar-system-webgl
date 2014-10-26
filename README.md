@@ -28,3 +28,7 @@ http://www.universetoday.com/36649/planets-in-order-of-size/
 Planet axes taken from:
 
 http://www.astronomynotes.com/tables/tablesb.htm
+
+Planet texture maps were taken from:
+
+http://planetpixelemporium.com/
