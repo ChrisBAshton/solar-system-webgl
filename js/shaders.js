@@ -97,8 +97,5 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         return shaderProgram;
     }
 
-    return {
-        init: initShaders
-    }
-
+    return initShaders();
 });

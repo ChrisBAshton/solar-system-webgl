@@ -1,6 +1,7 @@
 define(function () {
 
-    var gl = null;
+    var canvas = document.getElementById('canvas_solar_system'),
+        gl = null;
 
     function initWebGL(canvas) {
 
@@ -9,6 +10,7 @@ define(function () {
 
         try {
             gl = canvas.getContext("experimental-webgl");
+            gl.viewport(0, 0, canvas.width, canvas.height);
         } catch (e) {
             msg = "Error creating WebGL Context!: " + e.toString();
         }
@@ -19,7 +21,7 @@ define(function () {
         }
     }
 
-    initWebGL(document.getElementById('canvas_solar_system'));
+    initWebGL(canvas);
 
     return gl;
 

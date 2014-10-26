@@ -17,13 +17,17 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     AstronomicalObject.prototype = {
 
+        degreesToRadians: function (celsius) {
+            return celsius * (Math.PI / 180);
+        },
+
         setAttributes: function (config) {
-            this.name          = config.name          || 'name not set';
-            this.orbits        = config.orbits        || false;
-            this.orbitDistance = config.orbitDistance || 0;
-            this.radius        = config.radius        || 10;
-            this.axis          = config.axis          || 0;
-            this.texture       = config.texture       || "textures/moon.gif";
+            this.name          = config.name                        || 'name not set';
+            this.orbits        = config.orbits                      || false;
+            this.orbitDistance = config.orbitDistance               || 0;
+            this.radius        = config.radius                      || 10;
+            this.axis          = this.degreesToRadians(config.axis) || 0;
+            this.texture       = config.texture                     || "textures/moon.gif";
 
             this.orbitDistance /= 100;
             if (this.orbits) {
@@ -38,8 +42,8 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 this.origin[1] = this.orbits.origin[1];
                 this.origin[2] = this.orbits.origin[2] - (this.orbitDistance + this.orbits.radius + this.radius);
 
-                console.log(this.name + " does orbit, and its origin is ", this.origin);
-                console.log("Its parent (" + this.orbits.name + ") has an origin of: ", this.orbits.origin);
+                // console.log(this.name + " does orbit, and its origin is ", this.origin);
+                // console.log("Its parent (" + this.orbits.name + ") has an origin of: ", this.orbits.origin);
             }
             else {
                 this.origin = config.origin || [0, 0, 0];
@@ -49,7 +53,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         initMatrix: function () {
             this.modelViewMatrix = glMatrix.mat4.create();
             glMatrix.mat4.identity(this.modelViewMatrix);
-            glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.origin);     
+            glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.origin); 
+
+            // move origin to center of planet???
             // glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [
             //     0, 0, -(this.radius / 2)
             // ]);
@@ -246,6 +252,11 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             }/* else {
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, this.spin());
             }*/
+        },
+
+        animate: function () {
+            this.orbit();
+            //this.spin();
         }
 
     };
