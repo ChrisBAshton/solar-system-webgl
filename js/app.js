@@ -1,11 +1,15 @@
 define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera', 'controls'], function (glMatrix, glUtils, AstronomicalObject, gl, shaders, camera, controls) {
 
-    var test = true;
+    var test = false;
 
     var canvas = document.getElementById('canvas_solar_system'),
         projectionViewMatrix = glMatrix.mat4.create(),
         projectionMatrix = glMatrix.mat4.create(),
         shaderProgram;
+
+    function degreesToRadians(celsius) {
+        return celsius * (Math.PI / 180);
+    }
 
     function init() {
         initViewport();
@@ -14,7 +18,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             name:    "Sun",
             origin:  [0, 0, 0],
             radius:  1000,
-            axis:    0,
+            axis:    degreesToRadians(7.25),
             texture: 'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
         });
 
@@ -23,7 +27,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbits:        theSun,
             orbitDistance: 1000,
             radius:        100,
-            axis:          0,
+            axis:          degreesToRadians(0),
             faceColors: [
                 [1.0, 1.0, 1.0, 1.0], // Front face
                 [1.0, 1.0, 1.0, 1.0], // Back face
@@ -39,7 +43,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbits:        theSun,
             orbitDistance: 2200,
             radius:        300,
-            axis:          0,
+            axis:          degreesToRadians(25.19),
             faceColors: [
                 [1.0, 0.0, 0.0, 1.0], // Front face
                 [1.0, 0.0, 0.0, 1.0], // Back face
@@ -55,7 +59,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbits:        theSun,
             orbitDistance: 4000,
             radius:        300,
-            axis:          0,
+            axis:          degreesToRadians(23.4),
             faceColors: [
                 [0.0, 1.0, 0.0, 1.0], // Front face
                 [0.0, 1.0, 0.0, 1.0], // Back face
@@ -71,7 +75,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
             orbits:        earth,
             orbitDistance: 150,
             radius:        90,
-            axis:          0,
+            axis:          degreesToRadians(6.68),
             texture:       'http://www.corsproxy.com/learningwebgl.com/lessons/lesson11/moon.gif'
         });
 
@@ -161,7 +165,7 @@ define(['glMatrix', 'glUtils', 'astronomical_object', 'gl', 'shaders', 'camera',
     function animate(solarSystem) {
         for (var i = 0; i < solarSystem.length; i++) {
             solarSystem[i].spin();
-            solarSystem[i].orbit();
+            //solarSystem[i].orbit();
         }
     }
 

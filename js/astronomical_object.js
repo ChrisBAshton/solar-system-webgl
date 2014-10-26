@@ -149,12 +149,12 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         currentTime: Date.now(),
 
         spin: function () {
-            // var now = Date.now();
-            // var deltat = now - this.currentTime;
-            // this.currentTime = now;
-            // var fract = deltat / this.spinDuration;
-            // var angle = Math.PI * 2 * fract; // @TODO use this.axis somewhere
-            // glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, 1]);
+            var now = Date.now();
+            var deltat = now - this.currentTime;
+            this.currentTime = now;
+            var fract = deltat / this.spinDuration;
+            var angle = Math.PI * 2 * fract; // @TODO use this.axis somewhere
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, this.axis]);
         },
 
         orbit: function () {
