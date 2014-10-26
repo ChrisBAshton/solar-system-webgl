@@ -1,11 +1,11 @@
 define(['astronomical_object'], function (AstronomicalObject) {
 
     var theSun = new AstronomicalObject({
-        name:    "Sun",
-        origin:  [0, 0, 0],
-        radius:  432.45,
-        axis:    7.25,
-        texture: "textures/sunmap.jpg"
+        name:          "Sun",
+        origin:        [0, 0, 0],
+        radius:        432.45,
+        axis:          7.25,
+        texture:       "textures/sunmap.jpg"
     });
 
     var mercury = new AstronomicalObject({
