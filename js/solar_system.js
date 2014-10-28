@@ -88,7 +88,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         axis:          1.5
     });
 
-    var solarSystem = [theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune/*, earthsMoon*/];
+    var solarSystem = [theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon];
 
     return solarSystem;
 });

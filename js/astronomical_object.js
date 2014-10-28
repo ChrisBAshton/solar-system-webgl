@@ -15,6 +15,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         this.initTexture();
     };
 
+    var matrixStack = {};
+    var lastAngle = {};
+
     AstronomicalObject.prototype = {
 
         degreesToRadians: function (celsius) {
@@ -32,6 +35,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             this.orbitDistance /= 100;
             if (this.orbits) {
                 this.radius *= 10;
+                this.distanceFromBodyWeAreOrbiting = this.radius + this.orbitDistance + this.orbits.radius;
             }
         },
 
@@ -40,10 +44,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 this.origin = [];
                 this.origin[0] = this.orbits.origin[0];
                 this.origin[1] = this.orbits.origin[1];
-                this.origin[2] = this.orbits.origin[2] - (this.orbitDistance + this.orbits.radius + this.radius);
-
-                // console.log(this.name + " does orbit, and its origin is ", this.origin);
-                // console.log("Its parent (" + this.orbits.name + ") has an origin of: ", this.orbits.origin);
+                this.origin[2] = this.orbits.origin[2] - this.distanceFromBodyWeAreOrbiting;
             }
             else {
                 this.origin = config.origin || [0, 0, 0];
@@ -51,14 +52,15 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         },
 
         initMatrix: function () {
-            this.modelViewMatrix = glMatrix.mat4.create();
-            glMatrix.mat4.identity(this.modelViewMatrix);
-            glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.origin); 
+            var modelViewMatrix = glMatrix.mat4.create();
+            glMatrix.mat4.identity(modelViewMatrix);
+            glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.origin); 
 
-            // move origin to center of planet???
-            // glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [
-            //     0, 0, -(this.radius / 2)
-            // ]);
+            matrixStack[this.name] = [];
+            matrixStack[this.name].push(modelViewMatrix);
+            lastAngle[this.name] = 0;
+
+            this.modelViewMatrix = modelViewMatrix;
         },
 
         initTexture: function() {
@@ -195,75 +197,55 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
         orbit: function () {
             if (this.orbits) {
-                // the temporary matrices we'll use to make our planet orbit
-                var rotationMatrix = glMatrix.mat4.create(),
-                    translationMatrix = glMatrix.mat4.create(),
-                    orbitMatrix = glMatrix.mat4.create();
+                var translationMatrix = glMatrix.mat4.create();
+                var orbitAmount = (90 / this.orbitDistance) / (this.millisecondsPerYear / 1000);
+                var angle     = this.getAngle(orbitAmount);
 
-                var orbitingOrigin = [
-                    this.origin[0] - this.orbits.origin[0],
-                    this.origin[1] - this.orbits.origin[1],
-                    this.origin[2] - this.orbits.origin[2]
-                ];
-                var orbitingOriginInverse = [
-                    -orbitingOrigin[0],
-                    -orbitingOrigin[1],
-                    -orbitingOrigin[2]
-                ];
+                // multiply by the inverse of the parent matrix @TODO
+                var inverseParentMatrix = glMatrix.mat4.create();
+                glMatrix.mat4.invert(inverseParentMatrix, this.orbits.modelViewMatrix);
+                //glMatrix.mat4.multiply(translationMatrix, translationMatrix, inverseParentMatrix);
 
-                // we like orbit distance of 1000 and radius of 0.05
-                // distances further than 1000 should have a smaller radius rotation matrix
-                var rotation = 90 / this.orbitDistance;
+                // move to origin
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -lastAngle[this.name], [0, this.axis, 0]);
+                glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
 
-                var now = Date.now();
-                var deltat = now - this.timeOfLastAnimation;
-                this.timeOfLastAnimation = now;
-                var fract = deltat / this.spinDuration;
-
-                rotation = rotation / (this.millisecondsPerDay / 1000);
-
-
-                glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOriginInverse);
-                glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, rotation, [0, 1, 0]);
-                
-                var spin = false;
-
-                if (spin) {
-                    glMatrix.mat4.multiply(rotationMatrix, rotationMatrix, this.spin());
-                }
-
-                glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOrigin);
-                
-
-                // multiply translation and rotation matrices to get our orbit matrix
-                glMatrix.mat4.multiply(orbitMatrix, rotationMatrix, translationMatrix);
+                // perform orbit
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, orbitAmount, [0, 1, 0]);
+                glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
 
                 // move the planet according to its orbit matrix
-                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, orbitMatrix);
+                var tmpMatrix = matrixStack[this.name].pop();
+                glMatrix.mat4.multiply(tmpMatrix, tmpMatrix, translationMatrix);
+                matrixStack[this.name].push(tmpMatrix);
 
-            }/* else {
-                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, this.spin());
-            }*/
+                // perform spin
+                glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, lastAngle[this.name] + angle, [0, this.axis, 0]);
+                //glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, angle, [0, this.axis, 0]);
+
+                lastAngle[this.name] += angle;
+
+                this.modelViewMatrix = tmpMatrix;
+
+
+            } else {
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.getAngle(), [0, this.axis, 0]);
+            }
         },
-
-        spinDuration: 5000, // ms
         
         currentTime: Date.now(),
 
-        spin: function () {
+        getAngle: function (orbitAmount) {
             var now = Date.now();
             var deltat = now - this.currentTime;
             this.currentTime = now;
-            var fract = deltat / this.spinDuration;
+            var fract = orbitAmount || deltat / 5000;
             var angle = Math.PI * 2 * fract;
-
-            var tmpMatrix = glMatrix.mat4.create();
-            glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, angle, [0, 1, this.axis]);
-            return tmpMatrix;
+            return angle;
         },
 
-        animate: function (millisecondsPerDay) {
-            this.millisecondsPerDay = millisecondsPerDay;
+        animate: function (millisecondsPerYear) {
+            this.millisecondsPerYear = millisecondsPerYear;
             this.orbit();
         }
 
