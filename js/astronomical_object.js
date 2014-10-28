@@ -213,8 +213,15 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
                 // we like orbit distance of 1000 and radius of 0.05
                 // distances further than 1000 should have a smaller radius rotation matrix
-                
-                var rotation = 50 / this.orbitDistance;
+                var rotation = 90 / this.orbitDistance;
+
+                var now = Date.now();
+                var deltat = now - this.timeOfLastAnimation;
+                this.timeOfLastAnimation = now;
+                var fract = deltat / this.spinDuration;
+
+                rotation = rotation / (this.millisecondsPerDay / 1000);
+
 
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOriginInverse);
                 glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, rotation, [0, 1, 0]);
@@ -255,9 +262,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             return tmpMatrix;
         },
 
-        animate: function () {
+        animate: function (millisecondsPerDay) {
+            this.millisecondsPerDay = millisecondsPerDay;
             this.orbit();
-            //this.spin();
         }
 
     };

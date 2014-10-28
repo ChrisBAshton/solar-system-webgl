@@ -12,7 +12,7 @@ define(['solar_system', 'gl', 'shaders', 'camera', 'controls', 'glUtils'], funct
         
         if (!controls.paused()) {
             draw();
-            animate();
+            animate(controls.millisecondsPerDay());
         }
     }
 
@@ -32,9 +32,9 @@ define(['solar_system', 'gl', 'shaders', 'camera', 'controls', 'glUtils'], funct
         gl.clear(gl.COLOR_BUFFER_BIT  | gl.DEPTH_BUFFER_BIT);
     }
 
-    function animate() {
+    function animate(millisecondsPerDay) {
         for (var i = 0; i < SolarSystem.length; i++) {
-            SolarSystem[i].animate();
+            SolarSystem[i].animate(millisecondsPerDay);
         }
     }
 

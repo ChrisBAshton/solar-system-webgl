@@ -59,6 +59,17 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
         pauseButton.appendChild(pauseButtonText);
         document.body.appendChild(pauseButton);
+
+        var millisecondsPerDay   = document.createElement('INPUT');
+        millisecondsPerDay.type  = 'range';
+        millisecondsPerDay.id    = 'millisecondsPerDay';
+        millisecondsPerDay.min   = 500;
+        millisecondsPerDay.max   = 500000;
+        millisecondsPerDay.value = 5000;
+
+        document.body.appendChild(document.createTextNode(millisecondsPerDay.min));
+        document.body.appendChild(millisecondsPerDay);
+        document.body.appendChild(document.createTextNode(millisecondsPerDay.max));
     }
 
     function handleMouseDown(event) {
@@ -106,6 +117,10 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
         paused: function () {
             return paused;
+        },
+
+        millisecondsPerDay: function () {
+            return parseInt(document.getElementById('millisecondsPerDay').value, 10);
         }
     }
 
