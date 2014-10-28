@@ -2,42 +2,63 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
     var canvas           = document.getElementById('canvas_solar_system');
     var triggerAnimation = function () {};
-
-    Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
-
-        var validKey = true;
-
-        switch (key) {
-            case 'w':
-                camera.goForwards();
-                break;
-            case 'a':
-                camera.goLeft();
-                break;
-            case 's':
-                camera.goBackwards();
-                break;
-            case 'd':
-                camera.goRight();
-                break;
-            default:
-                validKey = false;
-        }
-
-        if (validKey) {
-            triggerAnimation();
-        }
-
-    }, 'keydown');
-
-    var mouseDown = false;
-    var lastMouseX = null;
-    var lastMouseY = null;
+    var mouseDown        = false;
+    var lastMouseX       = null;
+    var lastMouseY       = null;
+    var paused           = false;
 
     function init() {
+        bindKeyboardControls();
+        bindMouseControls();
+        createGUI();
+    }
+
+    function bindMouseControls() {
         canvas.onmousedown   = handleMouseDown;
         document.onmouseup   = handleMouseUp;
-        document.onmousemove = handleMouseMove; 
+        document.onmousemove = handleMouseMove;
+    }
+
+    function bindKeyboardControls() {
+        Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
+
+            var validKey = true;
+
+            switch (key) {
+                case 'w':
+                    camera.goForwards();
+                    break;
+                case 'a':
+                    camera.goLeft();
+                    break;
+                case 's':
+                    camera.goBackwards();
+                    break;
+                case 'd':
+                    camera.goRight();
+                    break;
+                default:
+                    validKey = false;
+            }
+
+            if (validKey) {
+                triggerAnimation();
+            }
+
+        }, 'keydown');        
+    }
+
+    function createGUI() {
+
+        var pauseButton     = document.createElement('BUTTON'),
+            pauseButtonText = document.createTextNode("Play/pause");
+
+        pauseButton.onclick = function () {
+            paused = !paused;
+        }
+
+        pauseButton.appendChild(pauseButtonText);
+        document.body.appendChild(pauseButton);
     }
 
     function handleMouseDown(event) {
@@ -77,11 +98,14 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         return degrees * Math.PI / 180;
     }
 
-
     return {
         bindToAnimation: function (callback) {
             triggerAnimation = callback;
             init();
+        },
+
+        paused: function () {
+            return paused;
         }
     }
 

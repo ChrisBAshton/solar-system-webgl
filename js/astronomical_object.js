@@ -88,7 +88,6 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             this.moonTexture = texture;
         },
 
-        // Create the vertex, color and index data for a multi-colored cube
         initBuffers: function (radius) {
 
             var latitudeBands = 30;
@@ -194,26 +193,6 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             gl.drawElements(gl.TRIANGLES, this.moonVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         },
 
-        getModelViewMatrix: function () {
-            return this.modelViewMatrix;
-        },
-
-        spinDuration: 5000, // ms
-        
-        currentTime: Date.now(),
-
-        spin: function () {
-            var now = Date.now();
-            var deltat = now - this.currentTime;
-            this.currentTime = now;
-            var fract = deltat / this.spinDuration;
-            var angle = Math.PI * 2 * fract; // @TODO use this.axis somewhere
-
-            var tmpMatrix = glMatrix.mat4.create();
-            glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, angle, [0, 1, this.axis]);
-            return tmpMatrix;
-        },
-
         orbit: function () {
             if (this.orbits) {
                 // the temporary matrices we'll use to make our planet orbit
@@ -239,7 +218,13 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOriginInverse);
                 glMatrix.mat4.rotate(rotationMatrix, rotationMatrix, rotation, [0, 1, 0]);
-                //glMatrix.mat4.multiply(rotationMatrix, rotationMatrix, this.spin());
+                
+                var spin = false;
+
+                if (spin) {
+                    glMatrix.mat4.multiply(rotationMatrix, rotationMatrix, this.spin());
+                }
+
                 glMatrix.mat4.translate(rotationMatrix, rotationMatrix, orbitingOrigin);
                 
 
@@ -252,6 +237,22 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             }/* else {
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, this.spin());
             }*/
+        },
+
+        spinDuration: 5000, // ms
+        
+        currentTime: Date.now(),
+
+        spin: function () {
+            var now = Date.now();
+            var deltat = now - this.currentTime;
+            this.currentTime = now;
+            var fract = deltat / this.spinDuration;
+            var angle = Math.PI * 2 * fract;
+
+            var tmpMatrix = glMatrix.mat4.create();
+            glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, angle, [0, 1, this.axis]);
+            return tmpMatrix;
         },
 
         animate: function () {
