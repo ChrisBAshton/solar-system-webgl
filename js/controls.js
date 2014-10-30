@@ -50,6 +50,10 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
     function createGUI() {
 
+        var guiContainer = document.createElement('DIV');
+        guiContainer.id = 'webgl_solarsystem_gui';
+        document.body.appendChild(guiContainer);
+
         var pauseButton     = document.createElement('BUTTON'),
             pauseButtonText = document.createTextNode("Play/pause");
 
@@ -58,18 +62,18 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         }
 
         pauseButton.appendChild(pauseButtonText);
-        document.body.appendChild(pauseButton);
+        guiContainer.appendChild(pauseButton);
 
         var millisecondsPerDay   = document.createElement('INPUT');
         millisecondsPerDay.type  = 'range';
         millisecondsPerDay.id    = 'millisecondsPerDay';
         millisecondsPerDay.min   = 500;
-        millisecondsPerDay.max   = 35000;
-        millisecondsPerDay.value = 5000;
+        millisecondsPerDay.max   = 20000;
+        millisecondsPerDay.value = 35000;
 
-        document.body.appendChild(document.createTextNode(millisecondsPerDay.min));
-        document.body.appendChild(millisecondsPerDay);
-        document.body.appendChild(document.createTextNode(millisecondsPerDay.max));
+        guiContainer.appendChild(document.createTextNode(millisecondsPerDay.min));
+        guiContainer.appendChild(millisecondsPerDay);
+        guiContainer.appendChild(document.createTextNode(millisecondsPerDay.max));
     }
 
     function handleMouseDown(event) {
