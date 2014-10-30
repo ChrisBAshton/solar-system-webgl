@@ -15,6 +15,12 @@ python -m SimpleHTTPServer
 
 Then go to [http://localhost:8000/](http://localhost:8000/) to see the solar system.
 
+# Explanation
+
+The orbiting algorithm follows a 7-step process, outlined in the figure below.
+
+![orbit algorithm design](https://raw.githubusercontent.com/ChrisBAshton/solar-system-webgl/master/report/orbit_alorithm_design.jpg?token=AE4Ad6Bq0x91NRZPBnXpg5DNdiFngF4yks5UW7nNwA%3D%3D)
+
 # Acknowledgements
 
 Orbit distances taken from:
