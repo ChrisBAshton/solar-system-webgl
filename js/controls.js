@@ -64,7 +64,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         millisecondsPerDay.type  = 'range';
         millisecondsPerDay.id    = 'millisecondsPerDay';
         millisecondsPerDay.min   = 500;
-        millisecondsPerDay.max   = 35000;
+        millisecondsPerDay.max   = 3500000;
         millisecondsPerDay.value = 5000;
 
         document.body.appendChild(document.createTextNode(millisecondsPerDay.min));
