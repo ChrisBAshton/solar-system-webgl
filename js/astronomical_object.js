@@ -18,6 +18,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
     var matrixStack = {};
     var lastSpinAngle = {};
     var lastOrbitAngle = {};
+    var cumulativeOrbitAngle = {};
 
     AstronomicalObject.prototype = {
 
@@ -61,6 +62,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             matrixStack[this.name].push(modelViewMatrix);
             lastSpinAngle[this.name] = 0;
             lastOrbitAngle[this.name] = 0;
+            cumulativeOrbitAngle[this.name] = 0;
 
             this.modelViewMatrix = modelViewMatrix;
         },
@@ -202,39 +204,46 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 var translationMatrix = glMatrix.mat4.create();
                 var orbitAmount = (90 / this.orbitDistance) / (this.millisecondsPerYear / 1000);
                 var spinAmount  = this.getAngle(orbitAmount);
-                var inverseParentMatrix = glMatrix.mat4.create();
-                glMatrix.mat4.invert(inverseParentMatrix, this.orbits.modelViewMatrix);
 
-
-
-                // move to origin
+                // X. unspin
                 glMatrix.mat4.rotate(translationMatrix, translationMatrix, -lastSpinAngle[this.name], [0, this.axis, 0]);
-                glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
 
-                // ############## multiply by the inverse of the parent matrix
-                glMatrix.mat4.multiply(translationMatrix, translationMatrix, inverseParentMatrix);
+                // NORMAL PLANETS
+                if (!this.orbits.orbits) {
 
-                // ############## multiply by the parent matrix
+                    // 3. move to origin of body we're orbiting
+                    glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
 
-                if (this.orbits.orbits) {
+                    // 4. rotate by extra orbit angle
+                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, orbitAmount, [0, 1, 0]);
 
-                    // rotate by the MOONs last orbit angle
-                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, -lastOrbitAngle[this.name], [0, this.axis, 0]);
+                    // 5. move back out to orbit space
+                    glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
+                }
+                // MOONS etc
+                else {
 
-                    glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.orbits.distanceFromBodyWeAreOrbiting]);
+                    // 1. move to center of earth
+                    glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
                     
+                    // 2. rotate by the moon's CUMULATIVE orbit amount
+                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, -cumulativeOrbitAngle[this.name], [0, 1, 0]);
+                    
+                    // 3. move to center of sun
+                    glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.orbits.distanceFromBodyWeAreOrbiting]);
+
+                    // 4. rotate by earth's LAST orbit angle
                     glMatrix.mat4.rotate(translationMatrix, translationMatrix, lastOrbitAngle[this.orbits.name], [0, 1, 0]);
+
+                    // 5. move back out by earth's distance
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.orbits.distanceFromBodyWeAreOrbiting]);
 
-                    // then correct ourselves
-                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, lastOrbitAngle[this.name], [0, this.axis, 0]);
+                    // 6. rotate by the moon's cumulative orbit amount PLUS the new orbit
+                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, cumulativeOrbitAngle[this.name] + orbitAmount, [0, 1, 0]);
+
+                    // 7. move back out to orbit space (away from earth)
+                    glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
                 }
-
-               glMatrix.mat4.multiply(translationMatrix, translationMatrix, this.orbits.modelViewMatrix);
-                // perform orbit
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, orbitAmount, [0, 1, 0]);
-                glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
-
 
                 // move the planet according to its orbit matrix
                 var tmpMatrix = matrixStack[this.name].pop();
@@ -245,14 +254,15 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, lastSpinAngle[this.name] + spinAmount, [0, this.axis, 0]);
 
                 lastOrbitAngle[this.name] = orbitAmount;
+                cumulativeOrbitAngle[this.name] += lastOrbitAngle[this.name];
                 lastSpinAngle[this.name] += spinAmount;
 
                 this.modelViewMatrix = tmpMatrix;
 
-            } /*else {
+            } else {
                 lastSpinAngle[this.name] = this.getAngle();
                 glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, lastSpinAngle[this.name], [0, this.axis, 0]);
-            }*/
+            }
         },
         
         currentTime: Date.now(),

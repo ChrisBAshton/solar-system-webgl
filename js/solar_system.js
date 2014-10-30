@@ -83,7 +83,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
     var earthsMoon = new AstronomicalObject({
         name:          "Earth's Moon",
         orbits:        earth,
-        orbitDistance: 24000,
+        orbitDistance: 2400,
         radius:        1,
         axis:          1.5
     });
