@@ -56,16 +56,13 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             'gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);' +
         '}';
 
-
-    var shaderProgram;
-
     function initShaders() {
 
         // load and compile the fragment and vertex shader
         var fragmentShader = createShader(gl, fragmentShaderSource, "fragment");
         var vertexShader = createShader(gl, vertexShaderSource, "vertex");
 
-        shaderProgram = gl.createProgram();
+        var shaderProgram = gl.createProgram();
         gl.attachShader(shaderProgram, vertexShader);
         gl.attachShader(shaderProgram, fragmentShader);
         gl.linkProgram(shaderProgram);

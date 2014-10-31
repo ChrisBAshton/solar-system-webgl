@@ -2,6 +2,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
     var canvas           = document.getElementById('canvas_solar_system');
     var triggerAnimation = function () {};
+    var keyDown          = false;
     var mouseDown        = false;
     var lastMouseX       = null;
     var lastMouseY       = null;
@@ -22,20 +23,22 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
     function bindKeyboardControls() {
         Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
 
+            keyDown = keyDown ? ++keyDown : 1;
+
             var validKey = true;
 
             switch (key) {
                 case 'w':
-                    camera.goForwards();
+                    camera.goForwards(keyDown);
                     break;
                 case 'a':
-                    camera.goLeft();
+                    camera.goLeft(keyDown);
                     break;
                 case 's':
-                    camera.goBackwards();
+                    camera.goBackwards(keyDown);
                     break;
                 case 'd':
-                    camera.goRight();
+                    camera.goRight(keyDown);
                     break;
                 default:
                     validKey = false;
@@ -45,7 +48,11 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
                 triggerAnimation();
             }
 
-        }, 'keydown');        
+        }, 'keydown');
+
+        Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
+            keyDown = false;
+        }, 'keyup');  
     }
 
     function createGUI() {
@@ -64,16 +71,124 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         pauseButton.appendChild(pauseButtonText);
         guiContainer.appendChild(pauseButton);
 
-        var millisecondsPerDay   = document.createElement('INPUT');
-        millisecondsPerDay.type  = 'range';
-        millisecondsPerDay.id    = 'millisecondsPerDay';
-        millisecondsPerDay.min   = 500;
-        millisecondsPerDay.max   = 20000;
-        millisecondsPerDay.value = 35000;
+        createSlider({
+            label:     'Milliseconds per day',
+            id:        'millisecondsPerDay',
+            min:       500,
+            max:       100000,
+            default:   20000,
+            container: guiContainer
+        });
 
-        guiContainer.appendChild(document.createTextNode(millisecondsPerDay.min));
-        guiContainer.appendChild(millisecondsPerDay);
-        guiContainer.appendChild(document.createTextNode(millisecondsPerDay.max));
+        createSlider({
+            label:     'Ambient Light - Red',
+            id:        'ambientR',
+            min:       0,
+            max:       1,
+            default:   0.2,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Ambient Light - Green',
+            id:        'ambientG',
+            min:       0,
+            max:       1,
+            default:   0.2,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Ambient Light - Blue',
+            id:        'ambientB',
+            min:       0,
+            max:       1,
+            default:   0.2,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Directional Light - Red',
+            id:        'directionalR',
+            min:       0,
+            max:       1,
+            default:   0.8,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Directional Light - Green',
+            id:        'directionalG',
+            min:       0,
+            max:       1,
+            default:   0.8,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Directional Light - Blue',
+            id:        'directionalB',
+            min:       0,
+            max:       1,
+            default:   0.8,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Light direction X',
+            id:        'lightDirectionX',
+            min:       -1.0,
+            max:       1.0,
+            default:   -1.0,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Light direction Y',
+            id:        'lightDirectionY',
+            min:       -1.0,
+            max:       1.0,
+            default:   -1.0,
+            step:      0.1,
+            container: guiContainer
+        });
+
+        createSlider({
+            label:     'Light direction Z',
+            id:        'lightDirectionZ',
+            min:       -1.0,
+            max:       1.0,
+            default:   -1.0,
+            step:      0.1,
+            container: guiContainer
+        });
+
+    }
+
+    function createSlider(config) {
+        var slider = document.createElement('INPUT'),
+            label  = document.createElement('LABEL');
+        
+        label.innerHTML = config.label;
+
+        slider.type  = 'range';
+        slider.id    = config.id;
+        slider.step  = config.step || 1;
+        slider.min   = config.min;
+        slider.max   = config.max;
+        slider.value = config.default;
+
+        config.container.appendChild(label);
+        config.container.appendChild(document.createTextNode(slider.min));
+        config.container.appendChild(slider);
+        config.container.appendChild(document.createTextNode(slider.max));
     }
 
     function handleMouseDown(event) {

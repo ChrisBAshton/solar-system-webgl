@@ -1,31 +1,24 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
-    var ambientR        = 0.2,
-        ambientG        = 0.2,
-        ambientB        = 0.2,
-        lightDirectionX = -1.0,
-        lightDirectionY = -1.0,
-        lightDirectionZ = -1.0,
-        directionalR    = 0.8,
-        directionalG    = 0.8,
-        directionalB    = 0.8;
-
+    function getInput(id) {
+        return parseFloat(document.getElementById(id).value);
+    }
 
     function prepareLighting(shaderProgram) {
-        var lighting = false;
+        var lighting = true;
 
         gl.uniform1i(shaderProgram.useLightingUniform, lighting);
         if (lighting) {
             gl.uniform3f(
                 shaderProgram.ambientColorUniform,
-                ambientR,
-                ambientG,
-                ambientB
+                getInput('ambientR'),
+                getInput('ambientG'),
+                getInput('ambientB')
             );
             var lightingDirection = [
-                lightDirectionX,
-                lightDirectionY,
-                lightDirectionZ
+                getInput('lightDirectionX'),
+                getInput('lightDirectionY'),
+                getInput('lightDirectionZ')
             ];
             var adjustedLD = glMatrix.vec3.create();
             glMatrix.vec3.normalize(lightingDirection, adjustedLD);
@@ -33,9 +26,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             gl.uniform3fv(shaderProgram.lightingDirectionUniform, adjustedLD);
             gl.uniform3f(
                 shaderProgram.directionalColorUniform,
-                directionalR,
-                directionalG,
-                directionalB
+                getInput('directionalR'),
+                getInput('directionalG'),
+                getInput('directionalB')
             );
         }
     }

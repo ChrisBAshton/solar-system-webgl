@@ -42,28 +42,44 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         },
 
         setOriginAccordingTo: function (config) {
+
+            var randomStartingOrbit;
+
             if (this.orbits) {
+                randomStartingOrbit = (Math.PI * 2) / Math.random();
                 this.origin = [];
                 this.origin[0] = this.orbits.origin[0];
                 this.origin[1] = this.orbits.origin[1];
                 this.origin[2] = this.orbits.origin[2] - this.distanceFromBodyWeAreOrbiting;
             }
             else {
+                randomStartingOrbit = 0;
                 this.origin = config.origin || [0, 0, 0];
             }
+
+            lastSpinAngle[this.name] = 0;
+            lastOrbitAngle[this.name] = randomStartingOrbit;
+            cumulativeOrbitAngle[this.name] = randomStartingOrbit;
         },
 
         initMatrix: function () {
             var modelViewMatrix = glMatrix.mat4.create();
-            glMatrix.mat4.identity(modelViewMatrix);
-            glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.origin); 
+
+            if (this.orbits.orbits) {
+                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, lastOrbitAngle[this.orbits.name], [0, 1, 0]);
+                glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.orbits.origin);
+            }
+
+            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, lastOrbitAngle[this.name], [0, 1, 0]);
+            
+            if (this.orbits.orbits) {
+                glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
+            } else {
+                glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.origin);
+            }
 
             matrixStack[this.name] = [];
             matrixStack[this.name].push(modelViewMatrix);
-            lastSpinAngle[this.name] = 0;
-            lastOrbitAngle[this.name] = 0;
-            cumulativeOrbitAngle[this.name] = 0;
-
             this.modelViewMatrix = modelViewMatrix;
         },
 

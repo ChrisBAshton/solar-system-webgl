@@ -2,8 +2,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     var canvas           = document.getElementById('canvas_solar_system'),
         projectionMatrix = glMatrix.mat4.create(),
-        cameraMatrix     = glMatrix.mat4.create(),
-        movementSpeed    = 50;
+        cameraMatrix     = glMatrix.mat4.create();
 
     function init() {
         createProjectionMatrix();
@@ -32,24 +31,28 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             return projectionViewMatrix;
         },
 
+        calculateMovementSpeed: function (acceleration) {
+            return acceleration * acceleration; //acceleration < 10 ? 10 : acceleration > 100 ? 100 : acceleration;
+        },
+
         rotateView: function (rotationMatrix) {
             glMatrix.mat4.multiply(cameraMatrix, cameraMatrix, rotationMatrix);
         },
 
-        goForwards: function () {
-            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, movementSpeed]);
+        goForwards: function (acceleration) {
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, this.calculateMovementSpeed(acceleration)]);
         },
 
-        goBackwards: function () {
-            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -movementSpeed]);
+        goBackwards: function (acceleration) {
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -this.calculateMovementSpeed(acceleration)]);
         },
 
-        goLeft: function () {
-            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [movementSpeed, 0, 0]);
+        goLeft: function (acceleration) {
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [this.calculateMovementSpeed(acceleration), 0, 0]);
         },
 
-        goRight: function () {
-            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [-movementSpeed, 0, 0]);
+        goRight: function (acceleration) {
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [-this.calculateMovementSpeed(acceleration), 0, 0]);
         }
     }
 
