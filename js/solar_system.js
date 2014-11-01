@@ -119,7 +119,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         orbits:        jupiter,
         orbitDistance: 220000,
         orbitalPeriod: 1.769,
-        spinPeriod:    1, // @TODO - find the real spin period for this moon
+        spinPeriod:    1.769,
         radius:        1075,
         axis:          0.050
     });
@@ -129,7 +129,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         orbits:        jupiter,
         orbitDistance: 420000,
         orbitalPeriod: 3.551,
-        spinPeriod:    1, // @TODO - find the real spin period for this moon
+        spinPeriod:    3.551,
         radius:        970,
         axis:          0.471
     });
@@ -139,7 +139,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         orbits:        jupiter,
         orbitDistance: 664000,
         orbitalPeriod: 7.155,
-        spinPeriod:    1, // @TODO - find the real spin period for this moon
+        spinPeriod:    7.155,
         radius:        1635,
         axis:          0.204
     });
@@ -149,7 +149,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         orbits:        jupiter,
         orbitDistance: 1170000,
         orbitalPeriod: 16.69,
-        spinPeriod:    1, // @TODO - find the real spin period for this moon
+        spinPeriod:    16.69,
         radius:        1497.5,
         axis:          0.205
     });
