@@ -1,10 +1,10 @@
-define(['gl', 'glMatrix'], function (gl, glMatrix) {
+define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
 
     function getInput(id) {
         return parseFloat(document.getElementById(id).value);
     }
 
-    function prepareLighting(shaderProgram) {
+    function prepareLighting() {
         var lighting = true;
 
         gl.uniform1i(shaderProgram.useLightingUniform, lighting);
@@ -15,26 +15,35 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 getInput('ambientG'),
                 getInput('ambientB')
             );
-            var lightingDirection = [
-                getInput('lightDirectionX'),
-                getInput('lightDirectionY'),
-                getInput('lightDirectionZ')
-            ];
-            var adjustedLD = glMatrix.vec3.create();
-            glMatrix.vec3.normalize(lightingDirection, adjustedLD);
-            glMatrix.vec3.scale(adjustedLD, -1);
-            gl.uniform3fv(shaderProgram.lightingDirectionUniform, adjustedLD);
+
             gl.uniform3f(
-                shaderProgram.directionalColorUniform,
-                getInput('directionalR'),
-                getInput('directionalG'),
-                getInput('directionalB')
+                shaderProgram.pointLightingLocationUniform,
+                getInput('lightPositionX'),
+                getInput('lightPositionY'),
+                getInput('lightPositionZ')
+            );
+
+            gl.uniform3f(
+                shaderProgram.pointLightingColorUniform,
+                getInput('pointR'),
+                getInput('pointG'),
+                getInput('pointB')
             );
         }
     }
 
+    function setMatrixUniforms(perspectiveMatrix, modelViewMatrix) {
+        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, perspectiveMatrix);
+        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, modelViewMatrix);
+        
+        var normalMatrix = glMatrix.mat3.create();
+        glMatrix.mat3.normalFromMat4(normalMatrix, modelViewMatrix);
+        gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+    }
+
     return {
-        prepare: prepareLighting
+        prepare: prepareLighting,
+        setMatrixUniforms: setMatrixUniforms
     };
 
 });

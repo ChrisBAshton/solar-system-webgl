@@ -111,8 +111,8 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         });
 
         createSlider({
-            label:     'Directional Light - Red',
-            id:        'directionalR',
+            label:     'Point Light Color - Red',
+            id:        'pointR',
             min:       0,
             max:       1,
             default:   0.8,
@@ -121,8 +121,8 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         });
 
         createSlider({
-            label:     'Directional Light - Green',
-            id:        'directionalG',
+            label:     'Point Light Color - Green',
+            id:        'pointG',
             min:       0,
             max:       1,
             default:   0.8,
@@ -131,8 +131,8 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         });
 
         createSlider({
-            label:     'Directional Light - Blue',
-            id:        'directionalB',
+            label:     'Point Light Color - Blue',
+            id:        'pointB',
             min:       0,
             max:       1,
             default:   0.8,
@@ -141,32 +141,29 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         });
 
         createSlider({
-            label:     'Light direction X',
-            id:        'lightDirectionX',
-            min:       -1.0,
-            max:       1.0,
-            default:   -1.0,
-            step:      0.1,
+            label:     'Light position X',
+            id:        'lightPositionX',
+            min:       -10000,
+            max:       10000,
+            default:   0,
             container: guiContainer
         });
 
         createSlider({
-            label:     'Light direction Y',
-            id:        'lightDirectionY',
-            min:       -1.0,
-            max:       1.0,
-            default:   -1.0,
-            step:      0.1,
+            label:     'Light position Y',
+            id:        'lightPositionY',
+            min:       -10000,
+            max:       10000,
+            default:   0,
             container: guiContainer
         });
 
         createSlider({
-            label:     'Light direction Z',
-            id:        'lightDirectionZ',
-            min:       -1.0,
-            max:       1.0,
-            default:   -1.0,
-            step:      0.1,
+            label:     'Light position Z',
+            id:        'lightPositionZ',
+            min:       -10000,
+            max:       10000,
+            default:   0,
             container: guiContainer
         });
 
