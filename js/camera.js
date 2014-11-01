@@ -1,16 +1,26 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
-    var canvas           = document.getElementById('canvas_solar_system'),
-        projectionMatrix = glMatrix.mat4.create(),
-        cameraMatrix     = glMatrix.mat4.create();
+    var canvas              = document.getElementById('canvas_solar_system'),
+        projectionMatrix    = glMatrix.mat4.create(),
+        cameraMatrix        = glMatrix.mat4.create(),
+        fullScreen          = false,
+        defaultCanvasWidth  = 800,
+        defaultCanvasHeight = 400;
 
     function init() {
-        createProjectionMatrix();
+        setCanvasSize(defaultCanvasWidth, defaultCanvasHeight);
         // camera's starting position
         glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -5000]);
     }
 
-    function createProjectionMatrix() {
+    function setCanvasSize(width, height) {
+        canvas.width  = width;
+        canvas.height = height;
+        gl.viewport(0, 0, canvas.width, canvas.height);
+        updateProjectionMatrix();
+    }
+
+    function updateProjectionMatrix() {
         // Create a project matrix with 45 degree field of view
         glMatrix.mat4.perspective(
             projectionMatrix,
@@ -24,6 +34,18 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
     init();
 
     return {
+
+        toggleFullScreen: function () {
+            fullScreen = !fullScreen;
+
+            if (fullScreen) {
+                canvas.className = 'canvas_solar_system--full_screen';
+                setCanvasSize(window.innerWidth, window.innerHeight);
+            } else {
+                canvas.className = 'canvas_solar_system';
+                setCanvasSize(defaultCanvasWidth, defaultCanvasHeight);
+            }
+        },
 
         getProjectionViewMatrix: function () {
             var projectionViewMatrix = glMatrix.mat4.create();

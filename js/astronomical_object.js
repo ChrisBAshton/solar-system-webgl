@@ -1,4 +1,4 @@
-define(['gl', 'glMatrix'], function (gl, glMatrix) {
+define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
 
     /**
      * [AstronomicalObject description]
@@ -32,7 +32,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             this.orbitDistance = config.orbitDistance               || 0;
             this.radius        = config.radius                      || 10;
             this.axis          = this.degreesToRadians(config.axis) || 0;
-            this.texture       = config.texture                     || "textures/moon.gif";
+            this.textureImage  = config.texture                     || "textures/moon.gif";
 
             this.orbitDistance /= 100;
             if (this.orbits) {
@@ -84,17 +84,17 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         },
 
         initTexture: function() {
-            var moonTexture = gl.createTexture();
-            moonTexture.image = new Image();
-            moonTexture.image.crossOrigin = "anonymous";
+            var texture = gl.createTexture();
+            texture.image = new Image();
+            texture.image.crossOrigin = "anonymous";
 
             var self = this;
 
-            moonTexture.image.onload = function () {
-                self.handleLoadedTexture(moonTexture);
+            texture.image.onload = function () {
+                self.handleLoadedTexture(texture);
             }
 
-            moonTexture.image.src = this.texture;
+            texture.image.src = this.textureImage;
         },
 
         handleLoadedTexture: function (texture) {
@@ -107,7 +107,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
             gl.bindTexture(gl.TEXTURE_2D, null);
 
-            this.moonTexture = texture;
+            this.texture = texture;
         },
 
         initBuffers: function (radius) {
@@ -160,59 +160,71 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
                 }
             }
 
-            this.moonVertexNormalBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexNormalBuffer);
+            this.vertexNormalBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(normalData), gl.STATIC_DRAW);
-            this.moonVertexNormalBuffer.itemSize = 3;
-            this.moonVertexNormalBuffer.numItems = normalData.length / 3;
+            this.vertexNormalBuffer.itemSize = 3;
+            this.vertexNormalBuffer.numItems = normalData.length / 3;
 
-            this.moonVertexTextureCoordBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexTextureCoordBuffer);
+            this.vertexTextureCoordBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoordData), gl.STATIC_DRAW);
-            this.moonVertexTextureCoordBuffer.itemSize = 2;
-            this.moonVertexTextureCoordBuffer.numItems = textureCoordData.length / 2;
+            this.vertexTextureCoordBuffer.itemSize = 2;
+            this.vertexTextureCoordBuffer.numItems = textureCoordData.length / 2;
 
-            this.moonVertexPositionBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexPositionBuffer);
+            this.vertexPositionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertexPositionData), gl.STATIC_DRAW);
-            this.moonVertexPositionBuffer.itemSize = 3;
-            this.moonVertexPositionBuffer.numItems = vertexPositionData.length / 3;
+            this.vertexPositionBuffer.itemSize = 3;
+            this.vertexPositionBuffer.numItems = vertexPositionData.length / 3;
 
-            this.moonVertexIndexBuffer = gl.createBuffer();
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.moonVertexIndexBuffer);
+            this.vertexIndexBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
             gl.bufferData(gl.ELEMENT_ARRAY_BUFFER, new Uint16Array(indexData), gl.STATIC_DRAW);
-            this.moonVertexIndexBuffer.itemSize = 1;
-            this.moonVertexIndexBuffer.numItems = indexData.length;
+            this.vertexIndexBuffer.itemSize = 1;
+            this.vertexIndexBuffer.numItems = indexData.length;
         },
 
-        draw: function (shaderProgram, projectionMatrix) {
+        draw: function (projectionMatrix) {
+            this.setupLighting(projectionMatrix);
+            this.setupTexture();
+            this.drawElements();
+        },
 
-            var lighting = false;
-            gl.uniform1i(shaderProgram.useLightingUniform, lighting);
-
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, this.moonTexture);
-            gl.uniform1i(shaderProgram.samplerUniform, 0);
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexPositionBuffer);
-            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.moonVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexTextureCoordBuffer);
-            gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.moonVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, this.moonVertexNormalBuffer);
-            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.moonVertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.moonVertexIndexBuffer);
-
+        setupLighting: function (projectionMatrix) {
+            var useLighting = true,
+                normalMatrix = glMatrix.mat3.create();
+            
+            if (this.name === 'Sun') {
+                useLighting = false;
+            }
+            gl.uniform1i(shaderProgram.useLightingUniform, useLighting);
+            
             gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projectionMatrix);
             gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, this.modelViewMatrix);
-            
-            var normalMatrix = glMatrix.mat3.create();
             glMatrix.mat3.normalFromMat4(normalMatrix, this.modelViewMatrix);
             gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+        },
 
-            gl.drawElements(gl.TRIANGLES, this.moonVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+        setupTexture: function () {
+            gl.activeTexture(gl.TEXTURE0);
+            gl.bindTexture(gl.TEXTURE_2D, this.texture);
+            gl.uniform1i(shaderProgram.samplerUniform, 0);
+        },
+
+        drawElements: function () {
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexTextureCoordBuffer);
+            gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, this.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexNormalBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, this.vertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, this.vertexIndexBuffer);
+
+            gl.drawElements(gl.TRIANGLES, this.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         },
 
         orbit: function () {

@@ -52,28 +52,34 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
         Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
             keyDown = false;
-        }, 'keyup');  
+        }, 'keyup');
+
+        Mousetrap.bind(['f'], function (e, key) {
+            camera.toggleFullScreen();
+            triggerAnimation();
+        }, 'keydown');
+
+        Mousetrap.bind(['p'], function (e, key) {
+            paused = !paused;
+        }, 'keydown');
     }
 
     function createGUI() {
 
+        var canvasContainer = document.getElementById('canvas_solar_system__container');
         var guiContainer = document.createElement('DIV');
         guiContainer.id = 'webgl_solarsystem_gui';
-        document.body.appendChild(guiContainer);
+        canvasContainer.insertBefore(guiContainer, canvasContainer.firstChild);
 
-        var pauseButton     = document.createElement('BUTTON'),
-            pauseButtonText = document.createTextNode("Play/pause");
-
-        pauseButton.onclick = function () {
-            paused = !paused;
-        }
-
-        pauseButton.appendChild(pauseButtonText);
-        guiContainer.appendChild(pauseButton);
+        guiContainer.innerHTML = '<h3>Instructions</h3>';
+        guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below.</p>';
+        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
 
         createSlider({
-            label:     'Milliseconds per day',
+            label:     'Time',
             id:        'millisecondsPerDay',
+            minLabel:  'Fast',
+            maxLabel:  'Slow',
             min:       500,
             max:       100000,
             default:   20000,
@@ -85,7 +91,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'ambientR',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   0.3,
             step:      0.1,
             container: guiContainer
         });
@@ -95,7 +101,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'ambientG',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   0.3,
             step:      0.1,
             container: guiContainer
         });
@@ -105,14 +111,14 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'ambientB',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   0.3,
             step:      0.1,
             container: guiContainer
         });
 
         createSlider({
-            label:     'Directional Light - Red',
-            id:        'directionalR',
+            label:     'Point Light Color - Red',
+            id:        'pointR',
             min:       0,
             max:       1,
             default:   0.8,
@@ -121,8 +127,8 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         });
 
         createSlider({
-            label:     'Directional Light - Green',
-            id:        'directionalG',
+            label:     'Point Light Color - Green',
+            id:        'pointG',
             min:       0,
             max:       1,
             default:   0.8,
@@ -131,50 +137,20 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         });
 
         createSlider({
-            label:     'Directional Light - Blue',
-            id:        'directionalB',
+            label:     'Point Light Color - Blue',
+            id:        'pointB',
             min:       0,
             max:       1,
             default:   0.8,
             step:      0.1,
             container: guiContainer
         });
-
-        createSlider({
-            label:     'Light direction X',
-            id:        'lightDirectionX',
-            min:       -1.0,
-            max:       1.0,
-            default:   -1.0,
-            step:      0.1,
-            container: guiContainer
-        });
-
-        createSlider({
-            label:     'Light direction Y',
-            id:        'lightDirectionY',
-            min:       -1.0,
-            max:       1.0,
-            default:   -1.0,
-            step:      0.1,
-            container: guiContainer
-        });
-
-        createSlider({
-            label:     'Light direction Z',
-            id:        'lightDirectionZ',
-            min:       -1.0,
-            max:       1.0,
-            default:   -1.0,
-            step:      0.1,
-            container: guiContainer
-        });
-
     }
 
     function createSlider(config) {
-        var slider = document.createElement('INPUT'),
-            label  = document.createElement('LABEL');
+        var fieldset = document.createElement('FIELDSET'),
+            slider   = document.createElement('INPUT'),
+            label    = document.createElement('LABEL');
         
         label.innerHTML = config.label;
 
@@ -185,10 +161,11 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         slider.max   = config.max;
         slider.value = config.default;
 
-        config.container.appendChild(label);
-        config.container.appendChild(document.createTextNode(slider.min));
-        config.container.appendChild(slider);
-        config.container.appendChild(document.createTextNode(slider.max));
+        config.container.appendChild(fieldset);
+        fieldset.appendChild(label);
+        fieldset.appendChild(document.createTextNode(config.minLabel || slider.min));
+        fieldset.appendChild(slider);
+        fieldset.appendChild(document.createTextNode(config.maxLabel || slider.max));
     }
 
     function handleMouseDown(event) {

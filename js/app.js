@@ -1,4 +1,4 @@
-define(['solar_system', 'gl', 'shaders', 'camera', 'controls', 'lighting', 'glUtils'], function (SolarSystem, gl, shaderProgram, camera, controls, lighting) {
+define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], function (SolarSystem, gl, camera, controls, lighting) {
 
     function init() {
         controls.bindToAnimation(function () {
@@ -18,10 +18,10 @@ define(['solar_system', 'gl', 'shaders', 'camera', 'controls', 'lighting', 'glUt
 
     function draw() {        
         cleanCanvas();
-        lighting.prepare(shaderProgram);
+        lighting.prepare();
         for (var i = 0; i < SolarSystem.length; i++) {
             var planet = SolarSystem[i];
-            planet.draw(shaderProgram, camera.getProjectionViewMatrix());
+            planet.draw(camera.getProjectionViewMatrix());
         }
     }
 
