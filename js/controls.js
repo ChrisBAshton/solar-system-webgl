@@ -80,9 +80,9 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'millisecondsPerDay',
             minLabel:  'Fast',
             maxLabel:  'Slow',
-            min:       500,
-            max:       100000,
-            default:   20000,
+            min:       5,
+            max:       5000,
+            default:   1000,
             container: guiContainer
         });
 

@@ -10,6 +10,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
     var theSun = new AstronomicalObject({
         name:          "Sun",
         origin:        [0, 0, 0],
+        spinPeriod:    29,
         radius:        432500,
         axis:          7.25,
         texture:       "textures/sunmap.jpg"
@@ -19,6 +20,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Mercury",
         orbits:        theSun,
         orbitDistance: 36000000,
+        orbitalPeriod: 87.66,
+        spinPeriod:    58.65,
         radius:        1516,
         axis:          0,
         texture:       "textures/mercurymap.jpg"
@@ -28,6 +31,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Venus",
         orbits:        theSun,
         orbitDistance: 67000000,
+        orbitalPeriod: 226.46,
+        spinPeriod:    243,
         radius:        3761,
         axis:          177.36,
         texture:       "textures/venusmap.jpg"
@@ -37,6 +42,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Earth",
         orbits:        theSun,
         orbitDistance: 93000000,
+        orbitalPeriod: 365.25,
+        spinPeriod:    1,
         radius:        3959,
         axis:          23.45,
         texture:       "textures/earthmap1k.jpg"
@@ -46,6 +53,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Mars",
         orbits:        theSun,
         orbitDistance: 141000000,
+        orbitalPeriod: 686.67,
+        spinPeriod:    1.03,
         radius:        2460,
         axis:          25.19,
         texture:       "textures/marsmap1k.jpg"
@@ -55,6 +64,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Jupiter",
         orbits:        theSun,
         orbitDistance: 483000000,
+        orbitalPeriod: 4331.87,
+        spinPeriod:    0.41,
         radius:        43441,
         axis:          3.13,
         texture:       "textures/jupitermap.jpg"
@@ -64,6 +75,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Saturn",
         orbits:        theSun,
         orbitDistance: 886000000,
+        orbitalPeriod: 10760.27,
+        spinPeriod:    0.44,
         radius:        36184,
         axis:          26.73,
         texture:       "textures/saturnmap.jpg"
@@ -73,6 +86,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Uranus",
         orbits:        theSun,
         orbitDistance: 1782000000,
+        orbitalPeriod: 30684.65,
+        spinPeriod:    0.72,
         radius:        15759,
         axis:          97.77,
         texture:       "textures/uranusmap.jpg"
@@ -82,6 +97,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Neptune",
         orbits:        theSun,
         orbitDistance: 2794000000,
+        orbitalPeriod: 60193.2,
+        spinPeriod:    0.72,
         radius:        15299,
         axis:          28.32,
         texture:       "textures/neptunemap.jpg"
@@ -91,6 +108,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Earth's Moon",
         orbits:        earth,
         orbitDistance: 2400000,
+        orbitalPeriod: 27.3,
+        spinPeriod:    27.3,
         radius:        1000,
         axis:          1.5
     });
@@ -99,6 +118,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Io",
         orbits:        jupiter,
         orbitDistance: 220000,
+        orbitalPeriod: 1.769,
+        spinPeriod:    1, // @TODO - find the real spin period for this moon
         radius:        1075,
         axis:          0.050
     });
@@ -107,6 +128,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Europa",
         orbits:        jupiter,
         orbitDistance: 420000,
+        orbitalPeriod: 3.551,
+        spinPeriod:    1, // @TODO - find the real spin period for this moon
         radius:        970,
         axis:          0.471
     });
@@ -115,6 +138,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Ganymede",
         orbits:        jupiter,
         orbitDistance: 664000,
+        orbitalPeriod: 7.155,
+        spinPeriod:    1, // @TODO - find the real spin period for this moon
         radius:        1635,
         axis:          0.204
     });
@@ -123,6 +148,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Callisto",
         orbits:        jupiter,
         orbitDistance: 1170000,
+        orbitalPeriod: 16.69,
+        spinPeriod:    1, // @TODO - find the real spin period for this moon
         radius:        1497.5,
         axis:          0.205
     });

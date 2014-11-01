@@ -27,6 +27,10 @@ Orbit distances taken from:
 
 http://www.northern-stars.com/solar_system_distance_scal.htm
 
+Orbit periods and rotation periods taken from:
+
+http://www.windows2universe.org/our_solar_system/planets_table.html
+
 Planet sizes taken from:
 
 http://www.universetoday.com/36649/planets-in-order-of-size/

@@ -4,6 +4,7 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
      * [AstronomicalObject description]
      * @param {Object} config The config object.
      * @param {int} config.orbitDistance (in miles) from whatever it is orbiting. This is then automatically reduced for presentation purposes.
+     * @param {float} config.orbitalPeriod Number of days to make a full orbit.
      * @param {int} config.radius (in miles). This is then automatically increased for presentation purposes.
      * @param {float} config.axis Rotational axis (in degrees).
      */
@@ -14,8 +15,6 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         this.initMatrix();
         this.initBuffers(this.radius);
         this.initTexture();
-        
-        console.log(this.name + ' has a radius of ' + this.radius + ' miles and an orbital distance of ' + this.orbitDistance);
     };
 
     var matrixStack = {};
@@ -33,11 +32,13 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
             this.name          = config.name                        || 'name not set';
             this.orbits        = config.orbits                      || false;
             this.orbitDistance = config.orbitDistance               || 0;
+            this.orbitalPeriod = config.orbitalPeriod               || 1;
+            this.spinPeriod    = config.spinPeriod                  || 1;
             this.radius        = config.radius                      || 10;
             this.axis          = this.degreesToRadians(config.axis) || 0;
             this.textureImage  = config.texture                     || "textures/moon.gif";
 
-            this.orbitDistance /= 100000;
+            this.orbitDistance /= 50000;
             this.radius /= 100;
             
             if (this.orbits) {
@@ -235,10 +236,17 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         },
 
         orbit: function () {
+
+            var timeThisFrame = Date.now(),
+                deltat = timeThisFrame - (this.timeLastFrame || 0),
+                proportionOfOrbit = deltat / (this.millisecondsPerDay * this.orbitalPeriod),
+                orbitAmount = (Math.PI * 2) * proportionOfOrbit,
+                proportionOfSpin = deltat / (this.millisecondsPerDay * this.spinPeriod),
+                spinAmount = (Math.PI * 2) * proportionOfSpin;
+            this.timeLastFrame = timeThisFrame;
+
             if (this.orbits) {
                 var translationMatrix = glMatrix.mat4.create();
-                var orbitAmount = (90 / this.orbitDistance) / (this.millisecondsPerYear / 1000);
-                var spinAmount  = this.getAngle(orbitAmount);
 
                 // X. unspin
                 glMatrix.mat4.rotate(translationMatrix, translationMatrix, -lastSpinAngle[this.name], [0, this.axis, 0]);
@@ -288,23 +296,22 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
                 // perform spin
                 glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, lastSpinAngle[this.name] + spinAmount, [0, this.axis, 0]);
 
-                lastOrbitAngle[this.name] = orbitAmount;
-                cumulativeOrbitAngle[this.name] += lastOrbitAngle[this.name];
-                lastSpinAngle[this.name] += spinAmount;
-
                 this.modelViewMatrix = tmpMatrix;
 
             } else {
-                lastSpinAngle[this.name] = this.getAngle();
-                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, lastSpinAngle[this.name], [0, this.axis, 0]);
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, this.axis, 0]);
             }
+            
+            lastOrbitAngle[this.name] = orbitAmount;
+            cumulativeOrbitAngle[this.name] += lastOrbitAngle[this.name];
+            lastSpinAngle[this.name] += spinAmount;
         },
         
         currentTime: Date.now(),
 
         /**
          * Gets the angle amount by which the planet should spin on its axis at the current frame.
-         * @param  {Float} orbitAmount The angle amount that the planet has orbited this frame, if any. If not provided, spin amount is calculated based on framerate.
+         * @param  {Float} orbitAmount The angle amount (in degrees) that the planet has orbited this frame, if any. If not provided, spin amount is calculated based on framerate.
          * @return {[Float]} The angle amount to spin by.
          */
         getAngle: function (orbitAmount) {
@@ -316,8 +323,8 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
             return angle;
         },
 
-        animate: function (millisecondsPerYear) {
-            this.millisecondsPerYear = millisecondsPerYear;
+        animate: function (millisecondsPerDay) {
+            this.millisecondsPerDay = millisecondsPerDay;
             this.orbit();
         }
 
