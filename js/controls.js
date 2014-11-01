@@ -66,23 +66,20 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
     function createGUI() {
 
+        var canvasContainer = document.getElementById('canvas_solar_system__container');
         var guiContainer = document.createElement('DIV');
         guiContainer.id = 'webgl_solarsystem_gui';
-        document.getElementById('canvas_solar_system__container').appendChild(guiContainer);
+        canvasContainer.insertBefore(guiContainer, canvasContainer.firstChild);
 
-        var pauseButton     = document.createElement('BUTTON'),
-            pauseButtonText = document.createTextNode("Play/pause");
-
-        pauseButton.onclick = function () {
-            paused = !paused;
-        }
-
-        pauseButton.appendChild(pauseButtonText);
-        guiContainer.appendChild(pauseButton);
+        guiContainer.innerHTML = '<h3>Instructions</h3>';
+        guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below.</p>';
+        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
 
         createSlider({
-            label:     'Milliseconds per day',
+            label:     'Time',
             id:        'millisecondsPerDay',
+            minLabel:  'Fast',
+            maxLabel:  'Slow',
             min:       500,
             max:       100000,
             default:   20000,
@@ -151,8 +148,9 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
     }
 
     function createSlider(config) {
-        var slider = document.createElement('INPUT'),
-            label  = document.createElement('LABEL');
+        var fieldset = document.createElement('FIELDSET'),
+            slider   = document.createElement('INPUT'),
+            label    = document.createElement('LABEL');
         
         label.innerHTML = config.label;
 
@@ -163,10 +161,11 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         slider.max   = config.max;
         slider.value = config.default;
 
-        config.container.appendChild(label);
-        config.container.appendChild(document.createTextNode(slider.min));
-        config.container.appendChild(slider);
-        config.container.appendChild(document.createTextNode(slider.max));
+        config.container.appendChild(fieldset);
+        fieldset.appendChild(label);
+        fieldset.appendChild(document.createTextNode(config.minLabel || slider.min));
+        fieldset.appendChild(slider);
+        fieldset.appendChild(document.createTextNode(config.maxLabel || slider.max));
     }
 
     function handleMouseDown(event) {

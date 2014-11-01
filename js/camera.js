@@ -4,7 +4,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         projectionMatrix    = glMatrix.mat4.create(),
         cameraMatrix        = glMatrix.mat4.create(),
         fullScreen          = false,
-        defaultCanvasWidth  = 1000,
+        defaultCanvasWidth  = 800,
         defaultCanvasHeight = 400;
 
     function init() {
