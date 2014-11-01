@@ -3,8 +3,9 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
     /**
      * [AstronomicalObject description]
      * @param {Object} config The config object.
-     * @param {int} config.orbitDistance X thousand miles from whatever it is orbiting. This is then automatically reduced for presentation purposes.
-     * @param {int} config.radius X thousand. This is then automatically increased for presentation purposes.
+     * @param {int} config.orbitDistance (in miles) from whatever it is orbiting. This is then automatically reduced for presentation purposes.
+     * @param {int} config.radius (in miles). This is then automatically increased for presentation purposes.
+     * @param {float} config.axis Rotational axis (in degrees).
      */
     var AstronomicalObject = function (config) {
         this.setAttributes(config);
@@ -13,6 +14,8 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         this.initMatrix();
         this.initBuffers(this.radius);
         this.initTexture();
+        
+        console.log(this.name + ' has a radius of ' + this.radius + ' miles and an orbital distance of ' + this.orbitDistance);
     };
 
     var matrixStack = {};
@@ -34,10 +37,14 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
             this.axis          = this.degreesToRadians(config.axis) || 0;
             this.textureImage  = config.texture                     || "textures/moon.gif";
 
-            this.orbitDistance /= 100;
+            this.orbitDistance /= 100000;
+            this.radius /= 100;
+            
             if (this.orbits) {
-                this.radius *= 10;
                 this.distanceFromBodyWeAreOrbiting = this.radius + this.orbitDistance + this.orbits.radius;
+            }
+            else if (this.name === 'Sun') {
+                this.radius /= 10;
             }
         },
 

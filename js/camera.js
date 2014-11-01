@@ -27,7 +27,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             Math.PI / 4,        // 45 degree field of view
             canvas.width / canvas.height,
             1,
-            100000
+            1000000
         );
     }
 

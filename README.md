@@ -35,6 +35,10 @@ Planet axes taken from:
 
 http://www.astronomynotes.com/tables/tablesb.htm
 
+Jupiter's Galilean moons info taken from:
+
+http://www.daviddarling.info/encyclopedia/J/Jupitermoons.html
+
 Planet texture maps were taken from:
 
 http://planetpixelemporium.com/
