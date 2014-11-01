@@ -8,7 +8,9 @@
 
         <p>CS323 - Advanced Computer Graphics</p>
 
-        <canvas id="canvas_solar_system" width="1000" height="400"></canvas>
+        <div id="canvas_solar_system__container">
+            <canvas id="canvas_solar_system" class="canvas_solar_system"></canvas>
+        </div>
 
         <style>
             #webgl_solarsystem_gui {
@@ -24,6 +26,19 @@
             #webgl_solarsystem_gui label {
                 display: block;
                 font-weight: bold;
+            }
+
+            .canvas_solar_system {
+
+            }
+
+            .canvas_solar_system--full_screen {
+                position: absolute;
+                top: 0;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                z-index: 999;
             }
         </style>
     </body>

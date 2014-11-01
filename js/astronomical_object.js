@@ -186,10 +186,33 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         },
 
         draw: function (projectionMatrix) {
+            this.setupLighting(projectionMatrix);
+            this.setupTexture();
+            this.drawElements();
+        },
+
+        setupLighting: function (projectionMatrix) {
+            var useLighting = true,
+                normalMatrix = glMatrix.mat3.create();
+            
+            if (this.name === 'Sun') {
+                useLighting = false;
+            }
+            gl.uniform1i(shaderProgram.useLightingUniform, useLighting);
+            
+            gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projectionMatrix);
+            gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, this.modelViewMatrix);
+            glMatrix.mat3.normalFromMat4(normalMatrix, this.modelViewMatrix);
+            gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+        },
+
+        setupTexture: function () {
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
+        },
 
+        drawElements: function () {
             gl.bindBuffer(gl.ARRAY_BUFFER, this.vertexPositionBuffer);
             gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, this.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
 

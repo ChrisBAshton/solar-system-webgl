@@ -59,12 +59,11 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         '}';
 
     function initShaders() {
-
         // load and compile the fragment and vertex shader
         var fragmentShader = createShader(gl, fragmentShaderSource, "fragment");
         var vertexShader = createShader(gl, vertexShaderSource, "vertex");
         var shaderProgram = gl.createProgram();
-        
+
         gl.attachShader(shaderProgram, vertexShader);
         gl.attachShader(shaderProgram, fragmentShader);
         gl.linkProgram(shaderProgram);

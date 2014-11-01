@@ -5,45 +5,29 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
     }
 
     function prepareLighting() {
-        var lighting = true;
+        gl.uniform3f(
+            shaderProgram.ambientColorUniform,
+            getInput('ambientR'),
+            getInput('ambientG'),
+            getInput('ambientB')
+        );
 
-        gl.uniform1i(shaderProgram.useLightingUniform, lighting);
-        if (lighting) {
-            gl.uniform3f(
-                shaderProgram.ambientColorUniform,
-                getInput('ambientR'),
-                getInput('ambientG'),
-                getInput('ambientB')
-            );
+        gl.uniform3f(
+            shaderProgram.pointLightingLocationUniform,
+            // same origin as the Sun, so that light appears to emanate from the Sun
+            0, 0, 0
+        );
 
-            gl.uniform3f(
-                shaderProgram.pointLightingLocationUniform,
-                getInput('lightPositionX'),
-                getInput('lightPositionY'),
-                getInput('lightPositionZ')
-            );
-
-            gl.uniform3f(
-                shaderProgram.pointLightingColorUniform,
-                getInput('pointR'),
-                getInput('pointG'),
-                getInput('pointB')
-            );
-        }
-    }
-
-    function setMatrixUniforms(perspectiveMatrix, modelViewMatrix) {
-        gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, perspectiveMatrix);
-        gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, modelViewMatrix);
-        
-        var normalMatrix = glMatrix.mat3.create();
-        glMatrix.mat3.normalFromMat4(normalMatrix, modelViewMatrix);
-        gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
+        gl.uniform3f(
+            shaderProgram.pointLightingColorUniform,
+            getInput('pointR'),
+            getInput('pointG'),
+            getInput('pointB')
+        );
     }
 
     return {
-        prepare: prepareLighting,
-        setMatrixUniforms: setMatrixUniforms
+        prepare: prepareLighting
     };
 
 });

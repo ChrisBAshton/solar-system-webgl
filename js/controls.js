@@ -52,14 +52,23 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
 
         Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
             keyDown = false;
-        }, 'keyup');  
+        }, 'keyup');
+
+        Mousetrap.bind(['f'], function (e, key) {
+            camera.toggleFullScreen();
+            triggerAnimation();
+        }, 'keydown');
+
+        Mousetrap.bind(['p'], function (e, key) {
+            paused = !paused;
+        }, 'keydown');
     }
 
     function createGUI() {
 
         var guiContainer = document.createElement('DIV');
         guiContainer.id = 'webgl_solarsystem_gui';
-        document.body.appendChild(guiContainer);
+        document.getElementById('canvas_solar_system__container').appendChild(guiContainer);
 
         var pauseButton     = document.createElement('BUTTON'),
             pauseButtonText = document.createTextNode("Play/pause");
@@ -85,7 +94,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'ambientR',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   0.3,
             step:      0.1,
             container: guiContainer
         });
@@ -95,7 +104,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'ambientG',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   0.3,
             step:      0.1,
             container: guiContainer
         });
@@ -105,7 +114,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             id:        'ambientB',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   0.3,
             step:      0.1,
             container: guiContainer
         });
@@ -139,34 +148,6 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             step:      0.1,
             container: guiContainer
         });
-
-        createSlider({
-            label:     'Light position X',
-            id:        'lightPositionX',
-            min:       -10000,
-            max:       10000,
-            default:   0,
-            container: guiContainer
-        });
-
-        createSlider({
-            label:     'Light position Y',
-            id:        'lightPositionY',
-            min:       -10000,
-            max:       10000,
-            default:   0,
-            container: guiContainer
-        });
-
-        createSlider({
-            label:     'Light position Z',
-            id:        'lightPositionZ',
-            min:       -10000,
-            max:       10000,
-            default:   0,
-            container: guiContainer
-        });
-
     }
 
     function createSlider(config) {

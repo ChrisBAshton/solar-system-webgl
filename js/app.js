@@ -21,7 +21,6 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
         lighting.prepare();
         for (var i = 0; i < SolarSystem.length; i++) {
             var planet = SolarSystem[i];
-            lighting.setMatrixUniforms(camera.getProjectionViewMatrix(), planet.modelViewMatrix);
             planet.draw(camera.getProjectionViewMatrix());
         }
     }
