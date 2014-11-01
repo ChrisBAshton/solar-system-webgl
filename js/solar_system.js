@@ -95,7 +95,39 @@ define(['astronomical_object'], function (AstronomicalObject) {
         axis:          1.5
     });
 
-    var solarSystem = [/*galaxy,*/ theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon];
+    var jupiterGalileanMoon1 = new AstronomicalObject({
+        name:          "Io",
+        orbits:        jupiter,
+        orbitDistance: 220,
+        radius:        1.075,
+        axis:          1.5
+    });
+
+    var jupiterGalileanMoon2 = new AstronomicalObject({
+        name:          "Europa",
+        orbits:        jupiter,
+        orbitDistance: 420,
+        radius:        0.97,
+        axis:          1.5
+    });
+
+    var jupiterGalileanMoon3 = new AstronomicalObject({
+        name:          "Ganymede",
+        orbits:        jupiter,
+        orbitDistance: 664,
+        radius:        1.635,
+        axis:          1.5
+    });
+
+    var jupiterGalileanMoon4 = new AstronomicalObject({
+        name:          "Callisto",
+        orbits:        jupiter,
+        orbitDistance: 1170,
+        radius:        1.4975,
+        axis:          1.5
+    });
+
+    var solarSystem = [galaxy, theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon, jupiterGalileanMoon1, jupiterGalileanMoon2, jupiterGalileanMoon3, jupiterGalileanMoon4];
 
     return solarSystem;
 });
