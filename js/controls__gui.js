@@ -1,16 +1,41 @@
 define(function () {
 
-    function createGUI() {
+    function createGUI(planetShortcuts) {
 
         var canvasContainer = document.getElementById('canvas_solar_system__container');
         var guiContainer = document.createElement('DIV');
+        var keyboardControlsInfo = document.createElement('DIV');
         guiContainer.id = 'webgl_solarsystem_gui';
         canvasContainer.insertBefore(guiContainer, canvasContainer.firstChild);
+        canvasContainer.appendChild(keyboardControlsInfo);
 
         guiContainer.innerHTML = '<h3>Instructions</h3>';
-        guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below.</p>';
-        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "r": reset camera to original position, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
+        guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below. See below the canvas for keyboard shortcuts.</p>';
 
+        var controls = {
+            'p': 'pause',
+            'f': 'full screen',
+            'w': 'move forwards',
+            'a': 'move left',
+            's': 'move backwards',
+            'd': 'move right',
+            'r': 'reset camera'
+        }
+
+        keyboardControlsInfo.innerHTML = '<h3>Keyboard controls (general)</h3>';
+        for (control in controls) {
+            keyboardControlsInfo.innerHTML += '<strong>' + control + '</strong>: ' + controls[control] + ', ';
+        }
+
+        keyboardControlsInfo.innerHTML += '<h3>Keyboard controls (snap to planet)</h3>';
+        for (shortcut in planetShortcuts) {
+            keyboardControlsInfo.innerHTML += '<strong>' + shortcut + '</strong>: ' + planetShortcuts[shortcut].name + ', ';
+        }
+
+        createSliders(guiContainer);
+    }
+
+    function createSliders(guiContainer) {
         var speedContainer = document.createElement('DIV');
         var speedInfo = document.createElement('DIV');
         var lightingContainerAmbient = document.createElement('DIV');
