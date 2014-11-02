@@ -1,10 +1,23 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
+    
+    function getShader(id) {
+        var shaderScript = document.getElementById(id);
+        if (!shaderScript) {
+            return null;
+        }
+        var str = "";
+        var k = shaderScript.firstChild;
+        while (k) {
+            if (k.nodeType == 3) {
+                str += k.textContent;
+            }
+            k = k.nextSibling;
+        }
 
-    function createShader(gl, str, type) {
         var shader;
-        if (type == "fragment") {
+        if (shaderScript.type == "x-shader/x-fragment") {
             shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (type == "vertex") {
+        } else if (shaderScript.type == "x-shader/x-vertex") {
             shader = gl.createShader(gl.VERTEX_SHADER);
         } else {
             return null;
@@ -12,56 +25,20 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
         gl.shaderSource(shader, str);
         gl.compileShader(shader);
-
+        
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
             alert(gl.getShaderInfoLog(shader));
+            console.log('could not compile shaders');
             return null;
         }
-
+        
         return shader;
     }
 
-     var vertexShaderSource =
-        'attribute vec3 aVertexPosition;' +
-        'attribute vec3 aVertexNormal;' +
-        'attribute vec2 aTextureCoord;' +
-        'uniform mat4 uMVMatrix;' +
-        'uniform mat4 uPMatrix;' +
-        'uniform mat3 uNMatrix;' +
-        'uniform vec3 uAmbientColor;' +
-        'uniform vec3 uPointLightingLocation;' +
-        'uniform vec3 uPointLightingColor;' +
-        'uniform bool uUseLighting;' +
-        'varying vec2 vTextureCoord;' +
-        'varying vec3 vLightWeighting;' +
-        'void main(void) {' +
-            'vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);' +
-            'gl_Position = uPMatrix * mvPosition;' +
-            'vTextureCoord = aTextureCoord;' +
-            'if (!uUseLighting) {' +
-                'vLightWeighting = vec3(1.0, 1.0, 1.0);' +
-            '} else {' +
-                'vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);' +
-                'vec3 transformedNormal = uNMatrix * aVertexNormal;' +
-                'float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);' +
-                'vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;' +
-            '}' +
-        '}';
-
-    var fragmentShaderSource =
-        'precision mediump float;' +
-        'varying vec2 vTextureCoord;' +
-        'varying vec3 vLightWeighting;' +
-        'uniform sampler2D uSampler;' +
-        'void main(void) {' +
-            'vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));' +
-            'gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a);' +
-        '}';
-
     function initShaders() {
         // load and compile the fragment and vertex shader
-        var fragmentShader = createShader(gl, fragmentShaderSource, "fragment");
-        var vertexShader = createShader(gl, vertexShaderSource, "vertex");
+        var fragmentShader = getShader("webgl_solarsystem__shader--fragment");
+        var vertexShader = getShader("webgl_solarsystem__shader--vertex");
         var shaderProgram = gl.createProgram();
 
         gl.attachShader(shaderProgram, vertexShader);
