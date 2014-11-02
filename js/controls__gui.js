@@ -44,7 +44,7 @@ define(function () {
             id:        'ambientGlobal',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient,
             onChangeCallback: function () {
@@ -57,7 +57,7 @@ define(function () {
             id:        'ambientR',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -67,7 +67,7 @@ define(function () {
             id:        'ambientG',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -77,7 +77,7 @@ define(function () {
             id:        'ambientB',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -87,7 +87,7 @@ define(function () {
             id:        'pointGlobal',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun,
             onChangeCallback: function () {
@@ -100,7 +100,7 @@ define(function () {
             id:        'pointR',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun
         });
@@ -110,7 +110,7 @@ define(function () {
             id:        'pointG',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun
         });
@@ -120,7 +120,7 @@ define(function () {
             id:        'pointB',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun
         });
