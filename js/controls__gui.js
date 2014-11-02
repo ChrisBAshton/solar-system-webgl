@@ -9,7 +9,7 @@ define(function () {
 
         guiContainer.innerHTML = '<h3>Instructions</h3>';
         guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below.</p>';
-        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
+        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "r": reset camera to original position, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
 
         var speedContainer = document.createElement('DIV');
         var speedInfo = document.createElement('DIV');
@@ -44,7 +44,7 @@ define(function () {
             id:        'ambientGlobal',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient,
             onChangeCallback: function () {
@@ -57,7 +57,7 @@ define(function () {
             id:        'ambientR',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -67,7 +67,7 @@ define(function () {
             id:        'ambientG',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -77,7 +77,7 @@ define(function () {
             id:        'ambientB',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   0.4,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -87,7 +87,7 @@ define(function () {
             id:        'pointGlobal',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun,
             onChangeCallback: function () {
@@ -100,7 +100,7 @@ define(function () {
             id:        'pointR',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun
         });
@@ -110,7 +110,7 @@ define(function () {
             id:        'pointG',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun
         });
@@ -120,7 +120,7 @@ define(function () {
             id:        'pointB',
             min:       0,
             max:       1,
-            default:   0.8,
+            default:   0.9,
             step:      0.1,
             container: lightingContainerSun
         });

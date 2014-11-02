@@ -43,6 +43,14 @@ Jupiter's Galilean moons info taken from:
 
 http://www.daviddarling.info/encyclopedia/J/Jupitermoons.html
 
+Saturn's rings info taken from:
+
+http://cseligman.com/text/planets/saturnrings.htm
+
 Planet texture maps were taken from:
 
 http://planetpixelemporium.com/
+
+Lots of code taken from/inspired by various lessons at:
+
+http://learningwebgl.com/blog/?page_id=1217

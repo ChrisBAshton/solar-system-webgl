@@ -62,6 +62,10 @@ define(['glMatrix', 'camera', 'controls__gui', 'Mousetrap'], function (glMatrix,
         Mousetrap.bind(['p'], function (e, key) {
             paused = !paused;
         }, 'keydown');
+
+        Mousetrap.bind(['r'], function (e, key) {
+            camera.resetPosition();
+        }, 'keydown');
     }
 
     function handleMouseDown(event) {
