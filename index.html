@@ -11,23 +11,29 @@
         </div>
 
         <style>
+            body {
+                background-color: #222;
+            }
+
+            h3 {
+                margin: 0;
+            }
+
             #canvas_solar_system__container {
+                margin: 0 auto;
+                max-width: 800px;
                 width: 100%;
-                background: #EDEDED;
                 padding: 20px;
-            }
-
-            #canvas_solar_system__container fieldset {
-                display: inline-block;
-            }
-
-            #canvas_solar_system__container label {
-                display: block;
-                font-weight: bold;
+                background-color: #fff;
             }
             
             #millisecondsPerDay {
                 min-width: 300px;
+            }
+
+            #millisecondsPerDayInfo {
+                text-align: center;
+                font-style: italic;
             }
 
             .canvas_solar_system {
@@ -44,6 +50,31 @@
                 right: 0;
                 z-index: 999;
                 background-color: #000;
+            }
+
+            .webgl_solarsystem_gui__fieldset_container {
+                margin-bottom: 10px;
+            }
+
+            .webgl_solarsystem_gui__fieldset_container--ambient, .webgl_solarsystem_gui__fieldset_container--sun {
+                float: left;
+                width: 50%;
+            }
+
+            .webgl_solarsystem_gui__fieldset_container fieldset {
+                width: 100%;
+                border: 0;
+                padding: 0.1em;
+            }
+
+            .webgl_solarsystem_gui__fieldset_container fieldset label {
+                width: 230px;
+                display: inline-block;
+                text-align: right;
+                padding-right: 15px;
+            }
+            .webgl_solarsystem_gui__fieldset_container fieldset:first-child label {
+                font-weight: bold;
             }
         </style>
     </body>
