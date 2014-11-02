@@ -84,7 +84,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         resetPosition: moveCameraToStartingPosition,
 
         snapTo: function (planet) {
-            console.log('snapping to ' + planet.name);
+            glMatrix.mat4.identity(cameraMatrix);
+            //glMatrix.mat4.rotate(cameraMatrix, cameraMatrix, angle, [0, 1, 0]);
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, planet.origin);
         }
     }
 

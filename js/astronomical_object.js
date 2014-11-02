@@ -91,20 +91,20 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 this.origin = config.origin || [0, 0, 0];
             }
 
-            lastSpinAngle[this.name] = 0;
-            lastOrbitAngle[this.name] = randomStartingOrbit;
-            cumulativeOrbitAngle[this.name] = randomStartingOrbit;
+            this.lastSpinAngle = 0;
+            this.lastOrbitAngle = randomStartingOrbit;
+            this.cumulativeOrbitAngle = randomStartingOrbit;
         },
 
         initMatrix: function () {
             var modelViewMatrix = glMatrix.mat4.create();
 
             if (this.orbits.orbits) {
-                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, lastOrbitAngle[this.orbits.name], [0, 1, 0]);
+                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, [0, 1, 0]);
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.orbits.origin);
             }
 
-            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, lastOrbitAngle[this.name], [0, 1, 0]);
+            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, [0, 1, 0]);
             
             if (this.orbits.orbits) {
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
@@ -180,7 +180,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 var translationMatrix = glMatrix.mat4.create();
 
                 // X. unspin
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -lastSpinAngle[this.name], [0, this.axis, 0]);
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, [0, this.axis, 0]);
 
                 // NORMAL PLANETS
                 if (!this.orbits.orbits) {
@@ -201,19 +201,19 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
                     
                     // 2. rotate by the moon's CUMULATIVE orbit amount
-                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, -cumulativeOrbitAngle[this.name], [0, 1, 0]);
+                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.cumulativeOrbitAngle, [0, 1, 0]);
                     
                     // 3. move to center of sun
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.orbits.distanceFromBodyWeAreOrbiting]);
 
                     // 4. rotate by earth's LAST orbit angle
-                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, lastOrbitAngle[this.orbits.name], [0, 1, 0]);
+                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, this.orbits.lastOrbitAngle, [0, 1, 0]);
 
                     // 5. move back out by earth's distance
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.orbits.distanceFromBodyWeAreOrbiting]);
 
                     // 6. rotate by the moon's cumulative orbit amount PLUS the new orbit
-                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, cumulativeOrbitAngle[this.name] + orbitAmount, [0, 1, 0]);
+                    glMatrix.mat4.rotate(translationMatrix, translationMatrix, this.cumulativeOrbitAngle + orbitAmount, [0, 1, 0]);
 
                     // 7. move back out to orbit space (away from earth)
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
@@ -225,7 +225,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 matrixStack[this.name].push(tmpMatrix);
 
                 // perform spin
-                glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, lastSpinAngle[this.name] + spinAmount, [0, this.axis, 0]);
+                glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, this.lastSpinAngle + spinAmount, [0, this.axis, 0]);
 
                 this.modelViewMatrix = tmpMatrix;
 
@@ -233,9 +233,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, this.axis, 0]);
             }
             
-            lastOrbitAngle[this.name] = orbitAmount;
-            cumulativeOrbitAngle[this.name] += lastOrbitAngle[this.name];
-            lastSpinAngle[this.name] += spinAmount;
+            this.lastOrbitAngle = orbitAmount;
+            this.cumulativeOrbitAngle += this.lastOrbitAngle;
+            this.lastSpinAngle += spinAmount;
         },
 
         animate: function (millisecondsPerDay) {
