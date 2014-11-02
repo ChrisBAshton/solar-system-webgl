@@ -62,6 +62,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
         shaderProgram.pointLightingLocationUniform = gl.getUniformLocation(shaderProgram, "uPointLightingLocation");
         shaderProgram.pointLightingColorUniform = gl.getUniformLocation(shaderProgram, "uPointLightingColor");
+        shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, "uAlpha");
 
         return shaderProgram;
     }

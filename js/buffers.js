@@ -88,15 +88,21 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexNormalBuffer);
             gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, obj.vertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
 
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.vertexIndexBuffer);
 
+            // transparency
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+            gl.disable(gl.BLEND);
+            gl.enable(gl.DEPTH_TEST);
+            gl.uniform1f(shaderProgram.alphaUniform, 1.0);
+
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.vertexIndexBuffer);
             gl.drawElements(gl.TRIANGLES, obj.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         },
 
         initCuboidalBuffers: function (obj) {
             var width  = obj.radius,
                 depth  = width,
-                height = 4;
+                height = 1;
 
             obj.cubeVertexPositionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexPositionBuffer);
@@ -192,9 +198,13 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, obj.cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexTextureCoordBuffer);
             gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, obj.cubeVertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-            gl.activeTexture(gl.TEXTURE0);
-            gl.bindTexture(gl.TEXTURE_2D, obj.texture);
-            gl.uniform1i(shaderProgram.samplerUniform, 0);
+
+            // transparency
+            gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
+            gl.enable(gl.BLEND);
+            gl.disable(gl.DEPTH_TEST);
+            gl.uniform1f(shaderProgram.alphaUniform, 0.8);
+
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.cubeVertexIndexBuffer);
             gl.drawElements(gl.TRIANGLES, obj.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         }
