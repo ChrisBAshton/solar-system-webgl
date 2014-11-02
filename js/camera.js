@@ -9,7 +9,11 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     function init() {
         setCanvasSize(defaultCanvasWidth, defaultCanvasHeight);
-        // camera's starting position
+        moveCameraToStartingPosition();
+    }
+
+    function moveCameraToStartingPosition() {
+        glMatrix.mat4.identity(cameraMatrix);
         glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -5000]);
     }
 
@@ -75,7 +79,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
         goRight: function (acceleration) {
             glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [-this.calculateMovementSpeed(acceleration), 0, 0]);
-        }
+        },
+
+        resetPosition: moveCameraToStartingPosition
     }
 
 });

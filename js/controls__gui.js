@@ -9,7 +9,7 @@ define(function () {
 
         guiContainer.innerHTML = '<h3>Instructions</h3>';
         guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below.</p>';
-        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
+        guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "r": reset camera to original position, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
 
         var speedContainer = document.createElement('DIV');
         var speedInfo = document.createElement('DIV');
