@@ -69,9 +69,16 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         setOriginAccordingTo: function (config) {
 
-            var randomStartingOrbit;
-
-            if (this.orbits) {
+            var randomStartingOrbit = 0;
+            
+            if (!this.spherical) {
+                this.origin = [];
+                this.origin[0] = this.orbits.origin[0];
+                this.origin[1] = this.orbits.origin[1];
+                this.origin[2] = this.orbits.origin[2];
+                this.distanceFromBodyWeAreOrbiting = 0;
+            }
+            else if (this.orbits) {
                 randomStartingOrbit = (Math.PI * 2) / Math.random();
                 this.origin = [];
                 this.origin[0] = this.orbits.origin[0];
@@ -79,7 +86,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 this.origin[2] = this.orbits.origin[2] - this.distanceFromBodyWeAreOrbiting;
             }
             else {
-                randomStartingOrbit = 0;
                 this.origin = config.origin || [0, 0, 0];
             }
 

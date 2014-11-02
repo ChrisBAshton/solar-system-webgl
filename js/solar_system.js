@@ -158,7 +158,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          "Saturn's Rings",
         orbits:        saturn,
         spherical:     false,
-        radius:        60000,
+        radius:        85000,
         axis:          27,
         texture:       "textures/ringsRGBA.png"
     });
