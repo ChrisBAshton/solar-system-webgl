@@ -38,6 +38,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.axis          = this.degreesToRadians(config.axis) || 0;
             this.textureImage  = config.texture                     || "textures/moon.gif";
             this.spherical     = config.spherical === undefined ? true : config.spherical;
+            this.useLighting   = config.useLighting === undefined ? true : config.useLighting;
 
             var self = this;
             if (this.spherical) {
@@ -149,14 +150,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         setupLighting: function (projectionMatrix) {
-            var useLighting = true,
-                normalMatrix = glMatrix.mat3.create();
-            
-            if (this.name === "Sun" || this.name === "Saturn's Rings") {
-                useLighting = false;
-            }
-            gl.uniform1i(shaderProgram.useLightingUniform, useLighting);
-            
+            var normalMatrix = glMatrix.mat3.create();
+
+            gl.uniform1i(shaderProgram.useLightingUniform, this.useLighting);
             gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projectionMatrix);
             gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, this.modelViewMatrix);
             glMatrix.mat3.normalFromMat4(normalMatrix, this.modelViewMatrix);

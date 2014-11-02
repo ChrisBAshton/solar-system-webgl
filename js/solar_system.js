@@ -13,7 +13,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    29,
         radius:        432500,
         axis:          7.25,
-        texture:       "textures/sunmap.jpg"
+        texture:       "textures/sunmap.jpg",
+        useLighting:   false
     });
 
     var mercury = new AstronomicalObject({
@@ -160,7 +161,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spherical:     false,
         radius:        85000,
         axis:          27,
-        texture:       "textures/ringsRGBA.png"
+        texture:       "textures/ringsRGBA.png",
+        useLighting:   false
     });
 
     var solarSystem = [galaxy, theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon, jupiterGalileanMoon1, jupiterGalileanMoon2, jupiterGalileanMoon3, jupiterGalileanMoon4, saturnsRings];
