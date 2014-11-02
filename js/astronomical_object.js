@@ -18,9 +18,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
     };
 
     var matrixStack = {};
-    var lastSpinAngle = {};
-    var lastOrbitAngle = {};
-    var cumulativeOrbitAngle = {};
 
     AstronomicalObject.prototype = {
 

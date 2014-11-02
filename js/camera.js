@@ -84,9 +84,24 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         resetPosition: moveCameraToStartingPosition,
 
         snapTo: function (planet) {
+            // clean slate
             glMatrix.mat4.identity(cameraMatrix);
-            //glMatrix.mat4.rotate(cameraMatrix, cameraMatrix, angle, [0, 1, 0]);
-            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, planet.origin);
+
+            // translate planet orbital distance
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [
+                planet.origin[0],
+                planet.origin[1],
+                planet.origin[2]
+            ]);
+
+            // zoom out a little so that we can see the planet
+            glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -planet.radius * 5]);
+
+            // rotate same amount as planet
+            glMatrix.mat4.rotate(cameraMatrix, cameraMatrix, -planet.cumulativeOrbitAngle, [0, 1, 0]);
+
+            // turn back to face the Sun
+            glMatrix.mat4.rotate(cameraMatrix, cameraMatrix, Math.PI, [0, 1, 0]);
         }
     }
 
