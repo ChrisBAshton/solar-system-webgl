@@ -75,6 +75,17 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
         guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below.</p>';
         guiContainer.innerHTML += '<p><strong>Keyboard controls:</strong> "p": pause, "f": full screen, "w": move camera forwards, "a": move camera to the left, "s": move camera backwards, "d": move camera to the right</p>';
 
+        var speedContainer = document.createElement('DIV');
+        var lightingContainerAmbient = document.createElement('DIV');
+        var lightingContainerSun = document.createElement('DIV');
+
+        speedContainer.className = 'webgl_solarsystem_gui__speed';
+        lightingContainerAmbient.className = 'webgl_solarsystem_gui__lighting--ambient';
+        lightingContainerSun.className = 'webgl_solarsystem_gui__lighting--sun';
+        guiContainer.appendChild(speedContainer);
+        guiContainer.appendChild(lightingContainerAmbient);
+        guiContainer.appendChild(lightingContainerSun);
+
         createSlider({
             label:     'Time',
             id:        'millisecondsPerDay',
@@ -83,7 +94,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             min:       5,
             max:       5000,
             default:   1000,
-            container: guiContainer
+            container: speedContainer
         });
 
         createSlider({
@@ -93,7 +104,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             max:       1,
             default:   0.3,
             step:      0.1,
-            container: guiContainer
+            container: lightingContainerAmbient
         });
 
         createSlider({
@@ -103,7 +114,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             max:       1,
             default:   0.3,
             step:      0.1,
-            container: guiContainer
+            container: lightingContainerAmbient
         });
 
         createSlider({
@@ -113,7 +124,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             max:       1,
             default:   0.3,
             step:      0.1,
-            container: guiContainer
+            container: lightingContainerAmbient
         });
 
         createSlider({
@@ -123,7 +134,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             max:       1,
             default:   0.8,
             step:      0.1,
-            container: guiContainer
+            container: lightingContainerSun
         });
 
         createSlider({
@@ -133,7 +144,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             max:       1,
             default:   0.8,
             step:      0.1,
-            container: guiContainer
+            container: lightingContainerSun
         });
 
         createSlider({
@@ -143,7 +154,7 @@ define(['glMatrix', 'camera', 'Mousetrap'], function (glMatrix, camera) {
             max:       1,
             default:   0.8,
             step:      0.1,
-            container: guiContainer
+            container: lightingContainerSun
         });
     }
 
