@@ -154,7 +154,16 @@ define(['astronomical_object'], function (AstronomicalObject) {
         axis:          0.205
     });
 
-    var solarSystem = [galaxy, theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon, jupiterGalileanMoon1, jupiterGalileanMoon2, jupiterGalileanMoon3, jupiterGalileanMoon4];
+    var saturnsRings = new AstronomicalObject({
+        name:          "Saturn's Rings",
+        orbits:        saturn,
+        spherical:     false,
+        radius:        60000,
+        axis:          27,
+        texture:       "textures/ringsRGBA.png"
+    });
+
+    var solarSystem = [galaxy, theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon, jupiterGalileanMoon1, jupiterGalileanMoon2, jupiterGalileanMoon3, jupiterGalileanMoon4, saturnsRings];
 
     return solarSystem;
 });
