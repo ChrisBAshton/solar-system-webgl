@@ -1,4 +1,4 @@
-define(['glMatrix', 'camera', 'controls__gui', 'Mousetrap'], function (glMatrix, camera, gui) {
+define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], function (glMatrix, camera, gui, SolarSystem) {
 
     var canvas           = document.getElementById('canvas_solar_system');
     var triggerAnimation = function () {};
@@ -7,17 +7,41 @@ define(['glMatrix', 'camera', 'controls__gui', 'Mousetrap'], function (glMatrix,
     var lastMouseX       = null;
     var lastMouseY       = null;
     var paused           = false;
+    var planetShortcuts  = {};
 
     function init() {
+        bindKeysToPlanets();
         bindKeyboardControls();
         bindMouseControls();
-        gui.init();
+        // @TODO - use planet shortcuts.
+        gui.init(planetShortcuts);
     }
 
     function bindMouseControls() {
         canvas.onmousedown   = handleMouseDown;
         document.onmouseup   = handleMouseUp;
         document.onmousemove = handleMouseMove;
+    }
+
+    function bindKeysToPlanets() {
+
+        /*
+            This seems an awful way of doing it, but passing currentPlanet to the camera.snapTo function always snaps to Saturn's Rings (i.e. the last planet in the loop).
+         */
+        var arrayOfKeysToBind = [],
+            currentPlanet;
+
+        for (var i = 0; i < SolarSystem.length; i++) {
+            currentPlanet = SolarSystem[i];
+            if (currentPlanet.shortcutKey) {
+                planetShortcuts[currentPlanet.shortcutKey] = currentPlanet;
+                arrayOfKeysToBind.push(currentPlanet.shortcutKey);
+            }
+        }
+
+        Mousetrap.bind(arrayOfKeysToBind, function (e, key) {
+            camera.snapTo(planetShortcuts[key]);
+        });
     }
 
     function bindKeyboardControls() {

@@ -39,6 +39,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.textureImage  = config.texture                     || "textures/moon.gif";
             this.spherical     = config.spherical === undefined ? true : config.spherical;
             this.useLighting   = config.useLighting === undefined ? true : config.useLighting;
+            this.shortcutKey   = config.shortcutKey;
 
             var self = this;
             if (this.spherical) {

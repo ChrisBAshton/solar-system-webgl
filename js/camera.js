@@ -81,7 +81,11 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [-this.calculateMovementSpeed(acceleration), 0, 0]);
         },
 
-        resetPosition: moveCameraToStartingPosition
+        resetPosition: moveCameraToStartingPosition,
+
+        snapTo: function (planet) {
+            console.log('snapping to ' + planet.name);
+        }
     }
 
 });

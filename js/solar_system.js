@@ -25,7 +25,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    58.65,
         radius:        1516,
         axis:          0,
-        texture:       "textures/mercurymap.jpg"
+        texture:       "textures/mercurymap.jpg",
+        shortcutKey:   '1'
     });
 
     var venus = new AstronomicalObject({
@@ -36,7 +37,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    243,
         radius:        3761,
         axis:          177.36,
-        texture:       "textures/venusmap.jpg"
+        texture:       "textures/venusmap.jpg",
+        shortcutKey:   '2'
     });
 
     var earth = new AstronomicalObject({
@@ -47,7 +49,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    1,
         radius:        3959,
         axis:          23.45,
-        texture:       "textures/earthmap1k.jpg"
+        texture:       "textures/earthmap1k.jpg",
+        shortcutKey:   '3'
     });
 
     var mars = new AstronomicalObject({
@@ -58,7 +61,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    1.03,
         radius:        2460,
         axis:          25.19,
-        texture:       "textures/marsmap1k.jpg"
+        texture:       "textures/marsmap1k.jpg",
+        shortcutKey:   '4'
     });
 
     var jupiter = new AstronomicalObject({
@@ -69,7 +73,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    0.41,
         radius:        43441,
         axis:          3.13,
-        texture:       "textures/jupitermap.jpg"
+        texture:       "textures/jupitermap.jpg",
+        shortcutKey:   '5'
     });
 
     var saturn = new AstronomicalObject({
@@ -80,7 +85,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    0.44,
         radius:        36184,
         axis:          26.73,
-        texture:       "textures/saturnmap.jpg"
+        texture:       "textures/saturnmap.jpg",
+        shortcutKey:   '6'
     });
 
     var uranus = new AstronomicalObject({
@@ -91,7 +97,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    0.72,
         radius:        15759,
         axis:          97.77,
-        texture:       "textures/uranusmap.jpg"
+        texture:       "textures/uranusmap.jpg",
+        shortcutKey:   '7'
     });
 
     var neptune = new AstronomicalObject({
@@ -102,7 +109,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         spinPeriod:    0.72,
         radius:        15299,
         axis:          28.32,
-        texture:       "textures/neptunemap.jpg"
+        texture:       "textures/neptunemap.jpg",
+        shortcutKey:   '8'
     });
 
     var earthsMoon = new AstronomicalObject({
