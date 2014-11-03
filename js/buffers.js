@@ -102,7 +102,7 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
         initCuboidalBuffers: function (obj) {
             var width  = obj.radius,
                 depth  = width,
-                height = 1;
+                height = 0.1;
 
             obj.cubeVertexPositionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexPositionBuffer);
