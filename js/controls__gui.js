@@ -74,7 +74,7 @@ define(function () {
             id:        'ambientGlobal',
             min:       0,
             max:       1,
-            default:   0.4,
+            default:   0.2,
             step:      0.1,
             container: lightingContainerAmbient,
             onChangeCallback: function () {
