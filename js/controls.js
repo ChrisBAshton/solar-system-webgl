@@ -13,7 +13,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         bindKeysToPlanets();
         bindKeyboardControls();
         bindMouseControls();
-        gui.init(planetShortcuts);
+        gui.init(planetShortcuts, triggerAnimation);
     }
 
     function bindMouseControls() {
@@ -89,6 +89,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
         Mousetrap.bind(['r'], function (e, key) {
             camera.resetPosition();
+            triggerAnimation();
         }, 'keydown');
     }
 

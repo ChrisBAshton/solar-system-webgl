@@ -1,7 +1,9 @@
 define(function () {
 
-    function createGUI(planetShortcuts) {
+    var triggerAnimation;
 
+    function createGUI(planetShortcuts, triggerAnimationParameter) {
+        triggerAnimation = triggerAnimationParameter;
         var canvasContainer = document.getElementById('canvas_solar_system__container');
         var guiContainer = document.createElement('DIV');
         var keyboardControlsInfo = document.createElement('DIV');
@@ -39,15 +41,18 @@ define(function () {
         var speedContainer = document.createElement('DIV');
         var speedInfo = document.createElement('DIV');
         var lightingContainerAmbient = document.createElement('DIV');
-        var lightingContainerSun = document.createElement('DIV');
+        var lightingContainerSunSpecular = document.createElement('DIV');
+        var lightingContainerSunDiffuse = document.createElement('DIV');
 
         speedInfo.id = 'millisecondsPerDayInfo';
         speedContainer.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--speed';
         lightingContainerAmbient.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--ambient';
-        lightingContainerSun.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--sun';
+        lightingContainerSunSpecular.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--sun_specular';
+        lightingContainerSunDiffuse.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--sun_diffuse';
         guiContainer.appendChild(speedContainer);
         guiContainer.appendChild(lightingContainerAmbient);
-        guiContainer.appendChild(lightingContainerSun);
+        guiContainer.appendChild(lightingContainerSunSpecular);
+        guiContainer.appendChild(lightingContainerSunDiffuse);
 
         createSlider({
             label:     'Time',
@@ -82,7 +87,7 @@ define(function () {
             id:        'ambientR',
             min:       0,
             max:       1,
-            default:   0.4,
+            default:   0.2,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -92,7 +97,7 @@ define(function () {
             id:        'ambientG',
             min:       0,
             max:       1,
-            default:   0.4,
+            default:   0.2,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -102,52 +107,95 @@ define(function () {
             id:        'ambientB',
             min:       0,
             max:       1,
-            default:   0.4,
+            default:   0.2,
             step:      0.1,
             container: lightingContainerAmbient
         });
 
         createSlider({
-            label:     'Sunlight Emission - Global',
-            id:        'pointGlobal',
+            label:     'Sunlight Emission (Specular) - Global',
+            id:        'pointGlobalSpecular',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   0.3,
             step:      0.1,
-            container: lightingContainerSun,
+            container: lightingContainerSunSpecular,
             onChangeCallback: function () {
-                updateValueOfSliders('pointGlobal', ['pointR', 'pointG', 'pointB']);
+                updateValueOfSliders('pointGlobalSpecular', ['pointRSpecular', 'pointGSpecular', 'pointBSpecular']);
             }
         });
 
         createSlider({
-            label:     'Sunlight Emission Color - Red',
-            id:        'pointR',
+            label:     'Sunlight Emission (Specular)  Color - Red',
+            id:        'pointRSpecular',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   0.3,
             step:      0.1,
-            container: lightingContainerSun
+            container: lightingContainerSunSpecular
         });
 
         createSlider({
-            label:     'Sunlight Emission Color - Green',
-            id:        'pointG',
+            label:     'Sunlight Emission (Specular)  Color - Green',
+            id:        'pointGSpecular',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   0.3,
             step:      0.1,
-            container: lightingContainerSun
+            container: lightingContainerSunSpecular
         });
 
         createSlider({
-            label:     'Sunlight Emission Color - Blue',
-            id:        'pointB',
+            label:     'Sunlight Emission (Specular)  Color - Blue',
+            id:        'pointBSpecular',
+            min:       0,
+            max:       1,
+            default:   0.3,
+            step:      0.1,
+            container: lightingContainerSunSpecular
+        });
+
+        createSlider({
+            label:     'Sunlight Emission (Diffuse) - Global',
+            id:        'pointGlobalDiffuse',
             min:       0,
             max:       1,
             default:   0.9,
             step:      0.1,
-            container: lightingContainerSun
+            container: lightingContainerSunDiffuse,
+            onChangeCallback: function () {
+                updateValueOfSliders('pointGlobalDiffuse', ['pointRDiffuse', 'pointGDiffuse', 'pointBDiffuse']);
+            }
+        });
+
+        createSlider({
+            label:     'Sunlight Emission (Diffuse)  Color - Red',
+            id:        'pointRDiffuse',
+            min:       0,
+            max:       1,
+            default:   0.9,
+            step:      0.1,
+            container: lightingContainerSunDiffuse
+        });
+
+        createSlider({
+            label:     'Sunlight Emission (Diffuse)  Color - Green',
+            id:        'pointGDiffuse',
+            min:       0,
+            max:       1,
+            default:   0.9,
+            step:      0.1,
+            container: lightingContainerSunDiffuse
+        });
+
+        createSlider({
+            label:     'Sunlight Emission (Diffuse)  Color - Blue',
+            id:        'pointBDiffuse',
+            min:       0,
+            max:       1,
+            default:   0.9,
+            step:      0.1,
+            container: lightingContainerSunDiffuse
         });
     }
 
@@ -164,7 +212,16 @@ define(function () {
         slider.min   = config.min;
         slider.max   = config.max;
         slider.value = config.default;
-        slider.oninput = config.onChangeCallback || function () {};
+
+        if (config.onChangeCallback) {
+            slider.oninput = function () {
+                config.onChangeCallback();
+                triggerAnimation();
+            }
+        }
+        else {
+            slider.oninput = triggerAnimation;
+        }
 
         config.container.appendChild(fieldset);
         fieldset.appendChild(label);

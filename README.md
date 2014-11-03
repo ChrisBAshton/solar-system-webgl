@@ -54,3 +54,7 @@ http://planetpixelemporium.com/
 Lots of code taken from/inspired by various lessons at:
 
 http://learningwebgl.com/blog/?page_id=1217
+
+Phong shading very much taken from:
+
+http://learningwebgl.com/blog/?p=1658
