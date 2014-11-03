@@ -19,10 +19,17 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         );
 
         gl.uniform3f(
-            shaderProgram.pointLightingColorUniform,
-            getInput('pointR'),
-            getInput('pointG'),
-            getInput('pointB')
+            shaderProgram.pointLightingSpecularColorUniform,
+            getInput('pointRSpecular'),
+            getInput('pointGSpecular'),
+            getInput('pointBSpecular')
+        );
+
+        gl.uniform3f(
+            shaderProgram.pointLightingDiffuseColorUniform,
+            getInput('pointRDiffuse'),
+            getInput('pointGDiffuse'),
+            getInput('pointBDiffuse')
         );
     }
 

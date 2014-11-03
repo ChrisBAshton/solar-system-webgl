@@ -55,9 +55,10 @@
                 margin-bottom: 10px;
             }
 
-            .webgl_solarsystem_gui__fieldset_container--ambient, .webgl_solarsystem_gui__fieldset_container--sun {
+            .webgl_solarsystem_gui__fieldset_container:not(.webgl_solarsystem_gui__fieldset_container--speed) {
                 float: left;
-                width: 50%;
+                width: 32%;
+                margin-right: 1%;
             }
 
             .webgl_solarsystem_gui__fieldset_container fieldset {
@@ -67,79 +68,57 @@
             }
 
             .webgl_solarsystem_gui__fieldset_container fieldset label {
-                width: 230px;
-                display: inline-block;
-                text-align: right;
-                padding-right: 15px;
+                display: block;
             }
             .webgl_solarsystem_gui__fieldset_container fieldset:first-child label {
                 font-weight: bold;
             }
         </style>
 
-        <!--
-            precision mediump float; 
-
-            varying vec3 normalInterp;
-            varying vec3 vertPos;
-
-            uniform int mode;
-
-            const vec3 lightPos = vec3(1.0,1.0,1.0);
-            const vec3 ambientColor = vec3(0.3, 0.0, 0.0);
-            const vec3 diffuseColor = vec3(0.5, 0.0, 0.0);
-            const vec3 specColor = vec3(1.0, 1.0, 1.0);
-
-            void main() {
-                vec3 normal = normalize(normalInterp);
-                vec3 lightDir = normalize(lightPos - vertPos);
-                vec3 reflectDir = reflect(-lightDir, normal);
-                vec3 viewDir = normalize(-vertPos);
-
-                float lambertian = max(dot(lightDir,normal), 0.0);
-                float specular = 0.0;
-
-                if(lambertian > 0.0) {
-                   float specAngle = max(dot(reflectDir, viewDir), 0.0);
-                   specular = pow(specAngle, 4.0);
-                }
-                gl_FragColor = vec4(ambientColor +
-                                  lambertian*diffuseColor +
-                                  specular*specColor, 1.0);
-            }
-        -->
-
-
         <script id="webgl_solarsystem__shader--fragment" type="x-shader/x-fragment">
             precision mediump float;
             varying vec2 vTextureCoord;
-            varying vec3 vLightWeighting;
+            varying vec3 vTransformedNormal;
+            varying vec4 vPosition;
+            uniform float uMaterialShininess;
+            uniform bool uShowSpecularHighlights;
+            uniform bool uUseLighting;
+            uniform bool uUseTextures;
+            uniform vec3 uAmbientColor;
+            uniform vec3 uPointLightingLocation;
+            uniform vec3 uPointLightingSpecularColor;
+            uniform vec3 uPointLightingDiffuseColor;
             uniform sampler2D uSampler;
             uniform float uAlpha;
 
             void main(void) {
-                vec4 textureColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-                gl_FragColor = vec4(textureColor.rgb * vLightWeighting, textureColor.a * uAlpha);
+                vec3 lightWeighting;
+                if (!uUseLighting) {
+                    lightWeighting = vec3(1.0, 1.0, 1.0);
+                } else {
+                    vec3 lightDirection = normalize(uPointLightingLocation - vPosition.xyz);
+                    vec3 normal = normalize(vTransformedNormal);
+                    float specularLightWeighting = 0.0;
+                    if (uShowSpecularHighlights) {
+                        vec3 eyeDirection = normalize(-vPosition.xyz);
+                        vec3 reflectionDirection = reflect(-lightDirection, normal);
+                        specularLightWeighting = pow(max(dot(reflectionDirection, eyeDirection), 0.0), uMaterialShininess);
+                    }
+                    float diffuseLightWeighting = max(dot(normal, lightDirection), 0.0);
+                    lightWeighting = uAmbientColor
+                        + uPointLightingSpecularColor * specularLightWeighting
+                        + uPointLightingDiffuseColor * diffuseLightWeighting;
+                }
+                vec4 fragmentColor;
+                if (uUseTextures) {
+                    fragmentColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+                } else {
+                    fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
+                }
+                gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a * uAlpha);
             }
         </script>
 
-        <!--
-            attribute vec3 inputPosition;
-            attribute vec3 inputNormal;
-            attribute vec2 inputTexCoord;
-
-            uniform mat4 projection, modelview, normalMat;
-
-            varying vec3 normalInterp;
-            varying vec3 vertPos;
-
-            void main(){
-                gl_Position = projection * modelview * vec4(inputPosition, 1.0);
-                vec4 vertPos4 = modelview * vec4(inputPosition, 1.0);
-                vertPos = vec3(vertPos4) / vertPos4.w;
-                normalInterp = vec3(normalMat * vec4(inputNormal, 0.0));
-            }
-        -->
         <script id="webgl_solarsystem__shader--vertex" type="x-shader/x-vertex">
             attribute vec3 aVertexPosition;
             attribute vec3 aVertexNormal;
@@ -147,25 +126,14 @@
             uniform mat4 uMVMatrix;
             uniform mat4 uPMatrix;
             uniform mat3 uNMatrix;
-            uniform vec3 uAmbientColor;
-            uniform vec3 uPointLightingLocation;
-            uniform vec3 uPointLightingDiffuseColor;
-            uniform bool uUseLighting;
             varying vec2 vTextureCoord;
-            varying vec3 vLightWeighting;
-
+            varying vec3 vTransformedNormal;
+            varying vec4 vPosition;
             void main(void) {
-                vec4 mvPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
-                gl_Position = uPMatrix * mvPosition;
+                vPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
+                gl_Position = uPMatrix * vPosition;
                 vTextureCoord = aTextureCoord;
-                if (!uUseLighting) {
-                    vLightWeighting = vec3(1.0, 1.0, 1.0);
-                } else {
-                    vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);
-                    vec3 transformedNormal = uNMatrix * aVertexNormal;
-                    float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
-                    vLightWeighting = uAmbientColor + uPointLightingDiffuseColor * directionalLightWeighting;
-                }
+                vTransformedNormal = uNMatrix * aVertexNormal;
             }
         </script>
 

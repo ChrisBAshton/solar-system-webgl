@@ -146,6 +146,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         setupLighting: function (projectionMatrix) {
             var normalMatrix = glMatrix.mat3.create();
 
+            gl.uniform1i(shaderProgram.showSpecularHighlightsUniform, true);
             gl.uniform1i(shaderProgram.useLightingUniform, this.useLighting);
             gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projectionMatrix);
             gl.uniformMatrix4fv(shaderProgram.mvMatrixUniform, false, this.modelViewMatrix);
@@ -156,7 +157,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         setupTexture: function () {
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
-            gl.uniform1i(shaderProgram.samplerUniform, 0);
+            gl.uniform1i(shaderProgram.useTexturesUniform, true);
         },
 
         orbit: function () {
