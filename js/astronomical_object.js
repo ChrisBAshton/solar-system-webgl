@@ -158,6 +158,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.useTexturesUniform, true);
+
+            gl.uniform1i(shaderProgram.samplerUniform, 0);
+            gl.uniform1f(shaderProgram.materialShininessUniform, 1.0);
         },
 
         orbit: function () {

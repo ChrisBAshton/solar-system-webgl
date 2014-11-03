@@ -54,6 +54,12 @@ define(function () {
         guiContainer.appendChild(lightingContainerSunSpecular);
         guiContainer.appendChild(lightingContainerSunDiffuse);
 
+        var globals = {
+            ambient:  0.3,
+            specular: 0.3,
+            diffuse:  1.0
+        };
+
         createSlider({
             label:     'Time',
             id:        'millisecondsPerDay',
@@ -74,7 +80,7 @@ define(function () {
             id:        'ambientGlobal',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   globals.ambient,
             step:      0.1,
             container: lightingContainerAmbient,
             onChangeCallback: function () {
@@ -87,7 +93,7 @@ define(function () {
             id:        'ambientR',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   globals.ambient,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -97,7 +103,7 @@ define(function () {
             id:        'ambientG',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   globals.ambient,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -107,7 +113,7 @@ define(function () {
             id:        'ambientB',
             min:       0,
             max:       1,
-            default:   0.2,
+            default:   globals.ambient,
             step:      0.1,
             container: lightingContainerAmbient
         });
@@ -117,7 +123,7 @@ define(function () {
             id:        'pointGlobalSpecular',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   globals.specular,
             step:      0.1,
             container: lightingContainerSunSpecular,
             onChangeCallback: function () {
@@ -130,7 +136,7 @@ define(function () {
             id:        'pointRSpecular',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   globals.specular,
             step:      0.1,
             container: lightingContainerSunSpecular
         });
@@ -140,7 +146,7 @@ define(function () {
             id:        'pointGSpecular',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   globals.specular,
             step:      0.1,
             container: lightingContainerSunSpecular
         });
@@ -150,7 +156,7 @@ define(function () {
             id:        'pointBSpecular',
             min:       0,
             max:       1,
-            default:   0.3,
+            default:   globals.specular,
             step:      0.1,
             container: lightingContainerSunSpecular
         });
@@ -160,7 +166,7 @@ define(function () {
             id:        'pointGlobalDiffuse',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   globals.diffuse,
             step:      0.1,
             container: lightingContainerSunDiffuse,
             onChangeCallback: function () {
@@ -173,7 +179,7 @@ define(function () {
             id:        'pointRDiffuse',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   globals.diffuse,
             step:      0.1,
             container: lightingContainerSunDiffuse
         });
@@ -183,7 +189,7 @@ define(function () {
             id:        'pointGDiffuse',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   globals.diffuse,
             step:      0.1,
             container: lightingContainerSunDiffuse
         });
@@ -193,7 +199,7 @@ define(function () {
             id:        'pointBDiffuse',
             min:       0,
             max:       1,
-            default:   0.9,
+            default:   globals.diffuse,
             step:      0.1,
             container: lightingContainerSunDiffuse
         });
