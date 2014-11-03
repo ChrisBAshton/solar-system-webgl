@@ -149,7 +149,7 @@
             uniform mat3 uNMatrix;
             uniform vec3 uAmbientColor;
             uniform vec3 uPointLightingLocation;
-            uniform vec3 uPointLightingColor;
+            uniform vec3 uPointLightingDiffuseColor;
             uniform bool uUseLighting;
             varying vec2 vTextureCoord;
             varying vec3 vLightWeighting;
@@ -164,7 +164,7 @@
                     vec3 lightDirection = normalize(uPointLightingLocation - mvPosition.xyz);
                     vec3 transformedNormal = uNMatrix * aVertexNormal;
                     float directionalLightWeighting = max(dot(transformedNormal, lightDirection), 0.0);
-                    vLightWeighting = uAmbientColor + uPointLightingColor * directionalLightWeighting;
+                    vLightWeighting = uAmbientColor + uPointLightingDiffuseColor * directionalLightWeighting;
                 }
             }
         </script>

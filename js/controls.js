@@ -13,7 +13,6 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         bindKeysToPlanets();
         bindKeyboardControls();
         bindMouseControls();
-        // @TODO - use planet shortcuts.
         gui.init(planetShortcuts);
     }
 
