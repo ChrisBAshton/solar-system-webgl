@@ -17,8 +17,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         this.initTexture();
     };
 
-    var matrixStack = {};
-
     AstronomicalObject.prototype = {
 
         degreesToRadians: function (celsius) {
@@ -109,8 +107,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.origin);
             }
 
-            matrixStack[this.name] = [];
-            matrixStack[this.name].push(modelViewMatrix);
             this.modelViewMatrix = modelViewMatrix;
         },
 
@@ -181,7 +177,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
                 // NORMAL PLANETS
                 if (!this.orbits.orbits) {
-
                     // 3. move to origin of body we're orbiting
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
 
@@ -217,14 +212,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 }
 
                 // move the planet according to its orbit matrix
-                var tmpMatrix = matrixStack[this.name].pop();
-                glMatrix.mat4.multiply(tmpMatrix, tmpMatrix, translationMatrix);
-                matrixStack[this.name].push(tmpMatrix);
+                glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
 
                 // perform spin
-                glMatrix.mat4.rotate(tmpMatrix, tmpMatrix, this.lastSpinAngle + spinAmount, [0, this.axis, 0]);
-
-                this.modelViewMatrix = tmpMatrix;
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, [0, this.axis, 0]);
 
             } else {
                 glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, this.axis, 0]);
