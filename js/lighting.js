@@ -34,7 +34,10 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
     }
 
     return {
-        prepare: prepareLighting
+        prepare: prepareLighting,
+        getShininess: function () {
+            return getInput('planetShininess');
+        }
     };
 
 });

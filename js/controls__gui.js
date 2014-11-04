@@ -55,9 +55,10 @@ define(function () {
         guiContainer.appendChild(lightingContainerSunDiffuse);
 
         var globals = {
-            ambient:  0.3,
-            specular: 0.3,
-            diffuse:  1.0
+            ambient:   0.3,
+            specular:  0.9,
+            diffuse:   1.0,
+            shininess: 5
         };
 
         createSlider({
@@ -74,6 +75,16 @@ define(function () {
         });
         speedContainer.appendChild(speedInfo);
         updateMillisecondsPerDay();
+
+        createSlider({
+            label:      'shininess',
+            id:         'planetShininess',
+            min:        0,
+            max:        100,
+            step:       1,
+            defaultVal: globals.shininess,
+            container:  speedContainer
+        });
 
         createSlider({
             label:      'Ambient Light - Global',

@@ -160,7 +160,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.uniform1i(shaderProgram.useTexturesUniform, true);
 
             gl.uniform1i(shaderProgram.samplerUniform, 0);
-            gl.uniform1f(shaderProgram.materialShininessUniform, 0.8);
         },
 
         orbit: function () {

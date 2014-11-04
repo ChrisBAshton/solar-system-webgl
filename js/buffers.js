@@ -1,4 +1,4 @@
-define(['gl', 'shaders'], function (gl, shaderProgram) {
+define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
     return {
 
@@ -192,6 +192,7 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             gl.disable(gl.BLEND);
             gl.enable(gl.DEPTH_TEST);
             gl.uniform1f(shaderProgram.alphaUniform, 1.0);
+            gl.uniform1f(shaderProgram.materialShininessUniform, lighting.getShininess());
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.vertexIndexBuffer);
             gl.drawElements(gl.TRIANGLES, obj.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
@@ -207,7 +208,8 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
             gl.enable(gl.BLEND);
             gl.enable(gl.DEPTH_TEST);
-            gl.uniform1f(shaderProgram.alphaUniform, 0.5);
+            gl.uniform1f(shaderProgram.alphaUniform, 1.0);
+            gl.uniform1f(shaderProgram.materialShininessUniform, 0);
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.cubeVertexIndexBuffer);
             gl.drawElements(gl.TRIANGLES, obj.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
