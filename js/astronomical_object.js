@@ -30,15 +30,28 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.orbitalPeriod = config.orbitalPeriod               || 1;
             this.spinPeriod    = config.spinPeriod                  || 1;
             this.radius        = config.radius                      || 10;
+            while(config.axis > 90) {
+                config.axis -= 90;
+            }
             this.axis          = this.degreesToRadians(config.axis) || 0;
             this.textureImage  = config.texture                     || 'textures/moon.gif';
             this.spherical     = config.spherical === undefined ? true : config.spherical;
             this.useLighting   = config.useLighting === undefined ? true : config.useLighting;
             this.shortcutKey   = config.shortcutKey;
 
+
+            /*
+            angle -> expected result
+
+             0 -> [0, 1, 0]
+            90 -> [1, 0, 0] 
+            45 -> [0.5, 0.5, 0] 
+
+             */
+
             this.axisArray = [
-                this.degreesToRadians(360) - this.axis,
-                this.degreesToRadians(360) + this.axis,
+                this.axis / this.degreesToRadians(90),
+                1 - (this.axis / this.degreesToRadians(90)),
                 0
             ];
 
@@ -103,7 +116,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             var modelViewMatrix = glMatrix.mat4.create();
 
             if (this.orbits.orbits) {
-                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, this.axisArray);
+                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, this.orbits.axisArray);
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.orbits.origin);
             }
 
@@ -229,7 +242,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, this.axisArray);
 
             } else {
-                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, this.axisArray);
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 0, 0]);
             }
             
             this.lastOrbitAngle = orbitAmount;
