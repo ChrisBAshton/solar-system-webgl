@@ -106,7 +106,7 @@
                     }
                     float diffuseLightWeighting = max(dot(normal, lightDirection), 0.0);
                     lightWeighting = uAmbientColor
-                        + uPointLightingSpecularColor * specularLightWeighting
+                        + uPointLightingSpecularColor * specularLightWeighting * diffuseLightWeighting
                         + uPointLightingDiffuseColor * diffuseLightWeighting;
                 }
                 vec4 fragmentColor;

@@ -206,7 +206,7 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             // transparency
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
             gl.enable(gl.BLEND);
-            gl.disable(gl.DEPTH_TEST);
+            gl.enable(gl.DEPTH_TEST);
             gl.uniform1f(shaderProgram.alphaUniform, 0.5);
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.cubeVertexIndexBuffer);
