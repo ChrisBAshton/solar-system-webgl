@@ -36,6 +36,14 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.useLighting   = config.useLighting === undefined ? true : config.useLighting;
             this.shortcutKey   = config.shortcutKey;
 
+            this.axisArray = [
+                this.degreesToRadians(360) - this.axis,
+                this.degreesToRadians(360) + this.axis,
+                0
+            ];
+
+            console.log(this.name, this.axisArray);
+
             var self = this;
             if (this.spherical) {
                 this.initBuffers  = function () {
@@ -95,11 +103,11 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             var modelViewMatrix = glMatrix.mat4.create();
 
             if (this.orbits.orbits) {
-                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, [0, 1, 0]);
+                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, this.axisArray);
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.orbits.origin);
             }
 
-            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, [0, 1, 0]);
+            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, this.axisArray);
             
             if (this.orbits.orbits) {
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
@@ -176,7 +184,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 var translationMatrix = glMatrix.mat4.create();
 
                 // X. unspin
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, [0, this.axis, 0]);
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, this.axisArray);
 
                 // NORMAL PLANETS
                 if (!this.orbits.orbits) {
@@ -218,10 +226,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
 
                 // perform spin
-                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, [0, this.axis, 0]);
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, this.axisArray);
 
             } else {
-                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, this.axis, 0]);
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, this.axisArray);
             }
             
             this.lastOrbitAngle = orbitAmount;
