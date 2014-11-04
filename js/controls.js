@@ -52,20 +52,20 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
             var validKey = true;
 
             switch (key) {
-                case 'w':
-                    camera.goForwards(keyDown);
-                    break;
-                case 'a':
-                    camera.goLeft(keyDown);
-                    break;
-                case 's':
-                    camera.goBackwards(keyDown);
-                    break;
-                case 'd':
-                    camera.goRight(keyDown);
-                    break;
-                default:
-                    validKey = false;
+            case 'w':
+                camera.goForwards(keyDown);
+                break;
+            case 'a':
+                camera.goLeft(keyDown);
+                break;
+            case 's':
+                camera.goBackwards(keyDown);
+                break;
+            case 'd':
+                camera.goRight(keyDown);
+                break;
+            default:
+                validKey = false;
             }
 
             if (validKey) {
@@ -110,7 +110,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         var newX = event.clientX;
         var newY = event.clientY;
 
-        var deltaX = newX - lastMouseX
+        var deltaX = newX - lastMouseX;
         var newRotationMatrix = glMatrix.mat4.create();
         glMatrix.mat4.identity(newRotationMatrix);
         glMatrix.mat4.rotate(newRotationMatrix, newRotationMatrix, degToRad(deltaX / 10), [0, 1, 0]);
@@ -120,7 +120,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
         camera.rotateView(newRotationMatrix);
 
-        lastMouseX = newX
+        lastMouseX = newX;
         lastMouseY = newY;
 
         triggerAnimation();
@@ -143,6 +143,5 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         millisecondsPerDay: function () {
             return parseInt(document.getElementById('millisecondsPerDay').value, 10);
         }
-    }
-
+    };
 });

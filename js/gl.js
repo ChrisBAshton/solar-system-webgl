@@ -5,14 +5,13 @@ define(function () {
 
     function initWebGL(canvas) {
 
-        var msg = "Your browser does not support WebGL, " +
-        "or it is not enabled by default.";
+        var msg = 'Your browser does not support WebGL, ' + 'or it is not enabled by default.';
 
         try {
-            gl = canvas.getContext("experimental-webgl");
+            gl = canvas.getContext('experimental-webgl');
             gl.viewport(0, 0, canvas.width, canvas.height);
         } catch (e) {
-            msg = "Error creating WebGL Context!: " + e.toString();
+            msg = 'Error creating WebGL Context!: ' + e.toString();
         }
 
         if (!gl) {
@@ -24,5 +23,4 @@ define(function () {
     initWebGL(canvas);
 
     return gl;
-
 });

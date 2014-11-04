@@ -1,120 +1,120 @@
 define(['astronomical_object'], function (AstronomicalObject) {
 
     var galaxy = new AstronomicalObject({
-        name:          "Galaxy",
+        name:          'Galaxy',
         origin:        [0, 0, 0],
         radius:        6000000,
-        texture:       "textures/galaxy.jpg"
+        texture:       'textures/galaxy.jpg'
     });
 
     var theSun = new AstronomicalObject({
-        name:          "Sun",
+        name:          'Sun',
         origin:        [0, 0, 0],
         spinPeriod:    29,
         radius:        432500,
         axis:          7.25,
-        texture:       "textures/sunmap.jpg",
+        texture:       'textures/sunmap.jpg',
         useLighting:   false
     });
 
     var mercury = new AstronomicalObject({
-        name:          "Mercury",
+        name:          'Mercury',
         orbits:        theSun,
         orbitDistance: 36000000,
         orbitalPeriod: 87.66,
         spinPeriod:    58.65,
         radius:        1516,
         axis:          0,
-        texture:       "textures/mercurymap.jpg",
+        texture:       'textures/mercurymap.jpg',
         shortcutKey:   '1'
     });
 
     var venus = new AstronomicalObject({
-        name:          "Venus",
+        name:          'Venus',
         orbits:        theSun,
         orbitDistance: 67000000,
         orbitalPeriod: 226.46,
         spinPeriod:    243,
         radius:        3761,
         axis:          177.36,
-        texture:       "textures/venusmap.jpg",
+        texture:       'textures/venusmap.jpg',
         shortcutKey:   '2'
     });
 
     var earth = new AstronomicalObject({
-        name:          "Earth",
+        name:          'Earth',
         orbits:        theSun,
         orbitDistance: 93000000,
         orbitalPeriod: 365.25,
         spinPeriod:    1,
         radius:        3959,
         axis:          23.45,
-        texture:       "textures/earthmap1k.jpg",
+        texture:       'textures/earthmap1k.jpg',
         shortcutKey:   '3'
     });
 
     var mars = new AstronomicalObject({
-        name:          "Mars",
+        name:          'Mars',
         orbits:        theSun,
         orbitDistance: 141000000,
         orbitalPeriod: 686.67,
         spinPeriod:    1.03,
         radius:        2460,
         axis:          25.19,
-        texture:       "textures/marsmap1k.jpg",
+        texture:       'textures/marsmap1k.jpg',
         shortcutKey:   '4'
     });
 
     var jupiter = new AstronomicalObject({
-        name:          "Jupiter",
+        name:          'Jupiter',
         orbits:        theSun,
         orbitDistance: 483000000,
         orbitalPeriod: 4331.87,
         spinPeriod:    0.41,
         radius:        43441,
         axis:          3.13,
-        texture:       "textures/jupitermap.jpg",
+        texture:       'textures/jupitermap.jpg',
         shortcutKey:   '5'
     });
 
     var saturn = new AstronomicalObject({
-        name:          "Saturn",
+        name:          'Saturn',
         orbits:        theSun,
         orbitDistance: 886000000,
         orbitalPeriod: 10760.27,
         spinPeriod:    0.44,
         radius:        36184,
         axis:          26.73,
-        texture:       "textures/saturnmap.jpg",
+        texture:       'textures/saturnmap.jpg',
         shortcutKey:   '6'
     });
 
     var uranus = new AstronomicalObject({
-        name:          "Uranus",
+        name:          'Uranus',
         orbits:        theSun,
         orbitDistance: 1782000000,
         orbitalPeriod: 30684.65,
         spinPeriod:    0.72,
         radius:        15759,
         axis:          97.77,
-        texture:       "textures/uranusmap.jpg",
+        texture:       'textures/uranusmap.jpg',
         shortcutKey:   '7'
     });
 
     var neptune = new AstronomicalObject({
-        name:          "Neptune",
+        name:          'Neptune',
         orbits:        theSun,
         orbitDistance: 2794000000,
         orbitalPeriod: 60193.2,
         spinPeriod:    0.72,
         radius:        15299,
         axis:          28.32,
-        texture:       "textures/neptunemap.jpg",
+        texture:       'textures/neptunemap.jpg',
         shortcutKey:   '8'
     });
 
     var earthsMoon = new AstronomicalObject({
-        name:          "Earth's Moon",
+        name:          'Earth\'s Moon',
         orbits:        earth,
         orbitDistance: 2400000,
         orbitalPeriod: 27.3,
@@ -124,7 +124,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var jupiterGalileanMoon1 = new AstronomicalObject({
-        name:          "Io",
+        name:          'Io',
         orbits:        jupiter,
         orbitDistance: 220000,
         orbitalPeriod: 1.769,
@@ -134,7 +134,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var jupiterGalileanMoon2 = new AstronomicalObject({
-        name:          "Europa",
+        name:          'Europa',
         orbits:        jupiter,
         orbitDistance: 420000,
         orbitalPeriod: 3.551,
@@ -144,7 +144,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var jupiterGalileanMoon3 = new AstronomicalObject({
-        name:          "Ganymede",
+        name:          'Ganymede',
         orbits:        jupiter,
         orbitDistance: 664000,
         orbitalPeriod: 7.155,
@@ -154,7 +154,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var jupiterGalileanMoon4 = new AstronomicalObject({
-        name:          "Callisto",
+        name:          'Callisto',
         orbits:        jupiter,
         orbitDistance: 1170000,
         orbitalPeriod: 16.69,
@@ -164,12 +164,12 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var saturnsRings = new AstronomicalObject({
-        name:          "Saturn's Rings",
+        name:          'Saturn\'s Rings',
         orbits:        saturn,
         spherical:     false,
         radius:        85000,
         axis:          27,
-        texture:       "textures/ringsRGBA.png",
+        texture:       'textures/ringsRGBA.png',
         useLighting:   false
     });
 

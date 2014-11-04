@@ -15,4 +15,4 @@ var requireconfig = {
 // Start the main app logic.
 require(requireconfig, ['app'], function (app) {
     app.init();
-}); 
+});

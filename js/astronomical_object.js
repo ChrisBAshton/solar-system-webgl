@@ -31,7 +31,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.spinPeriod    = config.spinPeriod                  || 1;
             this.radius        = config.radius                      || 10;
             this.axis          = this.degreesToRadians(config.axis) || 0;
-            this.textureImage  = config.texture                     || "textures/moon.gif";
+            this.textureImage  = config.texture                     || 'textures/moon.gif';
             this.spherical     = config.spherical === undefined ? true : config.spherical;
             this.useLighting   = config.useLighting === undefined ? true : config.useLighting;
             this.shortcutKey   = config.shortcutKey;
@@ -40,17 +40,17 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             if (this.spherical) {
                 this.initBuffers  = function () {
                     buffers.initSphericalBuffers(self);
-                }
+                };
                 this.drawElements = function () {
                     buffers.drawSphericalElements(self);
-                }
+                };
             } else {
                 this.initBuffers  = function () {
                     buffers.initCuboidalBuffers(self);
-                }
+                };
                 this.drawElements = function () {
                     buffers.drawCuboidalElements(self);
-                }
+                };
             }
 
             this.orbitDistance /= 50000;
@@ -110,16 +110,16 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.modelViewMatrix = modelViewMatrix;
         },
 
-        initTexture: function() {
+        initTexture: function () {
             var texture = gl.createTexture();
             texture.image = new Image();
-            texture.image.crossOrigin = "anonymous";
+            texture.image.crossOrigin = 'anonymous';
 
             var self = this;
 
             texture.image.onload = function () {
                 self.handleLoadedTexture(texture);
-            }
+            };
 
             texture.image.src = this.textureImage;
         },

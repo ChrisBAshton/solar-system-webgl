@@ -103,6 +103,5 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             // turn back to face the Sun
             glMatrix.mat4.rotate(cameraMatrix, cameraMatrix, Math.PI, [0, 1, 0]);
         }
-    }
-
+    };
 });

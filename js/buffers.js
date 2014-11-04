@@ -1,6 +1,5 @@
 define(['gl', 'shaders'], function (gl, shaderProgram) {
 
-
     return {
 
         initSphericalBuffers: function (obj) {
@@ -38,20 +37,7 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
                 }
             }
 
-            var indexData = [];
-            for (var latNumber = 0; latNumber < latitudeBands; latNumber++) {
-                for (var longNumber = 0; longNumber < longitudeBands; longNumber++) {
-                    var first = (latNumber * (longitudeBands + 1)) + longNumber;
-                    var second = first + longitudeBands + 1;
-                    indexData.push(first);
-                    indexData.push(second);
-                    indexData.push(first + 1);
-
-                    indexData.push(second);
-                    indexData.push(second + 1);
-                    indexData.push(first + 1);
-                }
-            }
+            var indexData = this._getIndexData(latitudeBands, longitudeBands);
 
             obj.vertexNormalBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexNormalBuffer);
@@ -78,25 +64,22 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             obj.vertexIndexBuffer.numItems = indexData.length;
         },
 
-        drawSphericalElements: function (obj) {
-            gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexPositionBuffer);
-            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, obj.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+        _getIndexData: function (latitudeBands, longitudeBands) {
+            var indexData = [];
+            for (var latNumber = 0; latNumber < latitudeBands; latNumber++) {
+                for (var longNumber = 0; longNumber < longitudeBands; longNumber++) {
+                    var first = (latNumber * (longitudeBands + 1)) + longNumber;
+                    var second = first + longitudeBands + 1;
+                    indexData.push(first);
+                    indexData.push(second);
+                    indexData.push(first + 1);
 
-            gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexTextureCoordBuffer);
-            gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, obj.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-            gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexNormalBuffer);
-            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, obj.vertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
-
-
-            // transparency
-            gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
-            gl.disable(gl.BLEND);
-            gl.enable(gl.DEPTH_TEST);
-            gl.uniform1f(shaderProgram.alphaUniform, 1.0);
-
-            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.vertexIndexBuffer);
-            gl.drawElements(gl.TRIANGLES, obj.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+                    indexData.push(second);
+                    indexData.push(second + 1);
+                    indexData.push(first + 1);
+                }
+            }
+            return indexData;
         },
 
         initCuboidalBuffers: function (obj) {
@@ -107,74 +90,76 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             obj.cubeVertexPositionBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexPositionBuffer);
             var vertices = [
-                // Front face
-                -width, -height,  depth,
-                 width, -height,  depth,
-                 width,  height,  depth,
-                -width,  height,  depth,
-                // Back face
-                -width, -height, -depth,
-                -width,  height, -depth,
-                 width,  height, -depth,
-                 width, -height, -depth,
-                // Top face
-                -width,  height, -depth,
-                -width,  height,  depth,
-                 width,  height,  depth,
-                 width,  height, -depth,
-                // Bottom face
-                -width, -height, -depth,
-                 width, -height, -depth,
-                 width, -height,  depth,
-                -width, -height,  depth,
-                // Right face
-                 width, -height, -depth,
-                 width,  height, -depth,
-                 width,  height,  depth,
-                 width, -height,  depth,
-                // Left face
-                -width, -height, -depth,
-                -width, -height,  depth,
-                -width,  height,  depth,
-                -width,  height, -depth,
-            ];
+                    // Front face
+                    -width, -height,  depth,
+                    width, -height,  depth,
+                    width,  height,  depth,
+                    -width,  height,  depth,
+                    // Back face
+                    -width, -height, -depth,
+                    -width,  height, -depth,
+                    width,  height, -depth,
+                    width, -height, -depth,
+                    // Top face
+                    -width,  height, -depth,
+                    -width,  height,  depth,
+                    width,  height,  depth,
+                    width,  height, -depth,
+                    // Bottom face
+                    -width, -height, -depth,
+                    width, -height, -depth,
+                    width, -height,  depth,
+                    -width, -height,  depth,
+                    // Right face
+                    width, -height, -depth,
+                    width,  height, -depth,
+                    width,  height,  depth,
+                    width, -height,  depth,
+                    // Left face
+                    -width, -height, -depth,
+                    -width, -height,  depth,
+                    -width,  height,  depth,
+                    -width,  height, -depth
+                ];
+
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(vertices), gl.STATIC_DRAW);
             obj.cubeVertexPositionBuffer.itemSize = 3;
             obj.cubeVertexPositionBuffer.numItems = 24;
             obj.cubeVertexTextureCoordBuffer = gl.createBuffer();
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexTextureCoordBuffer);
             var textureCoords = [
-              // Front face
-              0.0, 0.0,
-              1.0, 0.0,
-              1.0, 1.0,
-              0.0, 1.0,
-              // Back face
-              1.0, 0.0,
-              1.0, 1.0,
-              0.0, 1.0,
-              0.0, 0.0,
-              // Top face
-              0.0, 1.0,
-              0.0, 0.0,
-              1.0, 0.0,
-              1.0, 1.0,
-              // Bottom face
-              1.0, 1.0,
-              0.0, 1.0,
-              0.0, 0.0,
-              1.0, 0.0,
-              // Right face
-              1.0, 0.0,
-              1.0, 1.0,
-              0.0, 1.0,
-              0.0, 0.0,
-              // Left face
-              0.0, 0.0,
-              1.0, 0.0,
-              1.0, 1.0,
-              0.0, 1.0,
+                // Front face
+                0.0, 0.0,
+                1.0, 0.0,
+                1.0, 1.0,
+                0.0, 1.0,
+                // Back face
+                1.0, 0.0,
+                1.0, 1.0,
+                0.0, 1.0,
+                0.0, 0.0,
+                // Top face
+                0.0, 1.0,
+                0.0, 0.0,
+                1.0, 0.0,
+                1.0, 1.0,
+                // Bottom face
+                1.0, 1.0,
+                0.0, 1.0,
+                0.0, 0.0,
+                1.0, 0.0,
+                // Right face
+                1.0, 0.0,
+                1.0, 1.0,
+                0.0, 1.0,
+                0.0, 0.0,
+                // Left face
+                0.0, 0.0,
+                1.0, 0.0,
+                1.0, 1.0,
+                0.0, 1.0
             ];
+
             gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(textureCoords), gl.STATIC_DRAW);
             obj.cubeVertexTextureCoordBuffer.itemSize = 2;
             obj.cubeVertexTextureCoordBuffer.numItems = 24;
@@ -193,6 +178,25 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             obj.cubeVertexIndexBuffer.numItems = 36;
         },
 
+        drawSphericalElements: function (obj) {
+            gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexPositionBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, obj.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexTextureCoordBuffer);
+            gl.vertexAttribPointer(shaderProgram.textureCoordAttribute, obj.vertexTextureCoordBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexNormalBuffer);
+            gl.vertexAttribPointer(shaderProgram.vertexNormalAttribute, obj.vertexNormalBuffer.itemSize, gl.FLOAT, false, 0, 0);
+
+            // transparency
+            gl.disable(gl.BLEND);
+            gl.enable(gl.DEPTH_TEST);
+            gl.uniform1f(shaderProgram.alphaUniform, 1.0);
+
+            gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.vertexIndexBuffer);
+            gl.drawElements(gl.TRIANGLES, obj.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
+        },
+
         drawCuboidalElements: function (obj) {
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexPositionBuffer);
             gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, obj.cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -203,12 +207,10 @@ define(['gl', 'shaders'], function (gl, shaderProgram) {
             gl.blendFunc(gl.SRC_ALPHA, gl.ONE);
             gl.enable(gl.BLEND);
             gl.disable(gl.DEPTH_TEST);
-            gl.uniform1f(shaderProgram.alphaUniform, 0.8);
+            gl.uniform1f(shaderProgram.alphaUniform, 0.5);
 
             gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, obj.cubeVertexIndexBuffer);
             gl.drawElements(gl.TRIANGLES, obj.cubeVertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         }
-
-    }
-
-})
+    };
+});

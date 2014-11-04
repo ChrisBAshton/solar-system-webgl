@@ -1,0 +1,14 @@
+{
+  "name": "solar-system-webgl",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChrisBAshton/solar-system-webgl"
+  },
+  "description":    "This is a solar system in WebGL, made for a university assignment.",
+  "version":        "0.1.0",
+  "devDependencies": {
+    "grunt":                            "~0.4.0",
+    "grunt-cli":                        "~0.1.11",
+    "grunt-contrib-jshint":             "0.6.4"
+  }
+}

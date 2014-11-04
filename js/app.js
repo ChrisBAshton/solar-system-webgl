@@ -16,7 +16,7 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
         }
     }
 
-    function draw() {        
+    function draw() {
         cleanCanvas();
         lighting.prepare();
         for (var i = 0; i < SolarSystem.length; i++) {
@@ -40,5 +40,5 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
 
     return {
         init: init
-    }
+    };
 });

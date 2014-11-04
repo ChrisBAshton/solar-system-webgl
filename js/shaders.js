@@ -5,19 +5,19 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         if (!shaderScript) {
             return null;
         }
-        var str = "";
+        var str = '';
         var k = shaderScript.firstChild;
         while (k) {
-            if (k.nodeType == 3) {
+            if (k.nodeType === 3) {
                 str += k.textContent;
             }
             k = k.nextSibling;
         }
 
         var shader;
-        if (shaderScript.type == "x-shader/x-fragment") {
+        if (shaderScript.type === 'x-shader/x-fragment') {
             shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type == "x-shader/x-vertex") {
+        } else if (shaderScript.type === 'x-shader/x-vertex') {
             shader = gl.createShader(gl.VERTEX_SHADER);
         } else {
             return null;
@@ -37,8 +37,8 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     function initShaders() {
         // load and compile the fragment and vertex shader
-        var fragmentShader = getShader("webgl_solarsystem__shader--fragment");
-        var vertexShader = getShader("webgl_solarsystem__shader--vertex");
+        var fragmentShader = getShader('webgl_solarsystem__shader--fragment');
+        var vertexShader = getShader('webgl_solarsystem__shader--vertex');
         var shaderProgram = gl.createProgram();
 
         gl.attachShader(shaderProgram, vertexShader);
@@ -46,29 +46,29 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         gl.linkProgram(shaderProgram);
 
         if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
-            alert("Could not initialise shaders");
+            alert('Could not initialise shaders');
         }
         
         gl.useProgram(shaderProgram);
-        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+        shaderProgram.vertexPositionAttribute = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
         gl.enableVertexAttribArray(shaderProgram.vertexPositionAttribute);
-        shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, "aVertexNormal");
+        shaderProgram.vertexNormalAttribute = gl.getAttribLocation(shaderProgram, 'aVertexNormal');
         gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
-        shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+        shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, 'aTextureCoord');
         gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
-        shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, "uNMatrix");
-        shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, "uSampler");
-        shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, "uMaterialShininess");
-        shaderProgram.showSpecularHighlightsUniform = gl.getUniformLocation(shaderProgram, "uShowSpecularHighlights");
-        shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, "uUseTextures");
-        shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, "uUseLighting");
-        shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, "uAmbientColor");
-        shaderProgram.pointLightingLocationUniform = gl.getUniformLocation(shaderProgram, "uPointLightingLocation");
-        shaderProgram.pointLightingSpecularColorUniform = gl.getUniformLocation(shaderProgram, "uPointLightingSpecularColor");
-        shaderProgram.pointLightingDiffuseColorUniform = gl.getUniformLocation(shaderProgram, "uPointLightingDiffuseColor");
-        shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, "uAlpha");
+        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, 'uPMatrix');
+        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, 'uMVMatrix');
+        shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, 'uNMatrix');
+        shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, 'uSampler');
+        shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, 'uMaterialShininess');
+        shaderProgram.showSpecularHighlightsUniform = gl.getUniformLocation(shaderProgram, 'uShowSpecularHighlights');
+        shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, 'uUseTextures');
+        shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, 'uUseLighting');
+        shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, 'uAmbientColor');
+        shaderProgram.pointLightingLocationUniform = gl.getUniformLocation(shaderProgram, 'uPointLightingLocation');
+        shaderProgram.pointLightingSpecularColorUniform = gl.getUniformLocation(shaderProgram, 'uPointLightingSpecularColor');
+        shaderProgram.pointLightingDiffuseColorUniform = gl.getUniformLocation(shaderProgram, 'uPointLightingDiffuseColor');
+        shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, 'uAlpha');
 
         return shaderProgram;
     }
