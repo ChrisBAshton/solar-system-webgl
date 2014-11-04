@@ -95,6 +95,8 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 this.origin[1] = this.orbits.origin[1];
                 this.origin[2] = this.orbits.origin[2];
                 this.distanceFromBodyWeAreOrbiting = 0;
+                this.orbitalPeriod = this.orbits.orbitalPeriod;
+                this.spinPeriod    = this.orbits.spinPeriod;
             }
             else if (this.orbits) {
                 randomStartingOrbit = (Math.PI * 2) / Math.random();
@@ -116,11 +118,11 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             var modelViewMatrix = glMatrix.mat4.create();
 
             if (this.orbits.orbits) {
-                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, this.orbits.axisArray);
+                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, [0, 1, 0]);
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.orbits.origin);
             }
 
-            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, this.axisArray);
+            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, [0, 1, 0]);
             
             if (this.orbits.orbits) {
                 glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
