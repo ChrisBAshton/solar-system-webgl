@@ -7,16 +7,27 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         defaultCanvasWidth  = 800,
         defaultCanvasHeight = 400;
 
+    /**
+     * Initialises the camera.
+     */
     function init() {
         setCanvasSize(defaultCanvasWidth, defaultCanvasHeight);
         moveCameraToStartingPosition();
     }
 
+    /**
+     * Resets camera to its starting position - which is the origin of the solar system, set back by a certain distance so as not to be stuck "inside" the Sun.
+     */
     function moveCameraToStartingPosition() {
         glMatrix.mat4.identity(cameraMatrix);
         glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -5000]);
     }
 
+    /**
+     * Sets the size of the canvas and informs the necessary objects/matrices of the change.
+     * @param {int} width  Width of the canvas.
+     * @param {int} height Height of the canvas.
+     */
     function setCanvasSize(width, height) {
         canvas.width  = width;
         canvas.height = height;
@@ -24,6 +35,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         updateProjectionMatrix();
     }
 
+    /**
+     * Updates the projection view matrix.
+     */
     function updateProjectionMatrix() {
         glMatrix.mat4.perspective(
             projectionMatrix,
@@ -38,6 +52,9 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     return {
 
+        /**
+         * Toggles full screen mode. When full screen, the canvas is set to the size of the viewport, otherwise it is set to the default height and width, defined in this class.
+         */
         toggleFullScreen: function () {
             fullScreen = !fullScreen;
 
@@ -50,38 +67,74 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
             }
         },
 
+        /**
+         * Returns the projection view matrix of the camera. This is used by the AstronomicalObject class.
+         * @return {[array]} Projection view matrix of the camera.
+         */
         getProjectionViewMatrix: function () {
             var projectionViewMatrix = glMatrix.mat4.create();
             glMatrix.mat4.multiply(projectionViewMatrix, projectionMatrix, cameraMatrix);
             return projectionViewMatrix;
         },
 
+        /**
+         * Calculates the movement speed of the camera, given the number of frames the movement key has been held down for.
+         * @param  {int} acceleration In this case, this is the number of frames that the movement key has been held down for.
+         * @return {int}              A number representing the distance in the 3D world that we should move by in the next frame.
+         */
         calculateMovementSpeed: function (acceleration) {
-            return acceleration * acceleration; //acceleration < 10 ? 10 : acceleration > 100 ? 100 : acceleration;
+            return acceleration * acceleration;
         },
 
+        /**
+         * Rotates the camera by the given rotation matrix.
+         * @param  {array} rotationMatrix Rotation matrix to merge with the camera matrix.
+         */
         rotateView: function (rotationMatrix) {
             glMatrix.mat4.multiply(cameraMatrix, cameraMatrix, rotationMatrix);
         },
 
+        /**
+         * Moves the camera forwards in 3D space.
+         * @param  {int} acceleration The number of frames the movement key has been held down for.
+         */
         goForwards: function (acceleration) {
             glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, this.calculateMovementSpeed(acceleration)]);
         },
 
+        /**
+         * Moves the camera backwards in 3D space.
+         * @param  {int} acceleration The number of frames the movement key has been held down for.
+         */
         goBackwards: function (acceleration) {
             glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [0, 0, -this.calculateMovementSpeed(acceleration)]);
         },
 
+        /**
+         * Strafes the camera to the left in 3D space.
+         * @param  {int} acceleration The number of frames the movement key has been held down for.
+         */
         goLeft: function (acceleration) {
             glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [this.calculateMovementSpeed(acceleration), 0, 0]);
         },
 
+        /**
+         * Strafes the camera to the right in 3D space.
+         * @param  {int} acceleration The number of frames the movement key has been held down for.
+         */
         goRight: function (acceleration) {
             glMatrix.mat4.translate(cameraMatrix, cameraMatrix, [-this.calculateMovementSpeed(acceleration), 0, 0]);
         },
 
+        /**
+         * Resets the camera to its original position.
+         */
         resetPosition: moveCameraToStartingPosition,
 
+        /**
+         * Snaps the camera to the given planet.
+         * @param  {AstronomicalObject} planet The planet object to snap to.
+         */
         snapTo: function (planet) {
             // clean slate
             glMatrix.mat4.identity(cameraMatrix);

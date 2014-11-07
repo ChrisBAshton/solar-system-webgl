@@ -3,6 +3,10 @@ define(function () {
     var canvas = document.getElementById('canvas_solar_system'),
         gl = null;
 
+    /**
+     * Does some initial checking for WebGL support, before defining the cross-module variable `gl`.
+     * @param  {DOMElement} canvas The canvas to get the context of.
+     */
     function initWebGL(canvas) {
 
         var msg = 'Your browser does not support WebGL, ' + 'or it is not enabled by default.';

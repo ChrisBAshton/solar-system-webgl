@@ -2,6 +2,11 @@ define(function () {
 
     var triggerAnimation;
 
+    /**
+     * Creates the GUI.
+     * @param  {object} planetShortcuts    Array of planet names and the keyboard shortcut to use to snap to them.  
+     * @param  {Function} triggerAnimationParameter Provides a hook for updating animation after changing input values (@TODO - code smell)
+     */
     function createGUI(planetShortcuts, triggerAnimationParameter) {
         triggerAnimation = triggerAnimationParameter;
         var canvasContainer = document.getElementById('canvas_solar_system__container');
@@ -37,6 +42,10 @@ define(function () {
         createSliders(guiContainer);
     }
 
+    /**
+     * Creates the sliders in the GUI.
+     * @param  {DOMElement} guiContainer Document element to insert the sliders in.
+     */
     function createSliders(guiContainer) {
         var speedContainer = document.createElement('DIV');
         var speedInfo = document.createElement('DIV');
@@ -216,6 +225,10 @@ define(function () {
         });
     }
 
+    /**
+     * Creates a slider.
+     * @param  {Object} config Configuration object.
+     */
     function createSlider(config) {
         var fieldset = document.createElement('FIELDSET'),
             slider   = document.createElement('INPUT'),
@@ -247,6 +260,9 @@ define(function () {
         fieldset.appendChild(document.createTextNode(config.maxLabel || slider.max));
     }
 
+    /**
+     * Updates the value displayed to users when they change the number of milliseconds per day.
+     */
     function updateMillisecondsPerDay() {
         var inputValue = document.getElementById('millisecondsPerDay').value,
             info  = document.getElementById('millisecondsPerDayInfo'),
@@ -264,6 +280,11 @@ define(function () {
         info.innerHTML = html;
     }
 
+    /**
+     * Updates the value of all the given sliders. This way we can have one 'master' slider that controls all the others.
+     * @param  {String} globalSlider    ID of the master slider.
+     * @param  {array} slidersToUpdate Array of IDs of the sliders that should be updated when the master is updated.
+     */
     function updateValueOfSliders(globalSlider, slidersToUpdate) {
         var value = document.getElementById(globalSlider).value,
             currentSlider;
@@ -275,6 +296,9 @@ define(function () {
     }
 
     return {
+        /**
+         * Initialises the GUI.
+         */
         init: createGUI
     };
 });

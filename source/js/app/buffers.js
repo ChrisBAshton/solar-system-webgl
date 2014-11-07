@@ -2,6 +2,10 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
     return {
 
+        /**
+         * Initialises the buffers.
+         * @param  {AstronomicalObject} obj The object for which we're initialising buffers.
+         */
         initBuffers: function (obj) {
             if (obj.spherical) {
                 this.initSphericalBuffers(obj);
@@ -10,6 +14,10 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
             }
         },
 
+        /**
+         * Draws the necessary elements of the object onto the canvas.
+         * @param  {AstronomicalObject} obj The object which needs to be drawn.
+         */
         drawElements: function (obj) {
             if (obj.spherical) {
                 this.drawSphericalElements(obj);
@@ -18,6 +26,10 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
             }
         },
 
+        /**
+         * Called by initBuffers(), this initialises the buffers for spherical objects, e.g. planets, the moon, the Sun.
+         * @param  {AstronomicalObject} obj The spherical object we're initialising buffers for.
+         */
         initSphericalBuffers: function (obj) {
             var radius = obj.radius;
             var latitudeBands = 30;
@@ -80,6 +92,12 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
             obj.vertexIndexBuffer.numItems = indexData.length;
         },
 
+        /**
+         * A private method called by initSphericalBuffers, which calculates index data used by gl.ELEMENT_ARRAY_BUFFER.
+         * @param  {int} latitudeBands  Latitude bands of the sphere
+         * @param  {int} longitudeBands Longitude bands of the sphere
+         * @return {array}              Index data.
+         */
         _getIndexData: function (latitudeBands, longitudeBands) {
             var indexData = [];
             for (var latNumber = 0; latNumber < latitudeBands; latNumber++) {
@@ -98,6 +116,10 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
             return indexData;
         },
 
+        /**
+         * Called by initBuffers(), this initialises the buffers for cuboidal objects, e.g. Saturn's rings
+         * @param  {AstronomicalObject} obj The cuboidal object we're initialising buffers for.
+         */
         initCuboidalBuffers: function (obj) {
             var width  = obj.radius,
                 depth  = width,
@@ -194,6 +216,10 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
             obj.cubeVertexIndexBuffer.numItems = 36;
         },
 
+        /**
+         * Called by drawElements(), this draws the elements that comprise spherical objects.
+         * @param  {AstronomicalObject} obj The spherical object we're drawing
+         */
         drawSphericalElements: function (obj) {
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.vertexPositionBuffer);
             gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, obj.vertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);
@@ -214,6 +240,10 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
             gl.drawElements(gl.TRIANGLES, obj.vertexIndexBuffer.numItems, gl.UNSIGNED_SHORT, 0);
         },
 
+        /**
+         * Called by drawElements(), this draws the elements that comprise cuboidal objects.
+         * @param  {AstronomicalObject} obj The cuboidal object we're drawing
+         */
         drawCuboidalElements: function (obj) {
             gl.bindBuffer(gl.ARRAY_BUFFER, obj.cubeVertexPositionBuffer);
             gl.vertexAttribPointer(shaderProgram.vertexPositionAttribute, obj.cubeVertexPositionBuffer.itemSize, gl.FLOAT, false, 0, 0);

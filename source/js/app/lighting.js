@@ -1,9 +1,8 @@
 define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
 
-    function getInput(id) {
-        return parseFloat(document.getElementById(id).value);
-    }
-
+    /**
+     * Prepares the canvas for drawing lighting by grabbing the lighting parameters from the GUI.
+     */
     function prepareLighting() {
         gl.uniform3f(
             shaderProgram.ambientColorUniform,
@@ -33,8 +32,25 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         );
     }
 
+    /**
+     * Gets a float value from a DOMElement Input.
+     * @param  {String} id ID of the DOMElement whose value we want.
+     * @return {float}    The parsed float value of that input.
+     */
+    function getInput(id) {
+        return parseFloat(document.getElementById(id).value);
+    }
+
     return {
+        /**
+         * Alias for prepareLighting().
+         */
         prepare: prepareLighting,
+
+        /**
+         * Gets the shininess parameter from the GUI (used for Phong shading)
+         * @return {float} Planet shininess (between 0 and 100).
+         */
         getShininess: function () {
             return getInput('planetShininess');
         }

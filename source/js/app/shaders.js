@@ -1,40 +1,9 @@
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
-    
-    function getShader(id) {
-        var shaderScript = document.getElementById(id);
-        if (!shaderScript) {
-            return null;
-        }
-        var str = '';
-        var k = shaderScript.firstChild;
-        while (k) {
-            if (k.nodeType === 3) {
-                str += k.textContent;
-            }
-            k = k.nextSibling;
-        }
 
-        var shader;
-        if (shaderScript.type === 'x-shader/x-fragment') {
-            shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type === 'x-shader/x-vertex') {
-            shader = gl.createShader(gl.VERTEX_SHADER);
-        } else {
-            return null;
-        }
-
-        gl.shaderSource(shader, str);
-        gl.compileShader(shader);
-        
-        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            alert(gl.getShaderInfoLog(shader));
-            console.log('could not compile shaders');
-            return null;
-        }
-        
-        return shader;
-    }
-
+    /**
+     * Initialises the shaders.
+     * @return {Object} The shader program containing the compiled shaders.
+     */
     function initShaders() {
         // load and compile the fragment and vertex shader
         var fragmentShader = getShader('webgl_solarsystem__shader--fragment');
@@ -71,6 +40,46 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, 'uAlpha');
 
         return shaderProgram;
+    }
+
+    /**
+     * Gets an OpenGL shader from a DOM element's innerHTML, given its ID.
+     * @param  {String} id ID of the DOM element containing the shader program.
+     * @return {Object}    The compiled gl shader (fragment or vertex).
+     */
+    function getShader(id) {
+        var shaderScript = document.getElementById(id);
+        if (!shaderScript) {
+            return null;
+        }
+        var str = '';
+        var k = shaderScript.firstChild;
+        while (k) {
+            if (k.nodeType === 3) {
+                str += k.textContent;
+            }
+            k = k.nextSibling;
+        }
+
+        var shader;
+        if (shaderScript.type === 'x-shader/x-fragment') {
+            shader = gl.createShader(gl.FRAGMENT_SHADER);
+        } else if (shaderScript.type === 'x-shader/x-vertex') {
+            shader = gl.createShader(gl.VERTEX_SHADER);
+        } else {
+            return null;
+        }
+
+        gl.shaderSource(shader, str);
+        gl.compileShader(shader);
+        
+        if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+            alert(gl.getShaderInfoLog(shader));
+            console.log('could not compile shaders');
+            return null;
+        }
+        
+        return shader;
     }
 
     return initShaders();

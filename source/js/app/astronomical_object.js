@@ -110,6 +110,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             }
         },
 
+        /**
+         * Called on initialisation - this moves the object to a random position in its orbit, to prevent all objects starting off in a long straight line.
+         */
         setRandomStartingOrbit: function () {
             var randomStartingOrbit = this.orbits ? (Math.PI * 2) / Math.random() : 0;
             this.lastSpinAngle = 0;
@@ -117,6 +120,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.cumulativeOrbitAngle = randomStartingOrbit;
         },
 
+        /**
+         * Initialises the model view matrix.
+         */
         initMatrix: function () {
             this.modelViewMatrix = glMatrix.mat4.create();
 
@@ -129,6 +135,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
         },
 
+        /**
+         * Initialises the texture for the object.
+         */
         initTexture: function () {
             var texture = gl.createTexture();
             texture.image = new Image();
@@ -143,6 +152,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             texture.image.src = this.textureImage;
         },
 
+        /**
+         * Handle the image texture once it has downloaded.
+         * @param  {Object} texture A WebGL TEXTURE_2D object.
+         */
         handleLoadedTexture: function (texture) {
             gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
             gl.bindTexture(gl.TEXTURE_2D, texture);
@@ -154,12 +167,20 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.texture = texture;
         },
 
+        /**
+         * Draws the object, relative to a projection matrix handles by the Camera object.
+         * @param  {array} projectionMatrix glMatrix object (mat4) representing projection of the camera.
+         */
         draw: function (projectionMatrix) {
             this.setupLighting(projectionMatrix);
             this.setupTexture();
             buffers.drawElements(this);
         },
 
+        /**
+         * Initialises the shader variables for lighting.
+         * @param  {array} projectionMatrix glMatrix object (mat4) representing projection of the camera.
+         */
         setupLighting: function (projectionMatrix) {
             var normalMatrix = glMatrix.mat3.create();
             gl.uniform1i(shaderProgram.showSpecularHighlightsUniform, true);
@@ -170,6 +191,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.uniformMatrix3fv(shaderProgram.nMatrixUniform, false, normalMatrix);
         },
 
+        /**
+         * Sets up the texture.
+         */
         setupTexture: function () {
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
@@ -177,6 +201,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         },
 
+        /**
+         * Performs the calculations necessary for the object to orbit (and spin on its axis), if applicable.
+         */
         orbit: function () {
 
             var deltaT      = this.millisecondsSinceLastFrame(),
@@ -247,6 +274,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.updateAttributes(orbitAmount, spinAmount);
         },
 
+        /**
+         * Returns the number of milliseconds since the last frame.
+         * @return {int} Number of milliseconds since the last frame.
+         */
         millisecondsSinceLastFrame: function () {
             var timeThisFrame = Date.now(),
                 millisecondsSinceLastFrame = timeThisFrame - (this.timeLastFrame || 0);
@@ -254,18 +285,33 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             return millisecondsSinceLastFrame;
         },
 
+        /**
+         * Calculates the portion of a given attribute, based on the number of milliseconds since the last frame and the number of milliseconds which represents a day.
+         * @param  {int} attribute A property of the current object, e.g. orbitalPeriod
+         * @param  {float} deltaT    Number of milliseconds since last frame.
+         * @return {float}           Angle (in radians) that should be moved by.
+         */
         calculatePortionOf: function (attribute, deltaT) {
             var proportion = deltaT / (this.millisecondsPerDay * attribute),
                 proportionInRadians = (Math.PI * 2) * proportion;
             return proportionInRadians;
         },
 
+        /**
+         * Updates the object's attributes concerning angles.
+         * @param  {float} orbitAmount Last orbit amount travelled
+         * @param  {float} spinAmount  Last spin amount spun
+         */
         updateAttributes: function (orbitAmount, spinAmount) {
             this.lastOrbitAngle = orbitAmount;
             this.cumulativeOrbitAngle += this.lastOrbitAngle;
             this.lastSpinAngle += spinAmount;
         },
 
+        /**
+         * Called on every animation frame, this handles the animation of the object.
+         * @param  {float} millisecondsPerDay The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.
+         */
         animate: function (millisecondsPerDay) {
             this.millisecondsPerDay = millisecondsPerDay;
             this.orbit();

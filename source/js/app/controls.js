@@ -9,6 +9,9 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
     var paused           = false;
     var planetShortcuts  = {};
 
+    /**
+     * Initialises the controls.
+     */
     function init() {
         bindKeysToPlanets();
         bindKeyboardControls();
@@ -16,16 +19,24 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         gui.init(planetShortcuts, triggerAnimation);
     }
 
+    /**
+     * Binds the mouse events to handler functions.
+     */
     function bindMouseControls() {
         canvas.onmousedown   = handleMouseDown;
         document.onmouseup   = handleMouseUp;
         document.onmousemove = handleMouseMove;
     }
 
+    /**
+     * Handles binding certain key presses to calling the camera snapTo() function.
+     */
     function bindKeysToPlanets() {
 
         /*
             This seems an awful way of doing it, but passing currentPlanet to the camera.snapTo function always snaps to Saturn's Rings (i.e. the last planet in the loop).
+
+            @TODO - improve.
          */
         var arrayOfKeysToBind = [],
             currentPlanet;
@@ -44,6 +55,9 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         });
     }
 
+    /**
+     * Binds some key events to handler functions.
+     */
     function bindKeyboardControls() {
         Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
 
@@ -93,16 +107,28 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         }, 'keydown');
     }
 
+    /**
+     * Handles the mouse down event. In this case, we cache the position of the mouse so it can be used in rotation calculations later.
+     * @param  {event} event The mouse event.
+     */
     function handleMouseDown(event) {
         mouseDown = true;
         lastMouseX = event.clientX;
         lastMouseY = event.clientY;
     }
 
+    /**
+     * Handles the mouse up event.
+     * @param  {event} event The mouse event.
+     */
     function handleMouseUp(event) {
         mouseDown = false;
     }
 
+    /**
+     * Handles the mouse move event. In this case, we rotate the camera if the mouse button is down at the same time.
+     * @param  {event} event The mouse event.
+     */
     function handleMouseMove(event) {
         if (!mouseDown) {
             return;
@@ -126,20 +152,37 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         triggerAnimation();
     }
 
+    /**
+     * Converts degrees to radians. @TODO - this is a duplicate of degToRad in AstronomicalObject. Should remove the duplication.
+     * @param  {int} celsius Value in degrees.
+     * @return {float}       Converted value in radians.
+     */
     function degToRad(degrees) {
         return degrees * Math.PI / 180;
     }
 
     return {
+        /**
+         * Provides a hook for app.js to call functions after we've manually triggered animation. i.e. If we update the view in controls.js we can trigger the callback and ensure that the changes are drawn immediately (useful if the solar system animation is paused).
+         * @param  {Function} callback Function to call when we want to trigger the animation.
+         */
         bindToAnimation: function (callback) {
             triggerAnimation = callback;
             init();
         },
 
+        /**
+         * Other modules can tell if the animation is paused by querying this. @TODO - this is a code smell
+         * @return {boolean} True if animation is paused, false if not.
+         */
         paused: function () {
             return paused;
         },
 
+        /**
+         * Grabs the milliseconds per dsy from the GUI form input.
+         * @return {float} Milliseconds per day.
+         */
         millisecondsPerDay: function () {
             return parseInt(document.getElementById('millisecondsPerDay').value, 10);
         }
