@@ -13,7 +13,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         this.setOriginAccordingTo(config);
 
         this.initMatrix();
-        this.initBuffers();
+        buffers.initBuffers(this);
         this.initTexture();
     };
 
@@ -41,23 +41,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 1 - (this.axis / this.degreesToRadians(90)),
                 0
             ];
-
-            var self = this;
-            if (this.spherical) {
-                this.initBuffers  = function () {
-                    buffers.initSphericalBuffers(self);
-                };
-                this.drawElements = function () {
-                    buffers.drawSphericalElements(self);
-                };
-            } else {
-                this.initBuffers  = function () {
-                    buffers.initCuboidalBuffers(self);
-                };
-                this.drawElements = function () {
-                    buffers.drawCuboidalElements(self);
-                };
-            }
 
             this.orbitDistance /= 50000;
             this.radius /= 100;
@@ -152,7 +135,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         draw: function (projectionMatrix) {
             this.setupLighting(projectionMatrix);
             this.setupTexture();
-            this.drawElements();
+            buffers.drawElements(this);
         },
 
         setupLighting: function (projectionMatrix) {

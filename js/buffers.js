@@ -2,6 +2,22 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
     return {
 
+        initBuffers: function (obj) {
+            if (obj.spherical) {
+                this.initSphericalBuffers(obj);
+            } else {
+                this.initCuboidalBuffers(obj);
+            }
+        },
+
+        drawElements: function (obj) {
+            if (obj.spherical) {
+                this.drawSphericalElements(obj);
+            } else {
+                this.drawCuboidalElements(obj);
+            }
+        },
+
         initSphericalBuffers: function (obj) {
             var radius = obj.radius;
             var latitudeBands = 30;
