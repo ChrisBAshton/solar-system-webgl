@@ -162,8 +162,12 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 spinAmount  = this.calculatePortionOf(this.spinPeriod, deltaT);
 
             // SPECIAL CASE - handle Saturn's rings.
-            if (!this.spins && this.lastSpinAngle > 0) {
-                spinAmount = 0;
+            if (!this.spins) {
+                if (this.lastSpinAngle > 0) {
+                    spinAmount = 0;
+                } else {
+                    spinAmount = 1;
+                }
             }
 
             if (this.orbits) {
