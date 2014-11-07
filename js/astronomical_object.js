@@ -61,7 +61,8 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
             this.orbitDistance /= 50000;
             this.radius /= 100;
-            
+            this.distanceFromBodyWeAreOrbiting = 0;
+
             if (this.orbits) {
                 this.distanceFromBodyWeAreOrbiting = this.radius + this.orbitDistance + this.orbits.radius;
             }
@@ -116,12 +117,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             }
 
             glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, [0, 1, 0]);
-            
-            if (this.orbits.orbits) {
-                glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
-            } else {
-                glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.origin);
-            }
+            glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
 
             this.modelViewMatrix = modelViewMatrix;
         },
