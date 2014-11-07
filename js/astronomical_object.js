@@ -54,7 +54,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         setAxis: function (axis) {
             axis = axis || 0;
-            while(axis > 90) {
+            while (axis > 90) {
                 axis -= 90;
             }
             this.axis = this.degreesToRadians(axis);
