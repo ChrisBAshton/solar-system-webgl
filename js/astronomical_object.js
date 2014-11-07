@@ -55,8 +55,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 0
             ];
 
-            console.log(this.name, this.axisArray);
-
             var self = this;
             if (this.spherical) {
                 this.initBuffers  = function () {
