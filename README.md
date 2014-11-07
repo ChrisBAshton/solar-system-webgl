@@ -13,7 +13,16 @@ cd ~/Dropbox/uni/year_4/cs323_10_advanced_computer_graphics/assignment
 python -m SimpleHTTPServer
 ```
 
-Then go to [http://localhost:8000/](http://localhost:8000/) to see the solar system.
+Then go to http://localhost:8000/source/ to see the solar system.
+
+# Maintenance
+
+I use Grunt to make sure my JS is linted, unit tests pass, and so on. To ensure compliance:
+
+* download and install Node.js, and then Grunt
+* cd into this directory
+* Install the node modules (`npm install`)
+* You can now run `grunt` to run the automated processes. Everything should pass
 
 # Explanation
 
