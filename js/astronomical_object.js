@@ -19,10 +19,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
     AstronomicalObject.prototype = {
 
-        degreesToRadians: function (celsius) {
-            return celsius * (Math.PI / 180);
-        },
-
         setAttributes: function (config) {
             this.name          = config.name                        || 'name not set';
             this.orbits        = config.orbits                      || false;
@@ -35,19 +31,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             }
             this.axis          = this.degreesToRadians(config.axis) || 0;
             this.textureImage  = config.texture                     || 'textures/moon.gif';
-            this.spherical     = config.spherical === undefined ? true : config.spherical;
-            this.useLighting   = config.useLighting === undefined ? true : config.useLighting;
+            this.spherical     = this.getBoolean(config.spherical);
+            this.useLighting   = this.getBoolean(config.useLighting);
+            this.spins         = this.getBoolean(config.spins);
             this.shortcutKey   = config.shortcutKey;
-
-
-            /*
-            angle -> expected result
-
-             0 -> [0, 1, 0]
-            90 -> [1, 0, 0] 
-            45 -> [0.5, 0.5, 0] 
-
-             */
 
             this.axisArray = [
                 this.axis / this.degreesToRadians(90),
@@ -81,6 +68,14 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             else if (this.name === 'Sun') {
                 this.radius /= 10;
             }
+        },
+
+        degreesToRadians: function (celsius) {
+            return celsius * (Math.PI / 180);
+        },
+
+        getBoolean: function (attribute) {
+            return attribute === undefined ? true : attribute;
         },
 
         setOriginAccordingTo: function (config) {
@@ -185,13 +180,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         orbit: function () {
 
-            var timeThisFrame = Date.now(),
-                deltat = timeThisFrame - (this.timeLastFrame || 0),
-                proportionOfOrbit = deltat / (this.millisecondsPerDay * this.orbitalPeriod),
-                orbitAmount = (Math.PI * 2) * proportionOfOrbit,
-                proportionOfSpin = deltat / (this.millisecondsPerDay * this.spinPeriod),
-                spinAmount = (Math.PI * 2) * proportionOfSpin;
-            this.timeLastFrame = timeThisFrame;
+            var deltaT      = this.millisecondsSinceLastFrame(),
+                orbitAmount = this.calculatePortionOf(this.orbitalPeriod, deltaT),
+                spinAmount  = this.calculatePortionOf(this.spinPeriod, deltaT);
 
             if (this.orbits) {
                 var translationMatrix = glMatrix.mat4.create();
@@ -245,6 +236,23 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 0, 0]);
             }
             
+            this.updateAttributes(orbitAmount, spinAmount);
+        },
+
+        millisecondsSinceLastFrame: function () {
+            var timeThisFrame = Date.now(),
+                millisecondsSinceLastFrame = timeThisFrame - (this.timeLastFrame || 0);
+            this.timeLastFrame = timeThisFrame;
+            return millisecondsSinceLastFrame;
+        },
+
+        calculatePortionOf: function (attribute, deltaT) {
+            var proportion = deltaT / (this.millisecondsPerDay * attribute),
+                proportionInRadians = (Math.PI * 2) * proportion;
+            return proportionInRadians;
+        },
+
+        updateAttributes: function (orbitAmount, spinAmount) {
             this.lastOrbitAngle = orbitAmount;
             this.cumulativeOrbitAngle += this.lastOrbitAngle;
             this.lastSpinAngle += spinAmount;

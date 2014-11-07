@@ -4,7 +4,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         name:          'Galaxy',
         origin:        [0, 0, 0],
         radius:        6000000,
-        texture:       'textures/galaxy.jpg'
+        texture:       'textures/galaxy.jpg',
+        spins:         false
     });
 
     var theSun = new AstronomicalObject({
@@ -170,7 +171,8 @@ define(['astronomical_object'], function (AstronomicalObject) {
         radius:        85000,
         axis:          27,
         texture:       'textures/ringsRGBA.png',
-        useLighting:   false
+        useLighting:   false,
+        spins:         false
     });
 
     var solarSystem = [galaxy, theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon, jupiterGalileanMoon1, jupiterGalileanMoon2, jupiterGalileanMoon3, jupiterGalileanMoon4, saturnsRings];
