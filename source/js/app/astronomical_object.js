@@ -36,16 +36,16 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
             this.orbitDistance /= 50000;
             this.radius /= 100;
-            this.distanceFromBodyWeAreOrbiting = 0;
 
+            this.distanceFromBodyWeAreOrbiting = 0;
             if (this.orbits) {
                 this.distanceFromBodyWeAreOrbiting = this.radius + this.orbitDistance + this.orbits.radius;
             }
-            else if (this.name === 'Sun') {
+            
+            if (this.name === 'Sun') {
                 this.radius /= 10;
             }
-
-            if (this.name === 'Saturn\'s Rings') {
+            else if (this.name === 'Saturn\'s Rings') {
                 this.distanceFromBodyWeAreOrbiting = 0;
                 this.orbitalPeriod = this.orbits.orbitalPeriod;
                 this.spinPeriod    = this.orbits.spinPeriod;
@@ -161,6 +161,11 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 orbitAmount = this.calculatePortionOf(this.orbitalPeriod, deltaT),
                 spinAmount  = this.calculatePortionOf(this.spinPeriod, deltaT);
 
+            // SPECIAL CASE - handle Saturn's rings.
+            if (!this.spins && this.lastSpinAngle > 0) {
+                spinAmount = 0;
+            }
+
             if (this.orbits) {
                 var translationMatrix = glMatrix.mat4.create();
 
@@ -201,7 +206,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                     // 7. move back out to orbit space (away from earth)
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
                 }
-                
+
                 // move the planet according to its orbit matrix
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
 
