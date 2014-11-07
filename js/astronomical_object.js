@@ -10,7 +10,8 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
      */
     var AstronomicalObject = function (config) {
         this.setAttributes(config);
-        this.setOriginAccordingTo(config);
+        this.setOriginAccordingTo(config.origin);
+        this.setRandomStartingOrbit();
 
         this.initMatrix();
         buffers.initBuffers(this);
@@ -26,21 +27,13 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.orbitalPeriod = config.orbitalPeriod               || 1;
             this.spinPeriod    = config.spinPeriod                  || 1;
             this.radius        = config.radius                      || 10;
-            while(config.axis > 90) {
-                config.axis -= 90;
-            }
-            this.axis          = this.degreesToRadians(config.axis) || 0;
             this.textureImage  = config.texture                     || 'textures/moon.gif';
             this.spherical     = this.getBoolean(config.spherical);
             this.useLighting   = this.getBoolean(config.useLighting);
             this.spins         = this.getBoolean(config.spins);
             this.shortcutKey   = config.shortcutKey;
 
-            this.axisArray = [
-                this.axis / this.degreesToRadians(90),
-                1 - (this.axis / this.degreesToRadians(90)),
-                0
-            ];
+            this.setAxis(config.axis);
 
             this.orbitDistance /= 50000;
             this.radius /= 100;
@@ -52,6 +45,25 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             else if (this.name === 'Sun') {
                 this.radius /= 10;
             }
+
+            if (this.name === 'Saturn\'s Rings') {
+                this.distanceFromBodyWeAreOrbiting = 0;
+                this.orbitalPeriod = this.orbits.orbitalPeriod;
+                this.spinPeriod    = this.orbits.spinPeriod;
+            }
+        },
+
+        setAxis: function (axis) {
+            axis = axis || 0;
+            while(axis > 90) {
+                axis -= 90;
+            }
+            this.axis = this.degreesToRadians(axis);
+            this.axisArray = [
+                this.axis / this.degreesToRadians(90),
+                1 - (this.axis / this.degreesToRadians(90)),
+                0
+            ];
         },
 
         degreesToRadians: function (celsius) {
@@ -62,29 +74,24 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             return attribute === undefined ? true : attribute;
         },
 
-        setOriginAccordingTo: function (config) {
-
-            var randomStartingOrbit = 0;
-            
-            if (!this.spherical) {
-                this.origin = [];
-                this.origin[0] = this.orbits.origin[0];
-                this.origin[1] = this.orbits.origin[1];
-                this.origin[2] = this.orbits.origin[2];
-                this.distanceFromBodyWeAreOrbiting = 0;
-                this.orbitalPeriod = this.orbits.orbitalPeriod;
-                this.spinPeriod    = this.orbits.spinPeriod;
+        setOriginAccordingTo: function (origin) {
+            if (origin) {
+                this.origin = origin;
             }
             else if (this.orbits) {
-                randomStartingOrbit = (Math.PI * 2) / Math.random();
                 this.origin = [];
                 this.origin[0] = this.orbits.origin[0];
                 this.origin[1] = this.orbits.origin[1];
                 this.origin[2] = this.orbits.origin[2] - this.distanceFromBodyWeAreOrbiting;
             }
             else {
-                this.origin = config.origin || [0, 0, 0];
+                this.origin = [0, 0, 0];
             }
+        },
+
+        setRandomStartingOrbit: function () {
+
+            var randomStartingOrbit = this.orbits ? (Math.PI * 2) / Math.random() : 0;
 
             this.lastSpinAngle = 0;
             this.lastOrbitAngle = randomStartingOrbit;
