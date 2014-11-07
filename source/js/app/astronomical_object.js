@@ -89,9 +89,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         setRandomStartingOrbit: function () {
-
             var randomStartingOrbit = this.orbits ? (Math.PI * 2) / Math.random() : 0;
-
             this.lastSpinAngle = 0;
             this.lastOrbitAngle = randomStartingOrbit;
             this.cumulativeOrbitAngle = randomStartingOrbit;
@@ -142,7 +140,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         setupLighting: function (projectionMatrix) {
             var normalMatrix = glMatrix.mat3.create();
-
             gl.uniform1i(shaderProgram.showSpecularHighlightsUniform, true);
             gl.uniform1i(shaderProgram.useLightingUniform, this.useLighting);
             gl.uniformMatrix4fv(shaderProgram.pMatrixUniform, false, projectionMatrix);
@@ -183,7 +180,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 }
                 // MOONS etc
                 else {
-
                     // 1. move to center of earth
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, this.distanceFromBodyWeAreOrbiting]);
                     
@@ -205,7 +201,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                     // 7. move back out to orbit space (away from earth)
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
                 }
-
+                
                 // move the planet according to its orbit matrix
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
 

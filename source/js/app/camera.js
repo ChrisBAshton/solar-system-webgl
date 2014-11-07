@@ -25,7 +25,6 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
     }
 
     function updateProjectionMatrix() {
-        // Create a project matrix with 45 degree field of view
         glMatrix.mat4.perspective(
             projectionMatrix,
             Math.PI / 4,        // 45 degree field of view
