@@ -12,10 +12,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         this.setAttributes(config);
         this.setOriginAccordingTo(config.origin);
         this.setRandomStartingOrbit();
-
         this.initMatrix();
-        buffers.initBuffers(this);
         this.initTexture();
+        buffers.initBuffers(this);
     };
 
     AstronomicalObject.prototype = {
@@ -99,17 +98,15 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         initMatrix: function () {
-            var modelViewMatrix = glMatrix.mat4.create();
+            this.modelViewMatrix = glMatrix.mat4.create();
 
             if (this.orbits.orbits) {
-                glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.orbits.lastOrbitAngle, [0, 1, 0]);
-                glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, this.orbits.origin);
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.orbits.lastOrbitAngle, [0, 1, 0]);
+                glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, this.orbits.origin);
             }
 
-            glMatrix.mat4.rotate(modelViewMatrix, modelViewMatrix, this.lastOrbitAngle, [0, 1, 0]);
-            glMatrix.mat4.translate(modelViewMatrix, modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
-
-            this.modelViewMatrix = modelViewMatrix;
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastOrbitAngle, [0, 1, 0]);
+            glMatrix.mat4.translate(this.modelViewMatrix, this.modelViewMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
         },
 
         initTexture: function () {
@@ -133,9 +130,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
             gl.generateMipmap(gl.TEXTURE_2D);
-
             gl.bindTexture(gl.TEXTURE_2D, null);
-
             this.texture = texture;
         },
 
@@ -160,7 +155,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.activeTexture(gl.TEXTURE0);
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.useTexturesUniform, true);
-
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         },
 
