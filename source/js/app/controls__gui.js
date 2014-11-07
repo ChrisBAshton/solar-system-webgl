@@ -64,9 +64,9 @@ define(function () {
         guiContainer.appendChild(lightingContainerSunDiffuse);
 
         var globals = {
-            ambient:   0.3,
-            specular:  0.9,
-            diffuse:   1.0,
+            ambient:   0.4,
+            specular:  0.7,
+            diffuse:   0.7,
             shininess: 5
         };
 
