@@ -1,7 +1,7 @@
 define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderProgram, buffers) {
 
     /**
-     * [AstronomicalObject description]
+     * AstronomicalObject is a class that represents Planets, Moons, the Sun, Galaxy, and Saturn's Rings.
      * @param {Object} config The config object.
      * @param {int} config.orbitDistance (in miles) from whatever it is orbiting. This is then automatically reduced for presentation purposes.
      * @param {float} config.orbitalPeriod Number of days to make a full orbit.
@@ -10,7 +10,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
      */
     var AstronomicalObject = function (config) {
         this.setAttributes(config);
-        this.setOriginAccordingTo(config.origin);
+        this.setOrigin(config.origin);
         this.setRandomStartingOrbit();
         this.initMatrix();
         this.initTexture();
@@ -19,6 +19,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
     AstronomicalObject.prototype = {
 
+        /**
+         * Sets the attributes of the object instance based on the passed config object.
+         * @param {Object} config The config object.
+         */
         setAttributes: function (config) {
             this.name          = config.name                        || 'name not set';
             this.orbits        = config.orbits                      || false;
@@ -52,6 +56,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             }
         },
 
+        /**
+         * Sets the axis of the object.
+         * @param {int} axis Axis (in degrees) that the object rotates on.
+         */
         setAxis: function (axis) {
             axis = axis || 0;
             while (axis > 90) {
@@ -65,15 +73,29 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             ];
         },
 
+        /**
+         * Converts degrees to radians.
+         * @param  {int} celsius Value in degrees.
+         * @return {float}       Converted value in radians.
+         */
         degreesToRadians: function (celsius) {
             return celsius * (Math.PI / 180);
         },
 
+        /**
+         * Converts the given value into a boolean.
+         * @param  {Object} attribute Value to convert (typically a boolean or null)
+         * @return {boolean}          The boolean value.
+         */
         getBoolean: function (attribute) {
             return attribute === undefined ? true : attribute;
         },
 
-        setOriginAccordingTo: function (origin) {
+        /**
+         * Sets the origin of the object, using the passed value if there is one, or calculating based on the orbited object if there isn't.
+         * @param {Array} origin Three-value array representing the origin, or null.
+         */
+        setOrigin: function (origin) {
             if (origin) {
                 this.origin = origin;
             }
