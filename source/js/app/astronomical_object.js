@@ -108,13 +108,24 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         /**
-         * Called on initialisation - this moves the object to a random position in its orbit, to prevent all objects starting off in a long straight line.
+         * Called on initialisation - this moves the object to a position in its orbit, randomised to prevent all objects starting off in a long straight line.
          */
         setRandomStartingOrbit: function () {
-            var randomStartingOrbit = this.orbits ? (Math.PI * 2) / Math.random() : 0;
             this.lastSpinAngle = 0;
-            this.lastOrbitAngle = randomStartingOrbit;
-            this.cumulativeOrbitAngle = randomStartingOrbit;
+            this.lastOrbitAngle = 0;
+            this.cumulativeOrbitAngle = 0;
+
+            if (this.name === 'Saturn\'s Rings') {
+                // angle rings towards the Sun
+                var saturnsRingsAngle = this.degreesToRadians(90);
+                this.lastOrbitAngle = saturnsRingsAngle;
+                this.cumulativeOrbitAngle = saturnsRingsAngle;
+            }
+            else if (this.orbits) {
+                var randomStartingOrbit = (Math.PI * 2) / Math.random();
+                this.lastOrbitAngle = randomStartingOrbit;
+                this.cumulativeOrbitAngle = randomStartingOrbit;
+            }
         },
 
         /**
@@ -207,15 +218,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 orbitAmount = this.calculatePortionOf(this.orbitalPeriod, deltaT),
                 spinAmount  = this.calculatePortionOf(this.spinPeriod, deltaT);
 
-            // SPECIAL CASE - handle Saturn's rings.
-            if (this.name === 'Saturn\'s Rings') {
-                if (this.lastSpinAngle > 0) {
-                    spinAmount = 0;
-                } else {
-                    spinAmount = 1;
-                }
-            }
-
             if (this.orbits) {
                 var translationMatrix = glMatrix.mat4.create();
 
@@ -268,17 +270,25 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.updateAttributes(orbitAmount, spinAmount);
         },
 
+        /**
+         * Translation to perform before orbit.
+         * @param  {Object} translationMatrix glMatrix to multiply by modelViewMatrix
+         */
         beforeOrbit: function (translationMatrix) {
-            // X. unspin
+            // unspin
             if (this.isNotFirstAnimationFrame) {
                 glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, [0, 1, 0]);
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.axis, this.axisArray);
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -1, this.axisArray);
             }
         },
 
+        /**
+         * Translation to perform after orbit.
+         * @param  {float} spinAmount Spin amount to take into account.
+         */
         afterOrbit: function (spinAmount) {
             // perform spin
-            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.axis, this.axisArray);
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, 1, this.axisArray);
             glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, [0, 1, 0]);
             this.isNotFirstAnimationFrame = true;
         },
