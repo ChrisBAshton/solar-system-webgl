@@ -219,8 +219,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             if (this.orbits) {
                 var translationMatrix = glMatrix.mat4.create();
 
-                // X. unspin
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, this.axisArray);
+                this.beforeOrbit(translationMatrix);
 
                 // NORMAL PLANETS
                 if (!this.orbits.orbits) {
@@ -260,15 +259,28 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 // move the planet according to its orbit matrix
                 glMatrix.mat4.multiply(this.modelViewMatrix, this.modelViewMatrix, translationMatrix);
 
-                // perform spin
-                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, this.axisArray);
-
+                this.afterOrbit(spinAmount);
             }
             else if (this.spins) {
                 glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 1, 0]);
             }
             
             this.updateAttributes(orbitAmount, spinAmount);
+        },
+
+        beforeOrbit: function (translationMatrix) {
+            // X. unspin
+            if (this.isNotFirstAnimationFrame) {
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, [0, 1, 0]);
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.axis, this.axisArray);
+            }
+        },
+
+        afterOrbit: function (spinAmount) {
+            // perform spin
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.axis, this.axisArray);
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, [0, 1, 0]);
+            this.isNotFirstAnimationFrame = true;
         },
 
         /**
