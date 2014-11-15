@@ -62,10 +62,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          */
         setAxis: function (axis) {
             axis = axis || 0;
-            // @TODO - allow axises more than 90 degrees
-            while (axis > 90) {
-                axis -= 90;
-            }
             this.axis = this.degreesToRadians(axis);
             this.axisArray = [
                 this.axis / this.degreesToRadians(90),
