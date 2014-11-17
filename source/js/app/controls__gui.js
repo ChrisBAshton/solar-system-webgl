@@ -1,9 +1,13 @@
+/**
+ * @module ControlsGUI
+ */
 define(function () {
 
     var triggerAnimation;
 
     /**
      * Creates the GUI.
+     * @method createGUI
      * @param  {object} planetShortcuts    Array of planet names and the keyboard shortcut to use to snap to them.  
      * @param  {Function} triggerAnimationParameter Provides a hook for updating animation after changing input values (@TODO - code smell)
      */
@@ -44,6 +48,7 @@ define(function () {
 
     /**
      * Creates the sliders in the GUI.
+     * @method createSliders
      * @param  {DOMElement} guiContainer Document element to insert the sliders in.
      */
     function createSliders(guiContainer) {
@@ -227,6 +232,7 @@ define(function () {
 
     /**
      * Creates a slider.
+     * @method createSlider
      * @param  {Object} config Configuration object.
      */
     function createSlider(config) {
@@ -262,6 +268,7 @@ define(function () {
 
     /**
      * Updates the value displayed to users when they change the number of milliseconds per day.
+     * @method updateMillisecondsPerDay
      */
     function updateMillisecondsPerDay() {
         var inputValue = document.getElementById('millisecondsPerDay').value,
@@ -282,6 +289,7 @@ define(function () {
 
     /**
      * Updates the value of all the given sliders. This way we can have one 'master' slider that controls all the others.
+     * @method updateValueOfSliders
      * @param  {String} globalSlider    ID of the master slider.
      * @param  {array} slidersToUpdate Array of IDs of the sliders that should be updated when the master is updated.
      */
@@ -295,9 +303,14 @@ define(function () {
         }
     }
 
+    /**
+     * @class ControlsGUI
+     */
     return {
         /**
          * Initialises the GUI.
+         * @method init
+         * @constructor
          */
         init: createGUI
     };

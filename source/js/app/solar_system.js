@@ -1,3 +1,6 @@
+/**
+ * @module SolarSystem
+ */
 define(['astronomical_object'], function (AstronomicalObject) {
 
     var galaxy = new AstronomicalObject({

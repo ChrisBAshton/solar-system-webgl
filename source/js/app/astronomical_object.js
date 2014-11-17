@@ -1,7 +1,12 @@
+/**
+ * @module AstronomicalObject
+ */
 define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderProgram, buffers) {
 
     /**
      * AstronomicalObject is a class that represents Planets, Moons, the Sun, Galaxy, and Saturn's Rings.
+     * @class AstronomicalObject
+     * @constructor
      * @param {Object} config The config object.
      * @param {int} config.orbitDistance (in miles) from whatever it is orbiting. This is then automatically reduced for presentation purposes.
      * @param {float} config.orbitalPeriod Number of days to make a full orbit.
@@ -21,6 +26,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Sets the attributes of the object instance based on the passed config object.
+         * @method setAttributes
          * @param {Object} config The config object.
          */
         setAttributes: function (config) {
@@ -58,6 +64,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Sets the axis of the object.
+         * @method setAxis
          * @param {int} axis Axis (in degrees) that the object rotates on.
          */
         setAxis: function (axis) {
@@ -72,6 +79,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Converts degrees to radians.
+         * @method degreesToRadians
          * @param  {int} celsius Value in degrees.
          * @return {float}       Converted value in radians.
          */
@@ -81,6 +89,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Converts the given value into a boolean.
+         * @method getBoolean
          * @param  {Object} attribute Value to convert (typically a boolean or null)
          * @return {boolean}          The boolean value.
          */
@@ -90,6 +99,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Sets the origin of the object, using the passed value if there is one, or calculating based on the orbited object if there isn't.
+         * @method setOrigin
          * @param {Array} origin Three-value array representing the origin, or null.
          */
         setOrigin: function (origin) {
@@ -109,6 +119,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Called on initialisation - this moves the object to a position in its orbit, randomised to prevent all objects starting off in a long straight line.
+         * @method setRandomStartingOrbit
          */
         setRandomStartingOrbit: function () {
             this.lastSpinAngle = 0;
@@ -130,6 +141,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Initialises the model view matrix.
+         * @method initMatrix
          */
         initMatrix: function () {
             this.modelViewMatrix = glMatrix.mat4.create();
@@ -145,6 +157,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Initialises the texture for the object.
+         * @method initTexture
          */
         initTexture: function () {
             var texture = gl.createTexture();
@@ -162,6 +175,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Handle the image texture once it has downloaded.
+         * @method handleLoadedTexture
          * @param  {Object} texture A WebGL TEXTURE_2D object.
          */
         handleLoadedTexture: function (texture) {
@@ -177,6 +191,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Draws the object, relative to a projection matrix handles by the Camera object.
+         * @method draw
          * @param  {array} projectionMatrix glMatrix object (mat4) representing projection of the camera.
          */
         draw: function (projectionMatrix) {
@@ -187,6 +202,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Initialises the shader variables for lighting.
+         * @method setupLighting
          * @param  {array} projectionMatrix glMatrix object (mat4) representing projection of the camera.
          */
         setupLighting: function (projectionMatrix) {
@@ -201,6 +217,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Sets up the texture.
+         * @method setupTexture
          */
         setupTexture: function () {
             gl.activeTexture(gl.TEXTURE0);
@@ -211,6 +228,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Performs the calculations necessary for the object to orbit (and spin on its axis), if applicable.
+         * @method orbit
          */
         orbit: function () {
 
@@ -271,7 +289,8 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         /**
-         * Translation to perform before orbit.
+         * Rotation to perform before orbit.
+         * @method beforeOrbit
          * @param  {Object} translationMatrix glMatrix to multiply by modelViewMatrix
          */
         beforeOrbit: function (translationMatrix) {
@@ -283,7 +302,8 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         /**
-         * Translation to perform after orbit.
+         * Rotation to perform after orbit.
+         * @method afterOrbit
          * @param  {float} spinAmount Spin amount to take into account.
          */
         afterOrbit: function (spinAmount) {
@@ -295,6 +315,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Returns the number of milliseconds since the last frame.
+         * @method millisecondsSinceLastFrame
          * @return {int} Number of milliseconds since the last frame.
          */
         millisecondsSinceLastFrame: function () {
@@ -306,6 +327,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Calculates the portion of a given attribute, based on the number of milliseconds since the last frame and the number of milliseconds which represents a day.
+         * @method calculatePortionOf
          * @param  {int} attribute A property of the current object, e.g. orbitalPeriod
          * @param  {float} deltaT    Number of milliseconds since last frame.
          * @return {float}           Angle (in radians) that should be moved by.
@@ -318,6 +340,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Updates the object's attributes concerning angles.
+         * @method updateAttributes
          * @param  {float} orbitAmount Last orbit amount travelled
          * @param  {float} spinAmount  Last spin amount spun
          */
@@ -329,6 +352,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
         /**
          * Called on every animation frame, this handles the animation of the object.
+         * @method animate
          * @param  {float} millisecondsPerDay The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.
          */
         animate: function (millisecondsPerDay) {

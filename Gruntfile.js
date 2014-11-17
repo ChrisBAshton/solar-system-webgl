@@ -1,6 +1,7 @@
 module.exports = function (grunt) {
 
     grunt.loadNpmTasks('grunt-contrib-jshint');
+    grunt.loadNpmTasks('grunt-contrib-yuidoc');
     
     grunt.config('jshint', {
         options: {
@@ -24,5 +25,20 @@ module.exports = function (grunt) {
         all: ['Gruntfile.js', 'js/*.js']
     });
 
-    grunt.registerTask('default', ['jshint']);
+    grunt.config('pkg', grunt.file.readJSON('package.json'));
+
+    grunt.config('yuidoc', {
+        compile: {
+            name: '<%= pkg.name %>',
+            description: '<%= pkg.description %>',
+            version: '<%= pkg.version %>',
+            options: {
+                paths:    './source/js/app/',
+                //themedir: 'path/to/custom/theme/',
+                outdir:   './documentation/javascript/'
+            }
+        }
+    });
+
+    grunt.registerTask('default', ['jshint', 'yuidoc']);
 };
