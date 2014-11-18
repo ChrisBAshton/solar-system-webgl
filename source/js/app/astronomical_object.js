@@ -291,7 +291,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 this.afterOrbit(spinAmount);
             }
             else if (this.spins) {
-                //glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 1, 0]);
+                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 1, 0]);
             }
             
             this.updateAttributes(orbitAmount, spinAmount);
