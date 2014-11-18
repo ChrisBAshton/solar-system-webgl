@@ -320,7 +320,12 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          */
         millisecondsSinceLastFrame: function () {
             var timeThisFrame = Date.now(),
-                millisecondsSinceLastFrame = timeThisFrame - (this.timeLastFrame || 0);
+                millisecondsSinceLastFrame = 0;
+
+            if (this.isNotFirstAnimationFrame) {
+                millisecondsSinceLastFrame = timeThisFrame - this.timeLastFrame;
+            }
+            
             this.timeLastFrame = timeThisFrame;
             return millisecondsSinceLastFrame;
         },

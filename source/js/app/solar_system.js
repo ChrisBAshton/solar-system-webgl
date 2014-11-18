@@ -24,11 +24,11 @@ define(['astronomical_object'], function (AstronomicalObject) {
     var mercury = new AstronomicalObject({
         name:          'Mercury',
         orbits:        theSun,
-        orbitDistance: 36000000,
-        orbitalPeriod: 87.66,
-        spinPeriod:    58.65,
-        radius:        1516,
-        axis:          0,
+        orbitDistance: 36000000,    // distance in miles from the object we're orbiting
+        orbitalPeriod: 87.66,       // number of Earth days required to make a full orbit
+        spinPeriod:    58.65,       // number of Earth days required to spin once on its axis
+        radius:        1516,        // radius in miles
+        axis:          0,           // axial tilt (in degrees)
         texture:       'textures/mercurymap.jpg',
         shortcutKey:   '1'
     });
@@ -164,7 +164,7 @@ define(['astronomical_object'], function (AstronomicalObject) {
         orbitalPeriod: 16.69,
         spinPeriod:    16.69,
         radius:        1497.5,
-        axis:          0.205 // @TODO check these aren't in radians!!!
+        axis:          0.205
     });
 
     var saturnsRings = new AstronomicalObject({
