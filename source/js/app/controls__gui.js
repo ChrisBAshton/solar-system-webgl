@@ -13,34 +13,38 @@ define(function () {
      */
     function createGUI(planetShortcuts, triggerAnimationParameter) {
         triggerAnimation = triggerAnimationParameter;
+        
         var canvasContainer = document.getElementById('canvas_solar_system__container');
-        var guiContainer = document.createElement('DIV');
-        var keyboardControlsInfo = document.createElement('DIV');
+        var instructionsContainer = document.createElement('DIV');
+        var guiContainer = document.createElement('DIV'),
+            controls = {
+                'p': 'pause',
+                'f': 'full screen',
+                'w': 'move forwards',
+                'a': 'move left',
+                's': 'move backwards',
+                'd': 'move right',
+                'r': 'reset camera'
+            };
+        
         guiContainer.id = 'webgl_solarsystem_gui';
-        canvasContainer.insertBefore(guiContainer, canvasContainer.firstChild);
-        canvasContainer.appendChild(keyboardControlsInfo);
+        instructionsContainer.id = 'webgl_solarsystem_instructions';
+        
+        canvasContainer.insertBefore(instructionsContainer, canvasContainer.firstChild);
+        canvasContainer.appendChild(guiContainer);
 
-        guiContainer.innerHTML = '<h3>Instructions</h3>';
-        guiContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the sliders below. See below the canvas for keyboard shortcuts.</p>';
+        instructionsContainer.innerHTML = '<h3>Instructions</h3>';
+        instructionsContainer.innerHTML += '<p>Full screen viewing (keyboard shortcut "F") is <strong>highly recommended</strong>.</p>';
+        instructionsContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the GUI sliders. See below for keyboard shortcuts.</p>';
 
-        var controls = {
-            'p': 'pause',
-            'f': 'full screen',
-            'w': 'move forwards',
-            'a': 'move left',
-            's': 'move backwards',
-            'd': 'move right',
-            'r': 'reset camera'
-        };
-
-        keyboardControlsInfo.innerHTML = '<h3>Keyboard controls (general)</h3>';
+        instructionsContainer.innerHTML += '<h3>Keyboard controls (general)</h3>';
         for (var control in controls) {
-            keyboardControlsInfo.innerHTML += '<strong>' + control + '</strong>: ' + controls[control] + ', ';
+            instructionsContainer.innerHTML += '<strong>' + control + '</strong>: ' + controls[control] + ', ';
         }
 
-        keyboardControlsInfo.innerHTML += '<h3>Keyboard controls (snap to planet)</h3>';
+        instructionsContainer.innerHTML += '<h3>Keyboard controls (snap to planet)</h3>';
         for (var shortcut in planetShortcuts) {
-            keyboardControlsInfo.innerHTML += '<strong>' + shortcut + '</strong>: ' + planetShortcuts[shortcut].name + ', ';
+            instructionsContainer.innerHTML += '<strong>' + shortcut + '</strong>: ' + planetShortcuts[shortcut].name + ', ';
         }
 
         createSliders(guiContainer);
@@ -53,17 +57,24 @@ define(function () {
      */
     function createSliders(guiContainer) {
         var speedContainer = document.createElement('DIV');
+        var shininessContainer = document.createElement('DIV');
         var speedInfo = document.createElement('DIV');
+        var separator = document.createElement('HR');
         var lightingContainerAmbient = document.createElement('DIV');
         var lightingContainerSunSpecular = document.createElement('DIV');
         var lightingContainerSunDiffuse = document.createElement('DIV');
 
         speedInfo.id = 'millisecondsPerDayInfo';
-        speedContainer.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--speed';
-        lightingContainerAmbient.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--ambient';
-        lightingContainerSunSpecular.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--sun_specular';
-        lightingContainerSunDiffuse.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--sun_diffuse';
+        speedContainer.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_2';
+        shininessContainer.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_2';
+        lightingContainerAmbient.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3';
+        lightingContainerSunSpecular.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3';
+        lightingContainerSunDiffuse.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3';
+        separator.setAttribute('style', 'clear: both;');
+
         guiContainer.appendChild(speedContainer);
+        guiContainer.appendChild(shininessContainer);
+        guiContainer.appendChild(separator);
         guiContainer.appendChild(lightingContainerAmbient);
         guiContainer.appendChild(lightingContainerSunSpecular);
         guiContainer.appendChild(lightingContainerSunDiffuse);
@@ -91,13 +102,13 @@ define(function () {
         updateMillisecondsPerDay();
 
         createSlider({
-            label:      'shininess',
+            label:      'Planet shininess',
             id:         'planetShininess',
             min:        0,
             max:        100,
             step:       1,
             defaultVal: globals.shininess,
-            container:  speedContainer
+            container:  shininessContainer
         });
 
         createSlider({
@@ -144,7 +155,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Specular) - Global',
+            label:      'Specular term - Global',
             id:         'pointGlobalSpecular',
             min:        0,
             max:        1,
@@ -157,7 +168,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Specular)  Color - Red',
+            label:      'Specular term - Red',
             id:         'pointRSpecular',
             min:        0,
             max:        1,
@@ -167,7 +178,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Specular)  Color - Green',
+            label:      'Specular term - Green',
             id:         'pointGSpecular',
             min:        0,
             max:        1,
@@ -177,7 +188,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Specular)  Color - Blue',
+            label:      'Specular term - Blue',
             id:         'pointBSpecular',
             min:        0,
             max:        1,
@@ -187,7 +198,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Diffuse) - Global',
+            label:      'Diffuse term - Global',
             id:         'pointGlobalDiffuse',
             min:        0,
             max:        1,
@@ -200,7 +211,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Diffuse)  Color - Red',
+            label:      'Diffuse term - Red',
             id:         'pointRDiffuse',
             min:        0,
             max:        1,
@@ -210,7 +221,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Diffuse)  Color - Green',
+            label:      'Diffuse term - Green',
             id:         'pointGDiffuse',
             min:        0,
             max:        1,
@@ -220,7 +231,7 @@ define(function () {
         });
 
         createSlider({
-            label:      'Sunlight Emission (Diffuse)  Color - Blue',
+            label:      'Diffuse term - Blue',
             id:         'pointBDiffuse',
             min:        0,
             max:        1,

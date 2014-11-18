@@ -1,0 +1,105 @@
+body {
+    background-color: #222;
+}
+
+h3 {
+    margin: 0.5em 0;
+}
+
+a[target=_blank] {
+    background: url('data:image/gif;;base64,R0lGODlhCwALAJEAAP///5mZmf///wAAACH5BAUUAAIALAAAAAALAAsAAAIdlIOJJgEPA3MKKGdRfjRtu3UcFGFXRVpTqh6nZBQAOw==') no-repeat center right;
+    padding-right: 15px;
+}
+
+header {
+    padding-bottom: 40px;
+}
+
+header li {
+    display: block;
+    float: left;
+    width: 20%;
+}
+
+.container {
+    margin: 0 auto;
+    max-width: 800px;
+    width: 100%;
+    padding: 20px;
+    background-color: #fff;
+}
+
+#webgl_solarsystem_about {
+    padding: 1em;
+    background-color: indianred;
+    color: white;
+    margin-bottom: 15px;
+}
+
+#canvas_solar_system__container {
+
+}
+
+#webgl_solarsystem_gui {
+    overflow: hidden;
+}
+
+#millisecondsPerDay {
+    min-width: 300px;
+}
+
+#millisecondsPerDayInfo {
+    font-style: italic;
+}
+
+.canvas_solar_system {
+    display: block;
+    margin: 20px auto;
+    background-color: #000;
+}
+
+.canvas_solar_system--full_screen {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 999;
+    background-color: #000;
+}
+
+#webgl_solarsystem_instructions {
+    padding: 1em;
+    background-color: steelblue;
+    color: white;
+    margin-bottom: 15px;
+}
+
+.webgl_solarsystem_gui__fieldset_container {
+    margin-bottom: 10px;
+}
+
+.webgl_solarsystem_gui__fieldset_container--cols_2 {
+    float: left;
+    width: 48%;
+    margin-right: 1%;
+}
+
+.webgl_solarsystem_gui__fieldset_container--cols_3 {
+    float: left;
+    width: 32%;
+    margin-right: 1%;
+}
+
+.webgl_solarsystem_gui__fieldset_container fieldset {
+    width: 100%;
+    border: 0;
+    padding: 0.1em;
+}
+
+.webgl_solarsystem_gui__fieldset_container fieldset label {
+    display: block;
+}
+.webgl_solarsystem_gui__fieldset_container fieldset:first-child label {
+    font-weight: bold;
+}

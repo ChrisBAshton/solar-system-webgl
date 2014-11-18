@@ -13,7 +13,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
     var planetShortcuts  = {};
 
     /**
-     * Initialises the controls.
+     * Defines keyboard and mouse controls for interacting with the solar system.
      * @class Controls
      * @constructor
      */

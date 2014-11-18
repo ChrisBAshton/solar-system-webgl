@@ -13,6 +13,7 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
     * @constructor
     */
     function init() {
+        document.body.className += ' webgl_solarsystem__loaded';
         controls.bindToAnimation(function () {
             draw();
         });

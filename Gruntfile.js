@@ -34,8 +34,7 @@ module.exports = function (grunt) {
             version: '<%= pkg.version %>',
             options: {
                 paths:    './source/js/app/',
-                //themedir: 'path/to/custom/theme/',
-                outdir:   './documentation/javascript/'
+                outdir:   './api-docs/'
             }
         }
     });
