@@ -1,6 +1,6 @@
 # CS32310 - Advanced Computer Graphics assignment
 
-The assignment, worth 50% of the module, requires rendering a 3D animated solar system in WebGL.
+The assignment, worth 50% of the module, requires visualising a 3D animated solar system in WebGL.
 
 # Instructions
 
@@ -8,27 +8,21 @@ Run:
 
 ```bash
 
-cd ~/Dropbox/uni/year_4/cs323_10_advanced_computer_graphics/assignment
+cd assignment
 
 python -m SimpleHTTPServer
 ```
 
-Then go to http://localhost:8000/source/ to see the solar system.
+Then go to http://localhost:8000/source/ to see the solar system, or http://localhost:8000/api-docs/ to see the documentation.
 
 # Maintenance
 
-I use Grunt to make sure my JS is linted, unit tests pass, and so on. To ensure compliance:
+I use Grunt to make sure my JavaScript is linted and to generate my documentation. To replicate this on your machine:
 
 * download and install Node.js, and then Grunt
 * cd into this directory
 * Install the node modules (`npm install`)
-* You can now run `grunt` to run the automated processes. Everything should pass
-
-# Explanation
-
-The orbiting algorithm follows a 7-step process, outlined in the figure below.
-
-![orbit algorithm design](https://raw.githubusercontent.com/ChrisBAshton/solar-system-webgl/master/report/orbit_alorithm_design.jpg?token=AE4Ad6Bq0x91NRZPBnXpg5DNdiFngF4yks5UW7nNwA%3D%3D)
+* You can now run `grunt` to run the automated processes.
 
 # Acknowledgements
 
