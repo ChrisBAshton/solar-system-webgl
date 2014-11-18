@@ -134,6 +134,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             }
             else if (this.orbits) {
                 var randomStartingOrbit = (Math.PI * 2) / Math.random();
+                console.log(this.name, randomStartingOrbit);
                 this.lastOrbitAngle = randomStartingOrbit;
                 this.cumulativeOrbitAngle = randomStartingOrbit;
             }
@@ -226,6 +227,15 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.uniform1i(shaderProgram.samplerUniform, 0);
         },
 
+        calculateOrbitDistance: function () {
+            var portionOfOrbitCompleted = this.cumulativeOrbitAngle / (Math.PI * 2);
+
+            this.distanceFromBodyWeAreOrbiting--;
+            if (this.name === 'Earth') {
+                console.log(portionOfOrbitCompleted);
+            }
+        },
+
         /**
          * Performs the calculations necessary for the object to orbit (and spin on its axis), if applicable.
          * @method orbit
@@ -250,6 +260,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                     glMatrix.mat4.rotate(translationMatrix, translationMatrix, orbitAmount, [0, 1, 0]);
 
                     // 5. move back out to orbit space
+                    this.calculateOrbitDistance();
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
                 }
                 // MOONS etc
@@ -273,6 +284,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                     glMatrix.mat4.rotate(translationMatrix, translationMatrix, this.cumulativeOrbitAngle + orbitAmount, [0, 1, 0]);
 
                     // 7. move back out to orbit space (away from earth)
+                    this.calculateOrbitDistance();
                     glMatrix.mat4.translate(translationMatrix, translationMatrix, [0, 0, -this.distanceFromBodyWeAreOrbiting]);
                 }
 
@@ -320,7 +332,10 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          */
         millisecondsSinceLastFrame: function () {
             var timeThisFrame = Date.now(),
-                millisecondsSinceLastFrame = timeThisFrame - (this.timeLastFrame || 0);
+                millisecondsSinceLastFrame = 0;
+            if (this.isNotFirstAnimationFrame) {
+                millisecondsSinceLastFrame = timeThisFrame - this.timeLastFrame;
+            }
             this.timeLastFrame = timeThisFrame;
             return millisecondsSinceLastFrame;
         },
@@ -346,7 +361,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          */
         updateAttributes: function (orbitAmount, spinAmount) {
             this.lastOrbitAngle = orbitAmount;
-            this.cumulativeOrbitAngle += this.lastOrbitAngle;
+            this.cumulativeOrbitAngle += orbitAmount;
             this.lastSpinAngle += spinAmount;
         },
 
