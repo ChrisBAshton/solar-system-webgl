@@ -1,3 +1,6 @@
+/**
+ * @module Controls
+ */
 define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], function (glMatrix, camera, gui, SolarSystem) {
 
     var canvas           = document.getElementById('canvas_solar_system');
@@ -11,6 +14,8 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Initialises the controls.
+     * @class Controls
+     * @constructor
      */
     function init() {
         bindKeysToPlanets();
@@ -21,6 +26,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Binds the mouse events to handler functions.
+     * @method bindMouseControls
      */
     function bindMouseControls() {
         canvas.onmousedown   = handleMouseDown;
@@ -30,6 +36,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Handles binding certain key presses to calling the camera snapTo() function.
+     * @method bindKeysToPlanets
      */
     function bindKeysToPlanets() {
 
@@ -57,6 +64,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Binds some key events to handler functions.
+     * @method bindKeyboardControls
      */
     function bindKeyboardControls() {
         Mousetrap.bind(['w', 'a', 's', 'd'], function (e, key) {
@@ -109,6 +117,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Handles the mouse down event. In this case, we cache the position of the mouse so it can be used in rotation calculations later.
+     * @method handleMouseDown
      * @param  {event} event The mouse event.
      */
     function handleMouseDown(event) {
@@ -119,6 +128,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Handles the mouse up event.
+     * @method handleMouseUp
      * @param  {event} event The mouse event.
      */
     function handleMouseUp(event) {
@@ -127,6 +137,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Handles the mouse move event. In this case, we rotate the camera if the mouse button is down at the same time.
+     * @method handleMouseMove
      * @param  {event} event The mouse event.
      */
     function handleMouseMove(event) {
@@ -154,6 +165,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
     /**
      * Converts degrees to radians. @TODO - this is a duplicate of degToRad in AstronomicalObject. Should remove the duplication.
+     * @method degToRad
      * @param  {int} celsius Value in degrees.
      * @return {float}       Converted value in radians.
      */
@@ -164,6 +176,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
     return {
         /**
          * Provides a hook for app.js to call functions after we've manually triggered animation. i.e. If we update the view in controls.js we can trigger the callback and ensure that the changes are drawn immediately (useful if the solar system animation is paused).
+         * @method bindToAnimation
          * @param  {Function} callback Function to call when we want to trigger the animation.
          */
         bindToAnimation: function (callback) {
@@ -173,6 +186,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
         /**
          * Other modules can tell if the animation is paused by querying this. @TODO - this is a code smell
+         * @method paused
          * @return {boolean} True if animation is paused, false if not.
          */
         paused: function () {
@@ -181,6 +195,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
 
         /**
          * Grabs the milliseconds per dsy from the GUI form input.
+         * @method millisecondsPerDay
          * @return {float} Milliseconds per day.
          */
         millisecondsPerDay: function () {

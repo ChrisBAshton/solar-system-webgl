@@ -1,8 +1,15 @@
+/**
+ * Initialises the application
+ * @module App
+ */
 define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], function (SolarSystem, gl, camera, controls, lighting) {
 
     /**
-     * Initialises the application.
-     */
+    * Initialises the application.
+    *
+    * @class App
+    * @constructor
+    */
     function init() {
         controls.bindToAnimation(function () {
             draw();
@@ -12,6 +19,7 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
 
     /**
      * Runs on every animation frame.
+     * @method run
      */
     function run() {
         requestAnimationFrame(run);
@@ -24,6 +32,7 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
 
     /**
      * Draws to the canvas.
+     * @method draw
      */
     function draw() {
         cleanCanvas();
@@ -36,6 +45,7 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
 
     /**
      * Cleans the canvas.
+     * @method cleanCanvas
      */
     function cleanCanvas() {
         // clear the background (with black)
@@ -46,6 +56,7 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
 
     /**
      * Animates the objects in the Solar System.
+     * @method animate
      * @param  {float} millisecondsPerDay Determines the speed at which objects spin and orbit.
      */
     function animate(millisecondsPerDay) {

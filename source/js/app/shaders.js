@@ -1,7 +1,12 @@
+/**
+ * @module Shaders
+ */
 define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     /**
      * Initialises the shaders.
+     * @class Shaders
+     * @constructor
      * @return {Object} The shader program containing the compiled shaders.
      */
     function initShaders() {
@@ -44,6 +49,7 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
 
     /**
      * Gets an OpenGL shader from a DOM element's innerHTML, given its ID.
+     * @method  getShader
      * @param  {String} id ID of the DOM element containing the shader program.
      * @return {Object}    The compiled gl shader (fragment or vertex).
      */

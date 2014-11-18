@@ -1,7 +1,11 @@
+/**
+ * @module Lighting
+ */
 define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
 
     /**
      * Prepares the canvas for drawing lighting by grabbing the lighting parameters from the GUI.
+     * @method prepareLighting
      */
     function prepareLighting() {
         gl.uniform3f(
@@ -34,6 +38,7 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
 
     /**
      * Gets a float value from a DOMElement Input.
+     * @method getInput
      * @param  {String} id ID of the DOMElement whose value we want.
      * @return {float}    The parsed float value of that input.
      */
@@ -41,14 +46,20 @@ define(['gl', 'glMatrix', 'shaders'], function (gl, glMatrix, shaderProgram) {
         return parseFloat(document.getElementById(id).value);
     }
 
+    /**
+     * @class Lighting
+     * @constructor
+     */
     return {
         /**
          * Alias for prepareLighting().
+         * @method prepare
          */
         prepare: prepareLighting,
 
         /**
          * Gets the shininess parameter from the GUI (used for Phong shading)
+         * @method  getShininess
          * @return {float} Planet shininess (between 0 and 100).
          */
         getShininess: function () {

@@ -1,9 +1,16 @@
+/**
+ * @module Buffers
+ */
 define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
+    /**
+     * @class Buffers
+     */
     return {
 
         /**
          * Initialises the buffers.
+         * @method initBuffers
          * @param  {AstronomicalObject} obj The object for which we're initialising buffers.
          */
         initBuffers: function (obj) {
@@ -16,6 +23,7 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
         /**
          * Draws the necessary elements of the object onto the canvas.
+         * @method drawElements
          * @param  {AstronomicalObject} obj The object which needs to be drawn.
          */
         drawElements: function (obj) {
@@ -28,6 +36,7 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
         /**
          * Called by initBuffers(), this initialises the buffers for spherical objects, e.g. planets, the moon, the Sun.
+         * @method initSphericalBuffers
          * @param  {AstronomicalObject} obj The spherical object we're initialising buffers for.
          */
         initSphericalBuffers: function (obj) {
@@ -94,6 +103,7 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
         /**
          * A private method called by initSphericalBuffers, which calculates index data used by gl.ELEMENT_ARRAY_BUFFER.
+         * @method _getIndexData
          * @param  {int} latitudeBands  Latitude bands of the sphere
          * @param  {int} longitudeBands Longitude bands of the sphere
          * @return {array}              Index data.
@@ -118,6 +128,7 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
         /**
          * Called by initBuffers(), this initialises the buffers for cuboidal objects, e.g. Saturn's rings
+         * @method initCuboidalBuffers
          * @param  {AstronomicalObject} obj The cuboidal object we're initialising buffers for.
          */
         initCuboidalBuffers: function (obj) {
@@ -218,6 +229,7 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
         /**
          * Called by drawElements(), this draws the elements that comprise spherical objects.
+         * @method drawSphericalElements
          * @param  {AstronomicalObject} obj The spherical object we're drawing
          */
         drawSphericalElements: function (obj) {
@@ -242,6 +254,7 @@ define(['gl', 'shaders', 'lighting'], function (gl, shaderProgram, lighting) {
 
         /**
          * Called by drawElements(), this draws the elements that comprise cuboidal objects.
+         * @method drawCuboidalElements
          * @param  {AstronomicalObject} obj The cuboidal object we're drawing
          */
         drawCuboidalElements: function (obj) {
