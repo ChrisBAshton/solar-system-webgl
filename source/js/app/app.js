@@ -4,6 +4,8 @@
  */
 define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], function (SolarSystem, gl, camera, controls, lighting) {
 
+    var timeLastFrame = false;
+
     /**
     * Initialises the application.
     *
@@ -60,9 +62,28 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
      * @param  {float} millisecondsPerDay Determines the speed at which objects spin and orbit.
      */
     function animate(millisecondsPerDay) {
+        var deltaT = millisecondsSinceLastFrame();
         for (var i = 0; i < SolarSystem.length; i++) {
-            SolarSystem[i].animate(millisecondsPerDay);
+            SolarSystem[i].animate(millisecondsPerDay, deltaT);
         }
+    }
+
+    /**
+     * Returns the number of milliseconds since the last frame.
+     * @method millisecondsSinceLastFrame
+     * @return {int} Number of milliseconds since the last frame.
+     */
+    function millisecondsSinceLastFrame() {
+        var timeThisFrame = Date.now(),
+            millisecondsSinceLastFrame = 0;
+
+        if (!timeLastFrame) {
+            timeLastFrame = timeThisFrame;
+        }
+
+        millisecondsSinceLastFrame = timeThisFrame - timeLastFrame;
+        timeLastFrame = timeThisFrame;
+        return millisecondsSinceLastFrame;
     }
 
     return {

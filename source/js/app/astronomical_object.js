@@ -227,14 +227,15 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         /**
-         * Performs the calculations necessary for the object to orbit (and spin on its axis), if applicable.
-         * @method orbit
+         * Performs the calculations necessary for the object to orbit and spin on its axis, if applicable.
+         * @method animate
+         * @param {float} millisecondsPerDay The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.
+         * @param {float} millisecondsSinceLastFrame The number of milliseconds since the last frame was rendered.
          */
-        orbit: function () {
+        animate: function (millisecondsPerDay, millisecondsSinceLastFrame) {
 
-            var deltaT      = this.millisecondsSinceLastFrame(),
-                orbitAmount = this.calculatePortionOf(this.orbitalPeriod, deltaT),
-                spinAmount  = this.calculatePortionOf(this.spinPeriod, deltaT);
+            var orbitAmount = this.calculatePortionOf(this.orbitalPeriod, millisecondsSinceLastFrame, millisecondsPerDay),
+                spinAmount  = this.calculatePortionOf(this.spinPeriod, millisecondsSinceLastFrame, millisecondsPerDay);
 
             if (this.orbits) {
                 var translationMatrix = glMatrix.mat4.create();
@@ -282,7 +283,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
                 this.afterOrbit(spinAmount);
             }
             else if (this.spins) {
-                glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 1, 0]);
+                //glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, spinAmount, [0, 1, 0]);
             }
             
             this.updateAttributes(orbitAmount, spinAmount);
@@ -314,31 +315,15 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         /**
-         * Returns the number of milliseconds since the last frame.
-         * @method millisecondsSinceLastFrame
-         * @return {int} Number of milliseconds since the last frame.
-         */
-        millisecondsSinceLastFrame: function () {
-            var timeThisFrame = Date.now(),
-                millisecondsSinceLastFrame = 0;
-
-            if (this.isNotFirstAnimationFrame) {
-                millisecondsSinceLastFrame = timeThisFrame - this.timeLastFrame;
-            }
-            
-            this.timeLastFrame = timeThisFrame;
-            return millisecondsSinceLastFrame;
-        },
-
-        /**
          * Calculates the portion of a given attribute, based on the number of milliseconds since the last frame and the number of milliseconds which represents a day.
          * @method calculatePortionOf
          * @param  {int} attribute A property of the current object, e.g. orbitalPeriod
-         * @param  {float} deltaT    Number of milliseconds since last frame.
+         * @param  {float} millisecondsSinceLastFrame    Number of milliseconds since last frame.
+         * @param  {float} millisecondsPerDay The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.
          * @return {float}           Angle (in radians) that should be moved by.
          */
-        calculatePortionOf: function (attribute, deltaT) {
-            var proportion = deltaT / (this.millisecondsPerDay * attribute),
+        calculatePortionOf: function (attribute, millisecondsSinceLastFrame, millisecondsPerDay) {
+            var proportion = millisecondsSinceLastFrame / (millisecondsPerDay * attribute),
                 proportionInRadians = (Math.PI * 2) * proportion;
             return proportionInRadians;
         },
@@ -353,18 +338,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.lastOrbitAngle = orbitAmount;
             this.cumulativeOrbitAngle += this.lastOrbitAngle;
             this.lastSpinAngle += spinAmount;
-        },
-
-        /**
-         * Called on every animation frame, this handles the animation of the object.
-         * @method animate
-         * @param  {float} millisecondsPerDay The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.
-         */
-        animate: function (millisecondsPerDay) {
-            this.millisecondsPerDay = millisecondsPerDay;
-            this.orbit();
         }
-
     };
 
     return AstronomicalObject;
