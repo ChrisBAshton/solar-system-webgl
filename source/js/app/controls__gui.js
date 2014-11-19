@@ -105,7 +105,7 @@ define(function () {
             label:      'Planet shininess',
             id:         'planetShininess',
             min:        0,
-            max:        100,
+            max:        255,
             step:       1,
             defaultVal: globals.shininess,
             container:  shininessContainer

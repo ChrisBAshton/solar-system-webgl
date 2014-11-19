@@ -46,15 +46,16 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var earth = new AstronomicalObject({
-        name:          'Earth',
-        orbits:        theSun,
-        orbitDistance: 93000000,
-        orbitalPeriod: 365.25,
-        spinPeriod:    1,
-        radius:        3959,
-        axis:          23.45,
-        texture:       'textures/earthmap1k.jpg',
-        shortcutKey:   '3'
+        name:            'Earth',
+        orbits:          theSun,
+        orbitDistance:   93000000,
+        orbitalPeriod:   365.25,
+        spinPeriod:      1,
+        radius:          3959,
+        axis:            23.45,
+        texture:         'textures/earthmap1k.jpg',
+        specularTexture: 'textures/earthspecular1k.gif',
+        shortcutKey:     '3'
     });
 
     var mars = new AstronomicalObject({

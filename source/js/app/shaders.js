@@ -34,6 +34,8 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
         shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, 'uMVMatrix');
         shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, 'uNMatrix');
         shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, 'uSampler');
+        shaderProgram.showSpecularSamplerUniform = gl.getUniformLocation(shaderProgram, 'uShowSpecularSampler');
+        shaderProgram.specularSamplerUniform = gl.getUniformLocation(shaderProgram, 'uSpecularSampler');
         shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, 'uMaterialShininess');
         shaderProgram.showSpecularHighlightsUniform = gl.getUniformLocation(shaderProgram, 'uShowSpecularHighlights');
         shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, 'uUseTextures');
