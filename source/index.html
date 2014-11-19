@@ -29,6 +29,8 @@
                     </li>
                 </ul>
             </header>
+            
+            <div class="spinner"></div>
 
             <div id="webgl_solarsystem_about">
                 <p>
@@ -43,7 +45,6 @@
                     Now, I invite you to 'Toggle "About"' to hide this box, then 'Toggle instructions' for information on how to interact with the program and 'Toggle GUI' to unlock the GUI. Or <a href="#special">click here</a> to do it all in one step!
                 </p>
             </div>
-
 <!--
     #############################################################################
             LOOKING FOR CODE TO COPY AND PASTE, SO THAT YOU CAN PUT THIS
@@ -114,6 +115,7 @@
                             for (var i = 0; i < elements.length; i++) {
                                 $('a[href="#' + elements[i] + '"]').click();
                             }
+                            $('.spinner').hide('slow');
                         } else {
                             setTimeout(function () {
                                 waitUntilLoadedThenHide(elements);

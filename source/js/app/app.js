@@ -13,11 +13,32 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
     * @constructor
     */
     function init() {
-        document.body.className += ' webgl_solarsystem__loaded';
-        controls.bindToAnimation(function () {
-            draw();
+        waitUntilAssetsDownloadedThen(function () {
+            document.body.className += ' webgl_solarsystem__loaded';
+            controls.bindToAnimation(function () {
+                draw();
+            });
+            run();
         });
-        run();
+    }
+
+    function waitUntilAssetsDownloadedThen(callback) {
+        var allAssetsDownloaded = true;
+        for (var i = 0; i < SolarSystem.length; i++) {
+            if (!SolarSystem[i].isReady) {
+                allAssetsDownloaded = false;
+                break;
+            }
+        }
+
+        if (allAssetsDownloaded) {
+            callback();
+        }
+        else {
+            setTimeout(function () {
+                waitUntilAssetsDownloadedThen(callback);
+            }, 25);
+        }
     }
 
     /**

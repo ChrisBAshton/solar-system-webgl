@@ -15,6 +15,12 @@ python -m SimpleHTTPServer
 
 Then go to http://localhost:8000/source/ to see the solar system, or http://localhost:8000/api-docs/ to see the documentation.
 
+# Hooks
+
+The program adds a `webgl_solarsystem__loaded` class to the body to tell you when all the assets have finished loading. You can hook into this and add your own loading gifs, etc.
+
+The loading gif I use in the example is taken from the BBC's iframe scaffold.
+
 # Maintenance
 
 I use Grunt to make sure my JavaScript is linted and to generate my documentation. To replicate this on your machine:

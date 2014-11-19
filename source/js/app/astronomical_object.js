@@ -35,6 +35,14 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
     AstronomicalObject.prototype = {
 
         /**
+         * False until all assets for the Astronomical Object have been downloaded (i.e. the texture maps).
+         * @property isReady
+         * @type {Boolean}
+         * @default false
+         */
+        isReady: false,
+
+        /**
          * Sets the attributes of the object instance based on the passed config object.
          * @method setAttributes
          * @param {Object} config The config object.
@@ -214,6 +222,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.generateMipmap(gl.TEXTURE_2D);
             gl.bindTexture(gl.TEXTURE_2D, null);
             this[imageProperty] = texture;
+            this.isReady = true;
         },
 
         /**
