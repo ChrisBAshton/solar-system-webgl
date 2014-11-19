@@ -1,7 +1,7 @@
 /**
  * @module ControlsGUI
  */
-define(function () {
+define(['text!controls__gui_info.txt'], function (instructions) {
 
     var triggerAnimation;
 
@@ -14,40 +14,50 @@ define(function () {
     function createGUI(planetShortcuts, triggerAnimationParameter) {
         triggerAnimation = triggerAnimationParameter;
         
-        var canvasContainer = document.getElementById('canvas_solar_system__container');
-        var instructionsContainer = document.createElement('DIV');
-        var guiContainer = document.createElement('DIV'),
-            controls = {
-                'p': 'pause',
-                'f': 'full screen',
-                'w': 'move forwards',
-                'a': 'move left',
-                's': 'move backwards',
-                'd': 'move right',
-                'r': 'reset camera'
-            };
-        
-        guiContainer.id = 'webgl_solarsystem_gui';
-        instructionsContainer.id = 'webgl_solarsystem_instructions';
+        var canvasContainer       = document.getElementById('canvas_solar_system__container'),
+            instructionsContainer = document.createElement('DIV'),
+            guiContainer          = document.createElement('DIV');
         
         canvasContainer.insertBefore(instructionsContainer, canvasContainer.firstChild);
         canvasContainer.appendChild(guiContainer);
+        guiContainer.id = 'webgl_solarsystem_gui';
+        instructionsContainer.id = 'webgl_solarsystem_instructions';
 
-        instructionsContainer.innerHTML = '<h3>Instructions</h3>';
-        instructionsContainer.innerHTML += '<p>Full screen viewing (keyboard shortcut "F") is <strong>highly recommended</strong>.</p>';
-        instructionsContainer.innerHTML += '<p>Rotate your field of view by dragging the mouse over the canvas. Tweak the lighting conditions and orbital speeds using the GUI sliders. See below for keyboard shortcuts.</p>';
+        createInstructions(instructionsContainer, planetShortcuts);
+        createSliders(guiContainer);
+    }
 
-        instructionsContainer.innerHTML += '<h3>Keyboard controls (general)</h3>';
-        for (var control in controls) {
-            instructionsContainer.innerHTML += '<strong>' + control + '</strong>: ' + controls[control] + ', ';
-        }
-
-        instructionsContainer.innerHTML += '<h3>Keyboard controls (snap to planet)</h3>';
+    /**
+     * @method createInstructions
+     * @param  {DOMElement} instructionsContainer  The DIV we need to populate with instructions.
+     * @param  {object} planetShortcuts    Array of planet names and the keyboard shortcut to use to snap to them. 
+     */
+    function createInstructions(instructionsContainer, planetShortcuts) {
+        instructionsContainer.innerHTML = instructions;
         for (var shortcut in planetShortcuts) {
             instructionsContainer.innerHTML += '<strong>' + shortcut + '</strong>: ' + planetShortcuts[shortcut].name + ', ';
         }
+    }
 
-        createSliders(guiContainer);
+    /**
+     * Creates a DIV and appends to the given DOMElement container.
+     * 
+     * @method createDiv
+     * @param  {DOMElement} guiContainer The container to append the DIV to.
+     * @param  {String}   classes        The classname to give the DIV.
+     * @param  {Function} callback       Optional callback function.
+     * @return {DOMElement}              The newly created DIV.
+     */
+    function createDiv(guiContainer, classes, callback) {
+        var newDiv = document.createElement('DIV');
+        newDiv.className = classes;
+        guiContainer.appendChild(newDiv);
+
+        if (callback) {
+            callback();
+        }
+
+        return newDiv;
     }
 
     /**
@@ -56,28 +66,32 @@ define(function () {
      * @param  {DOMElement} guiContainer Document element to insert the sliders in.
      */
     function createSliders(guiContainer) {
-        var speedContainer = document.createElement('DIV');
-        var shininessContainer = document.createElement('DIV');
-        var speedInfo = document.createElement('DIV');
-        var separator = document.createElement('HR');
-        var lightingContainerAmbient = document.createElement('DIV');
-        var lightingContainerSunSpecular = document.createElement('DIV');
-        var lightingContainerSunDiffuse = document.createElement('DIV');
-
-        speedInfo.id = 'millisecondsPerDayInfo';
-        speedContainer.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_2';
-        shininessContainer.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_2';
-        lightingContainerAmbient.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3';
-        lightingContainerSunSpecular.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3';
-        lightingContainerSunDiffuse.className = 'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3';
-        separator.setAttribute('style', 'clear: both;');
-
-        guiContainer.appendChild(speedContainer);
-        guiContainer.appendChild(shininessContainer);
-        guiContainer.appendChild(separator);
-        guiContainer.appendChild(lightingContainerAmbient);
-        guiContainer.appendChild(lightingContainerSunSpecular);
-        guiContainer.appendChild(lightingContainerSunDiffuse);
+        var speedContainer               = createDiv(
+                guiContainer,
+                'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_2'
+            ),
+            shininessContainer           = createDiv(
+                guiContainer,
+                'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_2',
+                function () {
+                    var separator = document.createElement('HR');
+                    separator.setAttribute('style', 'clear: both;');
+                    guiContainer.appendChild(separator);
+                }
+            ),
+            lightingContainerAmbient     = createDiv(
+                guiContainer,
+                'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3'
+            ),
+            lightingContainerSunSpecular = createDiv(
+                guiContainer,
+                'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3'
+            ),
+            lightingContainerSunDiffuse  = createDiv(
+                guiContainer,
+                'webgl_solarsystem_gui__fieldset_container webgl_solarsystem_gui__fieldset_container--cols_3'
+            ),
+            speedInfo;
 
         var globals = {
             ambient:   0.4,
@@ -98,6 +112,9 @@ define(function () {
             container:  speedContainer,
             onChangeCallback: updateMillisecondsPerDay
         });
+
+        speedInfo = document.createElement('DIV');
+        speedInfo.id = 'millisecondsPerDayInfo';
         speedContainer.appendChild(speedInfo);
         updateMillisecondsPerDay();
 
