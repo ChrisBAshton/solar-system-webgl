@@ -10,7 +10,6 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
     var lastMouseX       = null;
     var lastMouseY       = null;
     var paused           = false;
-    var planetShortcuts  = {};
 
     /**
      * Defines keyboard and mouse controls for interacting with the solar system.
@@ -18,7 +17,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
      * @constructor
      */
     function init() {
-        bindKeysToPlanets();
+        var planetShortcuts = bindKeysToPlanets();
         bindKeyboardControls();
         bindMouseControls();
         gui.init(planetShortcuts, triggerAnimation);
@@ -37,29 +36,28 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
     /**
      * Handles binding certain key presses to calling the camera snapTo() function.
      * @method bindKeysToPlanets
+     * @return {JSON} Associative array where key is keyboard shortcut, value is Astronomical Object linked to that shortcut.
      */
     function bindKeysToPlanets() {
 
-        /*
-            This seems an awful way of doing it, but passing currentPlanet to the camera.snapTo function always snaps to Saturn's Rings (i.e. the last planet in the loop).
-
-            @TODO - improve.
-         */
-        var arrayOfKeysToBind = [],
-            currentPlanet;
+        var planetAssociatedWith = {},
+            keysToBind = [],
+            shortcut;
 
         for (var i = 0; i < SolarSystem.length; i++) {
-            currentPlanet = SolarSystem[i];
-            if (currentPlanet.shortcutKey) {
-                planetShortcuts[currentPlanet.shortcutKey] = currentPlanet;
-                arrayOfKeysToBind.push(currentPlanet.shortcutKey);
+            shortcut = SolarSystem[i].shortcutKey;
+            if (shortcut) {
+                planetAssociatedWith[shortcut] = SolarSystem[i];
+                keysToBind.push(shortcut);
             }
         }
 
-        Mousetrap.bind(arrayOfKeysToBind, function (e, key) {
-            camera.snapTo(planetShortcuts[key]);
+        Mousetrap.bind(keysToBind, function (e, key) {
+            camera.snapTo(planetAssociatedWith[key]);
             triggerAnimation();
         });
+
+        return planetAssociatedWith;
     }
 
     /**
@@ -185,7 +183,7 @@ define(['glMatrix', 'camera', 'controls__gui', 'solar_system', 'Mousetrap'], fun
         },
 
         /**
-         * Other modules can tell if the animation is paused by querying this. @TODO - this is a code smell
+         * Other modules can tell if the animation is paused by querying this.
          * @method paused
          * @return {boolean} True if animation is paused, false if not.
          */

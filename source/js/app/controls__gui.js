@@ -9,7 +9,7 @@ define(function () {
      * Creates the GUI.
      * @method createGUI
      * @param  {object} planetShortcuts    Array of planet names and the keyboard shortcut to use to snap to them.  
-     * @param  {Function} triggerAnimationParameter Provides a hook for updating animation after changing input values (@TODO - code smell)
+     * @param  {Function} triggerAnimationParameter Provides a hook for updating animation after changing input values (@TODO - this is a code smell. Should decouple the animation from the GUI inputs.)
      */
     function createGUI(planetShortcuts, triggerAnimationParameter) {
         triggerAnimation = triggerAnimationParameter;

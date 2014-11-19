@@ -29,21 +29,29 @@ define(['gl', 'glMatrix', 'text!shader__fragment.shader', 'text!shader__vertex.s
         gl.enableVertexAttribArray(shaderProgram.vertexNormalAttribute);
         shaderProgram.textureCoordAttribute = gl.getAttribLocation(shaderProgram, 'aTextureCoord');
         gl.enableVertexAttribArray(shaderProgram.textureCoordAttribute);
-        shaderProgram.pMatrixUniform = gl.getUniformLocation(shaderProgram, 'uPMatrix');
-        shaderProgram.mvMatrixUniform = gl.getUniformLocation(shaderProgram, 'uMVMatrix');
-        shaderProgram.nMatrixUniform = gl.getUniformLocation(shaderProgram, 'uNMatrix');
-        shaderProgram.samplerUniform = gl.getUniformLocation(shaderProgram, 'uSampler');
-        shaderProgram.showSpecularSamplerUniform = gl.getUniformLocation(shaderProgram, 'uShowSpecularSampler');
-        shaderProgram.specularSamplerUniform = gl.getUniformLocation(shaderProgram, 'uSpecularSampler');
-        shaderProgram.materialShininessUniform = gl.getUniformLocation(shaderProgram, 'uMaterialShininess');
-        shaderProgram.showSpecularHighlightsUniform = gl.getUniformLocation(shaderProgram, 'uShowSpecularHighlights');
-        shaderProgram.useTexturesUniform = gl.getUniformLocation(shaderProgram, 'uUseTextures');
-        shaderProgram.useLightingUniform = gl.getUniformLocation(shaderProgram, 'uUseLighting');
-        shaderProgram.ambientColorUniform = gl.getUniformLocation(shaderProgram, 'uAmbientColor');
-        shaderProgram.pointLightingLocationUniform = gl.getUniformLocation(shaderProgram, 'uPointLightingLocation');
-        shaderProgram.pointLightingSpecularColorUniform = gl.getUniformLocation(shaderProgram, 'uPointLightingSpecularColor');
-        shaderProgram.pointLightingDiffuseColorUniform = gl.getUniformLocation(shaderProgram, 'uPointLightingDiffuseColor');
-        shaderProgram.alphaUniform = gl.getUniformLocation(shaderProgram, 'uAlpha');
+
+        var jsVariableShaderVariablePairs = {
+            'pMatrixUniform':                    'uPMatrix',
+            'mvMatrixUniform':                   'uMVMatrix',
+            'nMatrixUniform':                    'uNMatrix',
+            'samplerUniform':                    'uSampler',
+            'showSpecularSamplerUniform':        'uShowSpecularSampler',
+            'specularSamplerUniform':            'uSpecularSampler',
+            'materialShininessUniform':          'uMaterialShininess',
+            'showSpecularHighlightsUniform':     'uShowSpecularHighlights',
+            'useTexturesUniform':                'uUseTextures',
+            'useLightingUniform':                'uUseLighting',
+            'ambientColorUniform':               'uAmbientColor',
+            'pointLightingLocationUniform':      'uPointLightingLocation',
+            'pointLightingSpecularColorUniform': 'uPointLightingSpecularColor',
+            'pointLightingDiffuseColorUniform':  'uPointLightingDiffuseColor',
+            'alphaUniform':                      'uAlpha'
+        }
+
+        for (var jsVariable in jsVariableShaderVariablePairs) {
+            var shaderVariable = jsVariableShaderVariablePairs[jsVariable];
+            shaderProgram[jsVariable] = gl.getUniformLocation(shaderProgram, shaderVariable);
+        }
 
         return shaderProgram;
     }

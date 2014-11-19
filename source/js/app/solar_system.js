@@ -180,7 +180,22 @@ define(['astronomical_object'], function (AstronomicalObject) {
         useLighting:   false
     });
 
-    var solarSystem = [galaxy, theSun, mercury, venus, earth, mars, jupiter, saturn, uranus, neptune, earthsMoon, jupiterGalileanMoon1, jupiterGalileanMoon2, jupiterGalileanMoon3, jupiterGalileanMoon4, saturnsRings];
-
-    return solarSystem;
+    return [
+        galaxy,
+        theSun,
+        mercury,
+        venus,
+        earth,
+        mars,
+        jupiter,
+        saturn,
+        uranus,
+        neptune,
+        earthsMoon,
+        jupiterGalileanMoon1,
+        jupiterGalileanMoon2,
+        jupiterGalileanMoon3,
+        jupiterGalileanMoon4,
+        saturnsRings
+    ];
 });

@@ -13,15 +13,14 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
     * @constructor
     */
     function init() {
-        waitUntilAssetsDownloadedThen(function () {
-            document.body.className += ' webgl_solarsystem__loaded';
-            controls.bindToAnimation(function () {
-                draw();
-            });
-            run();
-        });
+        waitUntilAssetsDownloadedThen(startTheApp);
     }
 
+    /**
+     * Waits until each Astronomical Object has declared it is ready to be rendered, i.e. texture images have been downloaded.
+     * @method waitUntilAssetsDownloadedThen
+     * @param  {Function} callback The function to call once all assets are downloaded.
+     */
     function waitUntilAssetsDownloadedThen(callback) {
         var allAssetsDownloaded = true;
         for (var i = 0; i < SolarSystem.length; i++) {
@@ -39,6 +38,18 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
                 waitUntilAssetsDownloadedThen(callback);
             }, 25);
         }
+    }
+
+    /**
+     * Provides a handle to the external host by adding a class to the body, telling the host the application is ready. Then initialises the controls and starts the animation.
+     * @method startTheApp
+     */
+    function startTheApp() {
+        document.body.className += ' webgl_solarsystem__loaded';
+        controls.bindToAnimation(function () {
+            draw();
+        });
+        run();
     }
 
     /**

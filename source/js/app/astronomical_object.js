@@ -36,14 +36,6 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
     AstronomicalObject.prototype = {
 
         /**
-         * False until all assets for the Astronomical Object have been downloaded (i.e. the texture maps).
-         * @property isReady
-         * @type {Boolean}
-         * @default false
-         */
-        isReady: false,
-
-        /**
          * Sets the attributes of the object instance based on the passed config object.
          * @method setAttributes
          * @param {Object} config The config object.
@@ -62,64 +54,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.spins                = this.getBoolean(config.spins);
             this.spinsClockwise       = this.getBoolean(config.spinsClockwise, false);
             this.shortcutKey          = config.shortcutKey;
-
             this.setAxis(config.axis);
-
-            this.orbitDistance /= 50000;
-            this.radius /= 100;
-
-            this.distanceFromBodyWeAreOrbiting = 0;
-            if (this.orbits) {
-                this.distanceFromBodyWeAreOrbiting = this.radius + this.orbitDistance + this.orbits.radius;
-            }
-            
-            if (this.name === 'Sun') {
-                this.radius /= 10;
-            }
-            else if (this.name === 'Saturn\'s Rings') {
-                this.distanceFromBodyWeAreOrbiting = 0;
-                this.orbitalPeriod = this.orbits.orbitalPeriod;
-                this.spinPeriod    = this.orbits.spinPeriod;
-            }
-        },
-
-        /**
-         * Sets the axis of the object.
-         * @method setAxis
-         * @param {int} axis Axis (in degrees) that the object rotates on.
-         */
-        setAxis: function (axis) {
-            axis = axis || 0;
-            this.axis = this.degreesToRadians(axis);
-            this.axisArray = [
-                this.axis / this.degreesToRadians(90),
-                1 - (this.axis / this.degreesToRadians(90)),
-                0
-            ];
-        },
-
-        /**
-         * Converts degrees to radians.
-         * @method degreesToRadians
-         * @param  {int} celsius Value in degrees.
-         * @return {float}       Converted value in radians.
-         */
-        degreesToRadians: function (celsius) {
-            return celsius * (Math.PI / 180);
-        },
-
-        /**
-         * Converts the given value into a boolean.
-         * @method getBoolean
-         * @param  {Object} attribute Value to convert (typically a boolean or null)
-         * @param {boolean} defaultValue Value to default to if one is not specified.
-         * @return {boolean}          The boolean value.
-         */
-        getBoolean: function (attribute, defaultValue) {
-            if (defaultValue === undefined) {
-                defaultValue = true;
-            }
-            return attribute === undefined ? defaultValue : attribute;
+            this.normalise();
+            this.prepareSpecialCases();
         },
 
         /**
@@ -232,6 +169,82 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.bindTexture(gl.TEXTURE_2D, null);
             this[imageProperty] = texture;
             this.isReady = true;
+        },
+
+        /**
+         * False until all assets for the Astronomical Object have been downloaded (i.e. the texture maps).
+         * @property isReady
+         * @type {Boolean}
+         * @default false
+         */
+        isReady: false,
+
+        /**
+         * Sets the axis of the object.
+         * @method setAxis
+         * @param {int} axis Axis (in degrees) that the object rotates on.
+         */
+        setAxis: function (axis) {
+            axis = axis || 0;
+            this.axis = this.degreesToRadians(axis);
+            this.axisArray = [
+                this.axis / this.degreesToRadians(90),
+                1 - (this.axis / this.degreesToRadians(90)),
+                0
+            ];
+        },
+
+        /**
+         * Adjusts the scales and radiuses for aesthetic reasons.
+         * @method normalise
+         */
+        normalise: function () {
+            this.orbitDistance /= 50000;
+            this.radius /= 100;
+        },
+
+        /**
+         * Executes code specific to individual entities, e.g. the Sun/Saturn's Rings. In future, this could be extracted out into a subclass.
+         * @method prepareSpecialCases
+         */
+        prepareSpecialCases: function () {
+            this.distanceFromBodyWeAreOrbiting = 0;
+            if (this.orbits) {
+                this.distanceFromBodyWeAreOrbiting = this.radius + this.orbitDistance + this.orbits.radius;
+            }
+            
+            if (this.name === 'Sun') {
+                this.radius /= 10;
+            }
+            else if (this.name === 'Saturn\'s Rings') {
+                this.distanceFromBodyWeAreOrbiting = 0;
+                this.orbitalPeriod = this.orbits.orbitalPeriod;
+                this.spinPeriod    = this.orbits.spinPeriod;
+            }
+        },
+
+        /**
+         * Converts degrees to radians.
+         * @method degreesToRadians
+         * @param  {int} celsius Value in degrees.
+         * @return {float}       Converted value in radians.
+         */
+        degreesToRadians: function (celsius) {
+            return celsius * (Math.PI / 180);
+        },
+
+        /**
+         * Converts the given value into a boolean.
+         * @method getBoolean
+         * @param  {Object} attribute Value to convert (typically a boolean or null)
+         * @param {boolean} defaultValue Value to default to if one is not specified.
+         * @return {boolean}          The boolean value.
+         */
+        getBoolean: function (attribute, defaultValue) {
+            if (defaultValue === undefined) {
+                defaultValue = true;
+            }
+            return attribute === undefined ? defaultValue : attribute;
         },
 
         /**
