@@ -98,13 +98,15 @@
                     $('a[href="#gui"]').on('click', respondToClick);
                     $('a[href="#about"]').on('click', respondToClick);
 
-                    $('a[href="#special"]').on('click', function () {
+                    $('a[href="#special"]').on('click', function (e) {
+                        e.preventDefault();
                         $('#webgl_solarsystem_about').hide();
                         $('#webgl_solarsystem_instructions').show();
                         $('#webgl_solarsystem_gui').show();
                         $('a[href="#about"]').removeClass('visible');
                         $('a[href="#instructions"]').addClass('visible');
                         $('a[href="#gui"]').addClass('visible');
+                        return false;
                     });
 
                     function waitUntilLoadedThenHide(elements) {
