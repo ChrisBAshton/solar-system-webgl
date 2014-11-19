@@ -5,28 +5,30 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
     /**
      * AstronomicalObject is a class that represents Planets, Moons, the Sun, Galaxy, and Saturn's Rings.
+     * 
      * @class AstronomicalObject
      * @constructor
-     * @param {Object}  config               The config object.
-     * @param {String}  config.name          Name of the Astronomical Body. Useful for debugging, but also used in generating the instructions for the keyboard shortcuts.
-     * @param {Array}   config.origin        X, Y, Z co-ordinates of the origin of the body in space.
-     * @param {int}     config.orbitDistance (in miles) from whatever it is orbiting. This is then automatically reduced for presen tation purposes.
-     * @param {float}   config.orbitalPeriod Number of days to make a full orbit.
-     * @param {float}   config.spinPeriod    Number of days to rotate fully on its axis.
-     * @param {int}     config.radius        (in miles). This is then automatically increased for presentation purposes.
-     * @param {float}   config.axis          Rotational axis (in degrees).
-     * @param {String}  config.texture       Url pointing to the texture image to be mapped to the object.
-     * @param {String}  config.shortcutKey   The key that when pressed should make the camera snap to the object.
-     * @param {boolean} config.spins         Determines whether or not the object should spin on its axis.
-     * @param {boolean} config.useLighting   Determines whether or not the object should be affected by Phong shading.
-     * @param {boolean} config.spherical     Determines which buffers to initialise and draw the object with (cuboidal or spherical).
+     * @param {Object}  config                  The config object.
+     * @param {String}  config.name             Name of the Astronomical Body. Useful for debugging, but also used in generating the instructions for the keyboard shortcuts.
+     * @param {Array}   config.origin           X, Y, Z co-ordinates of the origin of the body in space.
+     * @param {int}     config.orbitDistance    (in miles) from whatever it is orbiting. This is then automatically reduced for presen tation purposes.
+     * @param {float}   config.orbitalPeriod    Number of days to make a full orbit.
+     * @param {float}   config.spinPeriod       Number of days to rotate fully on its axis.
+     * @param {int}     config.radius           (in miles). This is then automatically increased for presentation purposes.
+     * @param {float}   config.axis             Rotational axis (in degrees).
+     * @param {String}  config.texture          Url pointing to the texture image to be mapped to the object.
+     * @param {String}  config.specularTexture  Url pointing to the specular map to be mapped to the object.
+     * @param {String}  config.shortcutKey      The key that when pressed should make the camera snap to the object.
+     * @param {boolean} config.spins            Determines whether or not the object should spin on its axis.
+     * @param {boolean} config.useLighting      Determines whether or not the object should be affected by Phong shading.
+     * @param {boolean} config.spherical        Determines which buffers to initialise and draw the object with (cuboidal or spherical).
      */
     var AstronomicalObject = function (config) {
         this.setAttributes(config);
         this.setOrigin(config.origin);
         this.setRandomStartingOrbit();
         this.initMatrix();
-        this.initTexture();
+        this.initTextures();
         buffers.initBuffers(this);
     };
 
@@ -38,17 +40,18 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          * @param {Object} config The config object.
          */
         setAttributes: function (config) {
-            this.name          = config.name                        || 'name not set';
-            this.orbits        = config.orbits                      || false;
-            this.orbitDistance = config.orbitDistance               || 0;
-            this.orbitalPeriod = config.orbitalPeriod               || 1;
-            this.spinPeriod    = config.spinPeriod                  || 1;
-            this.radius        = config.radius                      || 10;
-            this.textureImage  = config.texture                     || 'textures/moon.gif';
-            this.spherical     = this.getBoolean(config.spherical);
-            this.useLighting   = this.getBoolean(config.useLighting);
-            this.spins         = this.getBoolean(config.spins);
-            this.shortcutKey   = config.shortcutKey;
+            this.name                 = config.name            || 'name not set';
+            this.orbits               = config.orbits          || false;
+            this.orbitDistance        = config.orbitDistance   || 0;
+            this.orbitalPeriod        = config.orbitalPeriod   || 1;
+            this.spinPeriod           = config.spinPeriod      || 1;
+            this.radius               = config.radius          || 10;
+            this.textureImage         = config.texture         || 'textures/moon.gif';
+            this.specularTextureImage = config.specularTexture || false;
+            this.spherical            = this.getBoolean(config.spherical);
+            this.useLighting          = this.getBoolean(config.useLighting);
+            this.spins                = this.getBoolean(config.spins);
+            this.shortcutKey          = config.shortcutKey;
 
             this.setAxis(config.axis);
 
@@ -164,10 +167,25 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         },
 
         /**
-         * Initialises the texture for the object.
-         * @method initTexture
+         * Initialises the textures for the object.
+         * @method initTextures
          */
-        initTexture: function () {
+        initTextures: function () {
+            if (this.textureImage) {
+                this.initTexture(this.textureImage, 'texture');
+            }
+            if (this.specularTextureImage) {
+                this.initTexture(this.specularTextureImage, 'specularTexture');
+            }
+        },
+
+        /**
+         * Initialises a texture for the object.
+         * @method initTexture
+         * @param {String} imageSrc         URL pointing to the texture image.
+         * @param {String} imageProperty    The property to set texture to on this object.
+         */
+        initTexture: function (imageSrc, imageProperty) {
             var texture = gl.createTexture();
             texture.image = new Image();
             texture.image.crossOrigin = 'anonymous';
@@ -175,18 +193,19 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             var self = this;
 
             texture.image.onload = function () {
-                self.handleLoadedTexture(texture);
+                self.handleLoadedTexture(texture, imageProperty);
             };
 
-            texture.image.src = this.textureImage;
+            texture.image.src = imageSrc;
         },
 
         /**
          * Handle the image texture once it has downloaded.
          * @method handleLoadedTexture
-         * @param  {Object} texture A WebGL TEXTURE_2D object.
+         * @param {Object} texture A WebGL TEXTURE_2D object.
+         * @param {String} imageProperty The property to set texture to on this object.
          */
-        handleLoadedTexture: function (texture) {
+        handleLoadedTexture: function (texture, imageProperty) {
             gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL, true);
             gl.bindTexture(gl.TEXTURE_2D, texture);
             gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, texture.image);
@@ -194,7 +213,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR_MIPMAP_NEAREST);
             gl.generateMipmap(gl.TEXTURE_2D);
             gl.bindTexture(gl.TEXTURE_2D, null);
-            this.texture = texture;
+            this[imageProperty] = texture;
         },
 
         /**
@@ -232,6 +251,14 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             gl.bindTexture(gl.TEXTURE_2D, this.texture);
             gl.uniform1i(shaderProgram.useTexturesUniform, true);
             gl.uniform1i(shaderProgram.samplerUniform, 0);
+            gl.uniform1i(shaderProgram.showSpecularSamplerUniform, false);
+            
+            if (this.specularTextureImage) {
+                gl.uniform1i(shaderProgram.showSpecularSamplerUniform, true);
+                gl.activeTexture(gl.TEXTURE1);
+                gl.bindTexture(gl.TEXTURE_2D, this.specularTexture);
+                gl.uniform1i(shaderProgram.specularSamplerUniform, 1);
+            }
         },
 
         /**

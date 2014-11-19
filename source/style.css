@@ -1,9 +1,11 @@
 body {
     background-color: #222;
+    font-family: verdana;
+    font-size: 12px;
 }
 
-h3 {
-    margin: 0.5em 0;
+h2, h3 {
+    margin: 5px 0;
 }
 
 a {
@@ -20,7 +22,7 @@ a[target=_blank] {
 }
 
 header {
-    padding-bottom: 40px;
+    padding-bottom: 20px;
 }
 
 header li {
@@ -41,6 +43,15 @@ header li {
     background-color: indianred;
     color: white;
     margin-bottom: 15px;
+    border-radius: 8px;
+}
+
+#webgl_solarsystem_instructions {
+    padding: 1em;
+    background-color: steelblue;
+    color: white;
+    margin-bottom: 15px;
+    border-radius: 8px;
 }
 
 #canvas_solar_system__container {
@@ -73,13 +84,6 @@ header li {
     right: 0;
     z-index: 999;
     background-color: #000;
-}
-
-#webgl_solarsystem_instructions {
-    padding: 1em;
-    background-color: steelblue;
-    color: white;
-    margin-bottom: 15px;
 }
 
 .webgl_solarsystem_gui__fieldset_container {
