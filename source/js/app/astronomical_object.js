@@ -5,21 +5,23 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
 
     /**
      * AstronomicalObject is a class that represents Planets, Moons, the Sun, Galaxy, and Saturn's Rings.
+     * 
      * @class AstronomicalObject
      * @constructor
-     * @param {Object}  config               The config object.
-     * @param {String}  config.name          Name of the Astronomical Body. Useful for debugging, but also used in generating the instructions for the keyboard shortcuts.
-     * @param {Array}   config.origin        X, Y, Z co-ordinates of the origin of the body in space.
-     * @param {int}     config.orbitDistance (in miles) from whatever it is orbiting. This is then automatically reduced for presen tation purposes.
-     * @param {float}   config.orbitalPeriod Number of days to make a full orbit.
-     * @param {float}   config.spinPeriod    Number of days to rotate fully on its axis.
-     * @param {int}     config.radius        (in miles). This is then automatically increased for presentation purposes.
-     * @param {float}   config.axis          Rotational axis (in degrees).
-     * @param {String}  config.texture       Url pointing to the texture image to be mapped to the object.
-     * @param {String}  config.shortcutKey   The key that when pressed should make the camera snap to the object.
-     * @param {boolean} config.spins         Determines whether or not the object should spin on its axis.
-     * @param {boolean} config.useLighting   Determines whether or not the object should be affected by Phong shading.
-     * @param {boolean} config.spherical     Determines which buffers to initialise and draw the object with (cuboidal or spherical).
+     * @param {Object}  config                  The config object.
+     * @param {String}  config.name             Name of the Astronomical Body. Useful for debugging, but also used in generating the instructions for the keyboard shortcuts.
+     * @param {Array}   config.origin           X, Y, Z co-ordinates of the origin of the body in space.
+     * @param {int}     config.orbitDistance    (in miles) from whatever it is orbiting. This is then automatically reduced for presen tation purposes.
+     * @param {float}   config.orbitalPeriod    Number of days to make a full orbit.
+     * @param {float}   config.spinPeriod       Number of days to rotate fully on its axis.
+     * @param {int}     config.radius           (in miles). This is then automatically increased for presentation purposes.
+     * @param {float}   config.axis             Rotational axis (in degrees).
+     * @param {String}  config.texture          Url pointing to the texture image to be mapped to the object.
+     * @param {String}  config.specularTexture  Url pointing to the specular map to be mapped to the object.
+     * @param {String}  config.shortcutKey      The key that when pressed should make the camera snap to the object.
+     * @param {boolean} config.spins            Determines whether or not the object should spin on its axis.
+     * @param {boolean} config.useLighting      Determines whether or not the object should be affected by Phong shading.
+     * @param {boolean} config.spherical        Determines which buffers to initialise and draw the object with (cuboidal or spherical).
      */
     var AstronomicalObject = function (config) {
         this.setAttributes(config);
