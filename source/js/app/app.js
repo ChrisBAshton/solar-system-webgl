@@ -27,7 +27,10 @@ define(['solar_system', 'gl', 'camera', 'controls', 'lighting', 'glUtils'], func
     function run() {
         requestAnimationFrame(run);
         
-        if (!controls.paused()) {
+        if (controls.paused()) {
+            timeLastFrame = false;
+        }
+        else {
             draw();
             animate(controls.millisecondsPerDay());
         }
