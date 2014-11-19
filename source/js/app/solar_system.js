@@ -34,15 +34,16 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var venus = new AstronomicalObject({
-        name:          'Venus',
-        orbits:        theSun,
-        orbitDistance: 67000000,
-        orbitalPeriod: 226.46,
-        spinPeriod:    243,
-        radius:        3761,
-        axis:          177.36,
-        texture:       'textures/venusmap.jpg',
-        shortcutKey:   '2'
+        name:           'Venus',
+        orbits:         theSun,
+        orbitDistance:  67000000,
+        orbitalPeriod:  226.46,
+        spinPeriod:     243,
+        spinsClockwise: true,
+        radius:         3761,
+        axis:           177.36,
+        texture:        'textures/venusmap.jpg',
+        shortcutKey:    '2'
     });
 
     var earth = new AstronomicalObject({
@@ -95,15 +96,16 @@ define(['astronomical_object'], function (AstronomicalObject) {
     });
 
     var uranus = new AstronomicalObject({
-        name:          'Uranus',
-        orbits:        theSun,
-        orbitDistance: 1782000000,
-        orbitalPeriod: 30684.65,
-        spinPeriod:    0.72,
-        radius:        15759,
-        axis:          97.77,
-        texture:       'textures/uranusmap.jpg',
-        shortcutKey:   '7'
+        name:           'Uranus',
+        orbits:         theSun,
+        orbitDistance:  1782000000,
+        orbitalPeriod:  30684.65,
+        spinPeriod:     0.72,
+        spinsClockwise: true,
+        radius:         15759,
+        axis:           97.77,
+        texture:        'textures/uranusmap.jpg',
+        shortcutKey:    '7'
     });
 
     var neptune = new AstronomicalObject({

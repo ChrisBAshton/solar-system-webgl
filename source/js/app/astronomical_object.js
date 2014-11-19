@@ -20,6 +20,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
      * @param {String}  config.specularTexture  Url pointing to the specular map to be mapped to the object.
      * @param {String}  config.shortcutKey      The key that when pressed should make the camera snap to the object.
      * @param {boolean} config.spins            Determines whether or not the object should spin on its axis.
+     * @param {boolean} config.spinsClockwise   Defaults to false. Determines spin direction.
      * @param {boolean} config.useLighting      Determines whether or not the object should be affected by Phong shading.
      * @param {boolean} config.spherical        Determines which buffers to initialise and draw the object with (cuboidal or spherical).
      */
@@ -59,6 +60,7 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             this.spherical            = this.getBoolean(config.spherical);
             this.useLighting          = this.getBoolean(config.useLighting);
             this.spins                = this.getBoolean(config.spins);
+            this.spinsClockwise       = this.getBoolean(config.spinsClockwise, false);
             this.shortcutKey          = config.shortcutKey;
 
             this.setAxis(config.axis);
@@ -110,10 +112,14 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          * Converts the given value into a boolean.
          * @method getBoolean
          * @param  {Object} attribute Value to convert (typically a boolean or null)
+         * @param {boolean} defaultValue Value to default to if one is not specified.
          * @return {boolean}          The boolean value.
          */
-        getBoolean: function (attribute) {
-            return attribute === undefined ? true : attribute;
+        getBoolean: function (attribute, defaultValue) {
+            if (defaultValue === undefined) {
+                defaultValue = true;
+            }
+            return attribute === undefined ? defaultValue : attribute;
         },
 
         /**
@@ -153,6 +159,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
             }
             else if (this.orbits) {
                 var randomStartingOrbit = (Math.PI * 2) / Math.random();
+                if (this.spinsClockwise) {
+                    randomStartingOrbit *= -1;
+                }
                 this.lastOrbitAngle = randomStartingOrbit;
                 this.cumulativeOrbitAngle = randomStartingOrbit;
             }
@@ -341,7 +350,8 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
         beforeOrbit: function (translationMatrix) {
             // unspin
             if (this.isNotFirstAnimationFrame) {
-                glMatrix.mat4.rotate(translationMatrix, translationMatrix, -this.lastSpinAngle, [0, 1, 0]);
+                var angle = this.spinsClockwise ? this.lastSpinAngle : -this.lastSpinAngle;
+                glMatrix.mat4.rotate(translationMatrix, translationMatrix, angle, [0, 1, 0]);
                 glMatrix.mat4.rotate(translationMatrix, translationMatrix, -1, this.axisArray);
             }
         },
@@ -353,8 +363,9 @@ define(['gl', 'glMatrix', 'shaders', 'buffers'], function (gl, glMatrix, shaderP
          */
         afterOrbit: function (spinAmount) {
             // perform spin
+            var angle = this.spinsClockwise ? (-this.lastSpinAngle - spinAmount) : (this.lastSpinAngle + spinAmount);
             glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, 1, this.axisArray);
-            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, this.lastSpinAngle + spinAmount, [0, 1, 0]);
+            glMatrix.mat4.rotate(this.modelViewMatrix, this.modelViewMatrix, angle, [0, 1, 0]);
             this.isNotFirstAnimationFrame = true;
         },
 
