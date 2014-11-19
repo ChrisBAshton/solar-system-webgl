@@ -16,6 +16,10 @@ a:hover {
     color: #737373;
 }
 
+.visible {
+    font-weight: bold;
+}
+
 a[target=_blank] {
     background: url('data:image/gif;;base64,R0lGODlhCwALAJEAAP///5mZmf///wAAACH5BAUUAAIALAAAAAALAAsAAAIdlIOJJgEPA3MKKGdRfjRtu3UcFGFXRVpTqh6nZBQAOw==') no-repeat center right;
     padding-right: 15px;

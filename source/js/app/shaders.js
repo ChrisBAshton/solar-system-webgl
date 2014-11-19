@@ -1,7 +1,7 @@
 /**
  * @module Shaders
  */
-define(['gl', 'glMatrix'], function (gl, glMatrix) {
+define(['gl', 'glMatrix', 'text!shader__fragment.shader', 'text!shader__vertex.shader'], function (gl, glMatrix, fragmentShaderCode, vertexShaderCode) {
 
     /**
      * Initialises the shaders.
@@ -10,9 +10,8 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
      * @return {Object} The shader program containing the compiled shaders.
      */
     function initShaders() {
-        // load and compile the fragment and vertex shader
-        var fragmentShader = getShader('webgl_solarsystem__shader--fragment');
-        var vertexShader = getShader('webgl_solarsystem__shader--vertex');
+        var fragmentShader = compileShader(fragmentShaderCode, 'fragment');
+        var vertexShader = compileShader(vertexShaderCode, 'vertex');
         var shaderProgram = gl.createProgram();
 
         gl.attachShader(shaderProgram, vertexShader);
@@ -50,40 +49,29 @@ define(['gl', 'glMatrix'], function (gl, glMatrix) {
     }
 
     /**
-     * Gets an OpenGL shader from a DOM element's innerHTML, given its ID.
-     * @method  getShader
-     * @param  {String} id ID of the DOM element containing the shader program.
-     * @return {Object}    The compiled gl shader (fragment or vertex).
+     * Compiles an OpenGL shader from raw shader code.
+     * @method  compileShader
+     * @param  {String} code    The uncompiled shader program.
+     * @param  {String} type    The type of shader to compiled (fragment or vertex).
+     * @return {Object}         The compiled gl shader.
      */
-    function getShader(id) {
-        var shaderScript = document.getElementById(id);
-        if (!shaderScript) {
-            return null;
-        }
-        var str = '';
-        var k = shaderScript.firstChild;
-        while (k) {
-            if (k.nodeType === 3) {
-                str += k.textContent;
-            }
-            k = k.nextSibling;
-        }
-
+    function compileShader(code, type) {
         var shader;
-        if (shaderScript.type === 'x-shader/x-fragment') {
+        if (type === 'fragment') {
             shader = gl.createShader(gl.FRAGMENT_SHADER);
-        } else if (shaderScript.type === 'x-shader/x-vertex') {
+        }
+        else if (type === 'vertex') {
             shader = gl.createShader(gl.VERTEX_SHADER);
-        } else {
+        }
+        else {
             return null;
         }
 
-        gl.shaderSource(shader, str);
+        gl.shaderSource(shader, code);
         gl.compileShader(shader);
         
         if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
-            alert(gl.getShaderInfoLog(shader));
-            console.log('could not compile shaders');
+            console.log(gl.getShaderInfoLog(shader), 'Error: could not compile shaders');
             return null;
         }
         

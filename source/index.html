@@ -10,13 +10,13 @@
             <header>
                 <ul>
                     <li>
-                        <a href="#about">Toggle "About"</a>
+                        <a href="#about" class="visible">Toggle "About"</a>
                     </li>
                     <li>
-                        <a href="#instructions">Toggle instructions</a>
+                        <a href="#instructions" class="visible">Toggle instructions</a>
                     </li>
                     <li>
-                        <a href="#gui">Toggle GUI</a>
+                        <a href="#gui" class="visible">Toggle GUI</a>
                     </li>
                     <li>
                         <a href="../documentation/Report.pdf" target="_blank">Report</a>
@@ -31,10 +31,8 @@
             </header>
 
             <div id="webgl_solarsystem_about">
-                <h2>CS32310: Advanced Computer Graphics</h2>
-
                 <p>
-                    This is a 3D visualisation of the solar system, written in WebGL. Unlike many examples on the web, this is written without the aid of libraries such as Three.js.
+                    This is a 3D visualisation of the solar system, written in WebGL, developed for a university assignment (<em>CS32310: Advanced Computer Graphics</em>). Unlike many examples on the web, this is written without the aid of libraries such as Three.js.
                 </p>
 
                 <p>
@@ -42,124 +40,27 @@
                 </p>
 
                 <p>
-                    Now, I invite you to 'Toggle "About"' to hide this box, then 'Toggle instructions' for information on how to interact with the program.
+                    Now, I invite you to 'Toggle "About"' to hide this box, then 'Toggle instructions' for information on how to interact with the program and 'Toggle GUI' to unlock the GUI. Or <a href="#special">click here</a> to do it all in one step!
                 </p>
             </div>
 
 <!--
     #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
             LOOKING FOR CODE TO COPY AND PASTE, SO THAT YOU CAN PUT THIS
             ON YOUR OWN WEBSITE? LOOK NO FURTHER!
             COPY FROM HERE:
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
     #############################################################################
 -->
             <div id="canvas_solar_system__container">
                 <canvas id="canvas_solar_system" class="canvas_solar_system"></canvas>
             </div>
-
-            <script id="webgl_solarsystem__shader--fragment" type="x-shader/x-fragment">
-                precision mediump float;
-                varying vec2 vTextureCoord;
-                varying vec3 vTransformedNormal;
-                varying vec4 vPosition;
-                uniform float uMaterialShininess;
-                uniform bool uShowSpecularHighlights;
-                uniform bool uShowSpecularSampler;
-                uniform bool uUseLighting;
-                uniform bool uUseTextures;
-                uniform vec3 uAmbientColor;
-                uniform vec3 uPointLightingLocation;
-                uniform vec3 uPointLightingSpecularColor;
-                uniform vec3 uPointLightingDiffuseColor;
-                uniform sampler2D uSampler;
-                uniform sampler2D uSpecularSampler;
-                uniform float uAlpha;
-
-                void main(void) {
-                    vec3 lightWeighting;
-                    if (!uUseLighting) {
-                        lightWeighting = vec3(1.0, 1.0, 1.0);
-                    } else {
-
-                        float specularLightWeighting = 0.0;
-                        float shininess = 32.0;
-                        vec3 lightDirection = normalize(uPointLightingLocation - vPosition.xyz);
-                        vec3 normal = normalize(vTransformedNormal);
-
-                        if (uShowSpecularSampler) {
-                            shininess = texture2D(uSpecularSampler, vec2(vTextureCoord.s, vTextureCoord.t)).r * 255.0;
-                        } else {
-                            shininess = uMaterialShininess;
-                        }
-
-                        if (uShowSpecularHighlights && shininess < 255.0) {
-                            vec3 eyeDirection = normalize(-vPosition.xyz);
-                            vec3 reflectionDirection = reflect(-lightDirection, normal);
-                            specularLightWeighting = pow(max(dot(reflectionDirection, eyeDirection), 0.0), shininess);
-                        }
-
-                        float diffuseLightWeighting = max(dot(normal, lightDirection), 0.0);
-                        lightWeighting = uAmbientColor
-                            + uPointLightingSpecularColor * specularLightWeighting * diffuseLightWeighting
-                            + uPointLightingDiffuseColor * diffuseLightWeighting; // diffuseLightWeighting to retain information about light direction
-                    }
-
-                    // rendering the color from the texture
-                    vec4 fragmentColor;
-                    if (uUseTextures) {
-                        fragmentColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
-                    } else {
-                        fragmentColor = vec4(1.0, 1.0, 1.0, 1.0);
-                    }
-                    gl_FragColor = vec4(fragmentColor.rgb * lightWeighting, fragmentColor.a * uAlpha);
-                }
-            </script>
-
-            <script id="webgl_solarsystem__shader--vertex" type="x-shader/x-vertex">
-                attribute vec3 aVertexPosition;
-                attribute vec3 aVertexNormal;
-                attribute vec2 aTextureCoord;
-                uniform mat4 uMVMatrix;
-                uniform mat4 uPMatrix;
-                uniform mat3 uNMatrix;
-                varying vec2 vTextureCoord;
-                varying vec3 vTransformedNormal;
-                varying vec4 vPosition;
-                void main(void) {
-                    vPosition = uMVMatrix * vec4(aVertexPosition, 1.0);
-                    gl_Position = uPMatrix * vPosition;
-                    vTextureCoord = aTextureCoord;
-                    vTransformedNormal = uNMatrix * aVertexNormal;
-                }
-            </script>
-
             <script src="js/lib/require.js" data-main="js/main.js"></script>
 <!--
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
     #############################################################################
             ...TO HERE.
 
             THE SCRIPTS BELOW (JQUERY, ETC) ARE FOR STYLISTIC USE ON THIS
             TUTORIAL PAGE ONLY.
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
-    #############################################################################
     #############################################################################
 -->
 
@@ -168,17 +69,28 @@
                 $(document).ready(function () {
 
                     function toggleElement(elementName) {
-                        var element = $('#webgl_solarsystem_' + elementName);
+                        var element = $('#webgl_solarsystem_' + elementName),
+                            elementNowVisible;
+
                         if (element.css('display') === 'none') {
                             element.show('slow');
+                            elementNowVisible = true;
                         } else {
                             element.hide('fast');
+                            elementNowVisible = false;
                         }
+
+                        return elementNowVisible;
                     }
 
                     function respondToClick (event) {
                         event.preventDefault();
-                        toggleElement($(this).attr('href').substring(1));
+                        var elementNowVisible = toggleElement($(this).attr('href').substring(1));
+                        if (elementNowVisible) {
+                            $(this).addClass('visible');
+                        } else {
+                            $(this).removeClass('visible');
+                        }
                         return false;
                     }
 
@@ -186,10 +98,19 @@
                     $('a[href="#gui"]').on('click', respondToClick);
                     $('a[href="#about"]').on('click', respondToClick);
 
+                    $('a[href="#special"]').on('click', function () {
+                        $('#webgl_solarsystem_about').hide();
+                        $('#webgl_solarsystem_instructions').show();
+                        $('#webgl_solarsystem_gui').show();
+                        $('a[href="#about"]').removeClass('visible');
+                        $('a[href="#instructions"]').addClass('visible');
+                        $('a[href="#gui"]').addClass('visible');
+                    });
+
                     function waitUntilLoadedThenHide(elements) {
                         if ($('body').hasClass('webgl_solarsystem__loaded')) {
                             for (var i = 0; i < elements.length; i++) {
-                                toggleElement(elements[i]);
+                                $('a[href="#' + elements[i] + '"]').click();
                             }
                         } else {
                             setTimeout(function () {
@@ -198,7 +119,7 @@
                         }
                     }
 
-                    waitUntilLoadedThenHide(['instructions']);
+                    waitUntilLoadedThenHide(['instructions', 'gui']);
                 });
             </script>
         </div>
