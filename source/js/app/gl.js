@@ -25,8 +25,7 @@ define(function () {
         }
 
         if (!gl) {
-            alert(msg);
-            throw new Error(msg);
+            console.log(msg);
         }
     }
 

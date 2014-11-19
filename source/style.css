@@ -1,5 +1,6 @@
 body {
-    background-color: #222;
+    background: #000; /* older browsers */
+    background: linear-gradient(#545454, #000);
     font-family: verdana;
     font-size: 12px;
 }
@@ -32,6 +33,12 @@ header {
 header li {
     display: inline-block;
     margin-right: 30px;
+}
+
+footer {
+    margin-top: 20px;
+    font-style: italic;
+    text-align: center;
 }
 
 @-webkit-keyframes spinnerRotate
