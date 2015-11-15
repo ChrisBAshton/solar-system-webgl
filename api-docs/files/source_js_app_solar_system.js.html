@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>source/js/app/solar_system.js - solar-system-webgl</title>
+    <link rel="stylesheet" href="http://yui.yahooapis.com/3.9.1/build/cssgrids/cssgrids-min.css">
+    <link rel="stylesheet" href="../assets/vendor/prettify/prettify-min.css">
+    <link rel="stylesheet" href="../assets/css/main.css" id="site_styles">
+    <link rel="shortcut icon" type="image/png" href="../assets/favicon.png">
+    <script src="http://yui.yahooapis.com/combo?3.9.1/build/yui/yui-min.js"></script>
+</head>
+<body class="yui3-skin-sam">
+
+<div id="doc">
+    <div id="hd" class="yui3-g header">
+        <div class="yui3-u-3-4">
+            
+                <h1><img src="../assets/css/logo.png" title="solar-system-webgl"></h1>
+            
+        </div>
+        <div class="yui3-u-1-4 version">
+            <em>API Docs for: 0.1.0</em>
+        </div>
+    </div>
+    <div id="bd" class="yui3-g">
+
+        <div class="yui3-u-1-4">
+            <div id="docs-sidebar" class="sidebar apidocs">
+                <div id="api-list">
+    <h2 class="off-left">APIs</h2>
+    <div id="api-tabview" class="tabview">
+        <ul class="tabs">
+            <li><a href="#api-classes">Classes</a></li>
+            <li><a href="#api-modules">Modules</a></li>
+        </ul>
+
+        <div id="api-tabview-filter">
+            <input type="search" id="api-filter" placeholder="Type to filter APIs">
+        </div>
+
+        <div id="api-tabview-panel">
+            <ul id="api-classes" class="apis classes">
+            
+                <li><a href="../classes/App.html">App</a></li>
+            
+                <li><a href="../classes/AstronomicalObject.html">AstronomicalObject</a></li>
+            
+                <li><a href="../classes/Buffers.html">Buffers</a></li>
+            
+                <li><a href="../classes/Camera.html">Camera</a></li>
+            
+                <li><a href="../classes/Controls.html">Controls</a></li>
+            
+                <li><a href="../classes/ControlsGUI.html">ControlsGUI</a></li>
+            
+                <li><a href="../classes/GL.html">GL</a></li>
+            
+                <li><a href="../classes/Lighting.html">Lighting</a></li>
+            
+                <li><a href="../classes/Shaders.html">Shaders</a></li>
+            
+            </ul>
+
+            <ul id="api-modules" class="apis modules">
+            
+                <li><a href="../modules/App.html">App</a></li>
+            
+                <li><a href="../modules/AstronomicalObject.html">AstronomicalObject</a></li>
+            
+                <li><a href="../modules/Buffers.html">Buffers</a></li>
+            
+                <li><a href="../modules/Camera.html">Camera</a></li>
+            
+                <li><a href="../modules/Controls.html">Controls</a></li>
+            
+                <li><a href="../modules/ControlsGUI.html">ControlsGUI</a></li>
+            
+                <li><a href="../modules/GL.html">GL</a></li>
+            
+                <li><a href="../modules/Lighting.html">Lighting</a></li>
+            
+                <li><a href="../modules/Shaders.html">Shaders</a></li>
+            
+                <li><a href="../modules/SolarSystem.html">SolarSystem</a></li>
+            
+            </ul>
+        </div>
+    </div>
+</div>
+
+            </div>
+        </div>
+        <div class="yui3-u-3-4">
+                <div id="api-options">
+        Show:
+        <label for="api-show-inherited">
+            <input type="checkbox" id="api-show-inherited" checked>
+            Inherited
+        </label>
+
+        <label for="api-show-protected">
+            <input type="checkbox" id="api-show-protected">
+            Protected
+        </label>
+
+        <label for="api-show-private">
+            <input type="checkbox" id="api-show-private">
+            Private
+        </label>
+        <label for="api-show-deprecated">
+            <input type="checkbox" id="api-show-deprecated">
+            Deprecated
+        </label>
+
+    </div>
+
+
+            <div class="apidocs">
+                <div id="docs-main">
+                    <div class="content">
+                        <h1 class="file-heading">File: source/js/app/solar_system.js</h1>
+
+<div class="file">
+    <pre class="code prettyprint linenums">
+/**
+ * @module SolarSystem
+ */
+define([&#x27;astronomical_object&#x27;], function (AstronomicalObject) {
+
+    var galaxy = new AstronomicalObject({
+        name:          &#x27;Galaxy&#x27;,
+        origin:        [0, 0, 0],
+        radius:        6000000,
+        texture:       &#x27;textures/galaxy.jpg&#x27;,
+        spins:         false
+    });
+
+    var theSun = new AstronomicalObject({
+        name:          &#x27;Sun&#x27;,
+        origin:        [0, 0, 0],
+        spinPeriod:    29,
+        radius:        432500,
+        axis:          7.25,
+        texture:       &#x27;textures/sunmap.jpg&#x27;,
+        useLighting:   false
+    });
+
+    var mercury = new AstronomicalObject({
+        name:          &#x27;Mercury&#x27;,
+        orbits:        theSun,
+        orbitDistance: 36000000,    // distance in miles from the object we&#x27;re orbiting
+        orbitalPeriod: 87.66,       // number of Earth days required to make a full orbit
+        spinPeriod:    58.65,       // number of Earth days required to spin once on its axis
+        radius:        1516,        // radius in miles
+        axis:          0,           // axial tilt (in degrees)
+        texture:       &#x27;textures/mercurymap.jpg&#x27;,
+        shortcutKey:   &#x27;1&#x27;
+    });
+
+    var venus = new AstronomicalObject({
+        name:           &#x27;Venus&#x27;,
+        orbits:         theSun,
+        orbitDistance:  67000000,
+        orbitalPeriod:  226.46,
+        spinPeriod:     243,
+        spinsClockwise: true,
+        radius:         3761,
+        axis:           177.36,
+        texture:        &#x27;textures/venusmap.jpg&#x27;,
+        shortcutKey:    &#x27;2&#x27;
+    });
+
+    var earth = new AstronomicalObject({
+        name:            &#x27;Earth&#x27;,
+        orbits:          theSun,
+        orbitDistance:   93000000,
+        orbitalPeriod:   365.25,
+        spinPeriod:      1,
+        radius:          3959,
+        axis:            23.45,
+        texture:         &#x27;textures/earthmap1k.jpg&#x27;,
+        specularTexture: &#x27;textures/earthspecular1k.gif&#x27;,
+        shortcutKey:     &#x27;3&#x27;
+    });
+
+    var mars = new AstronomicalObject({
+        name:          &#x27;Mars&#x27;,
+        orbits:        theSun,
+        orbitDistance: 141000000,
+        orbitalPeriod: 686.67,
+        spinPeriod:    1.03,
+        radius:        2460,
+        axis:          25.19,
+        texture:       &#x27;textures/marsmap1k.jpg&#x27;,
+        shortcutKey:   &#x27;4&#x27;
+    });
+
+    var jupiter = new AstronomicalObject({
+        name:          &#x27;Jupiter&#x27;,
+        orbits:        theSun,
+        orbitDistance: 483000000,
+        orbitalPeriod: 4331.87,
+        spinPeriod:    0.41,
+        radius:        43441,
+        axis:          3.13,
+        texture:       &#x27;textures/jupitermap.jpg&#x27;,
+        shortcutKey:   &#x27;5&#x27;
+    });
+
+    var saturn = new AstronomicalObject({
+        name:          &#x27;Saturn&#x27;,
+        orbits:        theSun,
+        orbitDistance: 886000000,
+        orbitalPeriod: 10760.27,
+        spinPeriod:    0.44,
+        radius:        36184,
+        axis:          26.73,
+        texture:       &#x27;textures/saturnmap.jpg&#x27;,
+        shortcutKey:   &#x27;6&#x27;
+    });
+
+    var uranus = new AstronomicalObject({
+        name:           &#x27;Uranus&#x27;,
+        orbits:         theSun,
+        orbitDistance:  1782000000,
+        orbitalPeriod:  30684.65,
+        spinPeriod:     0.72,
+        spinsClockwise: true,
+        radius:         15759,
+        axis:           97.77,
+        texture:        &#x27;textures/uranusmap.jpg&#x27;,
+        shortcutKey:    &#x27;7&#x27;
+    });
+
+    var neptune = new AstronomicalObject({
+        name:          &#x27;Neptune&#x27;,
+        orbits:        theSun,
+        orbitDistance: 2794000000,
+        orbitalPeriod: 60193.2,
+        spinPeriod:    0.72,
+        radius:        15299,
+        axis:          28.32,
+        texture:       &#x27;textures/neptunemap.jpg&#x27;,
+        shortcutKey:   &#x27;8&#x27;
+    });
+
+    var earthsMoon = new AstronomicalObject({
+        name:          &#x27;Earth\&#x27;s Moon&#x27;,
+        orbits:        earth,
+        orbitDistance: 2400000,
+        orbitalPeriod: 27.3,
+        spinPeriod:    27.3,
+        radius:        1000,
+        axis:          1.5
+    });
+
+    var jupiterGalileanMoon1 = new AstronomicalObject({
+        name:          &#x27;Io&#x27;,
+        orbits:        jupiter,
+        orbitDistance: 220000,
+        orbitalPeriod: 1.769,
+        spinPeriod:    1.769,
+        radius:        1075,
+        axis:          0.050
+    });
+
+    var jupiterGalileanMoon2 = new AstronomicalObject({
+        name:          &#x27;Europa&#x27;,
+        orbits:        jupiter,
+        orbitDistance: 420000,
+        orbitalPeriod: 3.551,
+        spinPeriod:    3.551,
+        radius:        970,
+        axis:          0.471
+    });
+
+    var jupiterGalileanMoon3 = new AstronomicalObject({
+        name:          &#x27;Ganymede&#x27;,
+        orbits:        jupiter,
+        orbitDistance: 664000,
+        orbitalPeriod: 7.155,
+        spinPeriod:    7.155,
+        radius:        1635,
+        axis:          0.204
+    });
+
+    var jupiterGalileanMoon4 = new AstronomicalObject({
+        name:          &#x27;Callisto&#x27;,
+        orbits:        jupiter,
+        orbitDistance: 1170000,
+        orbitalPeriod: 16.69,
+        spinPeriod:    16.69,
+        radius:        1497.5,
+        axis:          0.205
+    });
+
+    var saturnsRings = new AstronomicalObject({
+        name:          &#x27;Saturn\&#x27;s Rings&#x27;,
+        orbits:        saturn,
+        spherical:     false,
+        radius:        85000,
+        axis:          27,
+        texture:       &#x27;textures/ringsRGBA.png&#x27;,
+        useLighting:   false
+    });
+
+    return [
+        galaxy,
+        theSun,
+        mercury,
+        venus,
+        earth,
+        mars,
+        jupiter,
+        saturn,
+        uranus,
+        neptune,
+        earthsMoon,
+        jupiterGalileanMoon1,
+        jupiterGalileanMoon2,
+        jupiterGalileanMoon3,
+        jupiterGalileanMoon4,
+        saturnsRings
+    ];
+});
+    </pre>
+</div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="../assets/vendor/prettify/prettify-min.js"></script>
+<script>prettyPrint();</script>
+<script src="../assets/js/yui-prettify.js"></script>
+<script src="../assets/../api.js"></script>
+<script src="../assets/js/api-filter.js"></script>
+<script src="../assets/js/api-list.js"></script>
+<script src="../assets/js/api-search.js"></script>
+<script src="../assets/js/apidocs.js"></script>
+</body>
+</html>

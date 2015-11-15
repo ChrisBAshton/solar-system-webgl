@@ -1,0 +1,1548 @@
+{
+    "project": {
+        "name": "solar-system-webgl",
+        "description": "This is a solar system in WebGL, made for a university assignment.",
+        "version": "0.1.0"
+    },
+    "files": {
+        "source/js/app/app.js": {
+            "name": "source/js/app/app.js",
+            "modules": {
+                "App": 1
+            },
+            "classes": {
+                "App": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/astronomical_object.js": {
+            "name": "source/js/app/astronomical_object.js",
+            "modules": {
+                "AstronomicalObject": 1
+            },
+            "classes": {
+                "AstronomicalObject": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/buffers.js": {
+            "name": "source/js/app/buffers.js",
+            "modules": {
+                "Buffers": 1
+            },
+            "classes": {
+                "Buffers": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/camera.js": {
+            "name": "source/js/app/camera.js",
+            "modules": {
+                "Camera": 1
+            },
+            "classes": {
+                "Camera": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/controls.js": {
+            "name": "source/js/app/controls.js",
+            "modules": {
+                "Controls": 1
+            },
+            "classes": {
+                "Controls": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/controls__gui.js": {
+            "name": "source/js/app/controls__gui.js",
+            "modules": {
+                "ControlsGUI": 1
+            },
+            "classes": {
+                "ControlsGUI": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/gl.js": {
+            "name": "source/js/app/gl.js",
+            "modules": {
+                "GL": 1
+            },
+            "classes": {
+                "GL": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/lighting.js": {
+            "name": "source/js/app/lighting.js",
+            "modules": {
+                "Lighting": 1
+            },
+            "classes": {
+                "Lighting": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/shaders.js": {
+            "name": "source/js/app/shaders.js",
+            "modules": {
+                "Shaders": 1
+            },
+            "classes": {
+                "Shaders": 1
+            },
+            "fors": {},
+            "namespaces": {}
+        },
+        "source/js/app/solar_system.js": {
+            "name": "source/js/app/solar_system.js",
+            "modules": {
+                "SolarSystem": 1
+            },
+            "classes": {},
+            "fors": {},
+            "namespaces": {}
+        }
+    },
+    "modules": {
+        "App": {
+            "name": "App",
+            "submodules": {},
+            "classes": {
+                "App": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/app.js",
+            "line": 9,
+            "description": "Initialises the application"
+        },
+        "AstronomicalObject": {
+            "name": "AstronomicalObject",
+            "submodules": {},
+            "classes": {
+                "AstronomicalObject": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/astronomical_object.js",
+            "line": 6
+        },
+        "Buffers": {
+            "name": "Buffers",
+            "submodules": {},
+            "classes": {
+                "Buffers": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/buffers.js",
+            "line": 6
+        },
+        "Camera": {
+            "name": "Camera",
+            "submodules": {},
+            "classes": {
+                "Camera": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/camera.js",
+            "line": 13
+        },
+        "Controls": {
+            "name": "Controls",
+            "submodules": {},
+            "classes": {
+                "Controls": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/controls.js",
+            "line": 14
+        },
+        "ControlsGUI": {
+            "name": "ControlsGUI",
+            "submodules": {},
+            "classes": {
+                "ControlsGUI": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/controls__gui.js",
+            "line": 334
+        },
+        "GL": {
+            "name": "GL",
+            "submodules": {},
+            "classes": {
+                "GL": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/gl.js",
+            "line": 9
+        },
+        "Lighting": {
+            "name": "Lighting",
+            "submodules": {},
+            "classes": {
+                "Lighting": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/lighting.js",
+            "line": 49
+        },
+        "Shaders": {
+            "name": "Shaders",
+            "submodules": {},
+            "classes": {
+                "Shaders": 1
+            },
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/shaders.js",
+            "line": 6
+        },
+        "SolarSystem": {
+            "name": "SolarSystem",
+            "submodules": {},
+            "classes": {},
+            "fors": {},
+            "namespaces": {},
+            "tag": "module",
+            "file": "source/js/app/solar_system.js",
+            "line": 1
+        }
+    },
+    "classes": {
+        "App": {
+            "name": "App",
+            "shortname": "App",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "App",
+            "namespace": "",
+            "file": "source/js/app/app.js",
+            "line": 9,
+            "description": "Initialises the application.",
+            "is_constructor": 1
+        },
+        "AstronomicalObject": {
+            "name": "AstronomicalObject",
+            "shortname": "AstronomicalObject",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "AstronomicalObject",
+            "namespace": "",
+            "file": "source/js/app/astronomical_object.js",
+            "line": 6,
+            "description": "AstronomicalObject is a class that represents Planets, Moons, the Sun, Galaxy, and Saturn's Rings.",
+            "is_constructor": 1,
+            "params": [
+                {
+                    "name": "config",
+                    "description": "The config object.",
+                    "type": "Object",
+                    "props": [
+                        {
+                            "name": "name",
+                            "description": "Name of the Astronomical Body. Useful for debugging, but also used in generating the instructions for the keyboard shortcuts.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "origin",
+                            "description": "X, Y, Z co-ordinates of the origin of the body in space.",
+                            "type": "Array"
+                        },
+                        {
+                            "name": "orbitDistance",
+                            "description": "(in miles) from whatever it is orbiting. This is then automatically reduced for presen tation purposes.",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "orbitalPeriod",
+                            "description": "Number of days to make a full orbit.",
+                            "type": "Float"
+                        },
+                        {
+                            "name": "spinPeriod",
+                            "description": "Number of days to rotate fully on its axis.",
+                            "type": "Float"
+                        },
+                        {
+                            "name": "radius",
+                            "description": "(in miles). This is then automatically increased for presentation purposes.",
+                            "type": "Int"
+                        },
+                        {
+                            "name": "axis",
+                            "description": "Rotational axis (in degrees).",
+                            "type": "Float"
+                        },
+                        {
+                            "name": "texture",
+                            "description": "Url pointing to the texture image to be mapped to the object.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "specularTexture",
+                            "description": "Url pointing to the specular map to be mapped to the object.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "shortcutKey",
+                            "description": "The key that when pressed should make the camera snap to the object.",
+                            "type": "String"
+                        },
+                        {
+                            "name": "spins",
+                            "description": "Determines whether or not the object should spin on its axis.",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "spinsClockwise",
+                            "description": "Defaults to false. Determines spin direction.",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "useLighting",
+                            "description": "Determines whether or not the object should be affected by Phong shading.",
+                            "type": "Boolean"
+                        },
+                        {
+                            "name": "spherical",
+                            "description": "Determines which buffers to initialise and draw the object with (cuboidal or spherical).",
+                            "type": "Boolean"
+                        }
+                    ]
+                }
+            ]
+        },
+        "Buffers": {
+            "name": "Buffers",
+            "shortname": "Buffers",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Buffers",
+            "namespace": "",
+            "file": "source/js/app/buffers.js",
+            "line": 6
+        },
+        "Camera": {
+            "name": "Camera",
+            "shortname": "Camera",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Camera",
+            "namespace": "",
+            "file": "source/js/app/camera.js",
+            "line": 13,
+            "description": "Initialises the camera.",
+            "is_constructor": 1
+        },
+        "Controls": {
+            "name": "Controls",
+            "shortname": "Controls",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Controls",
+            "namespace": "",
+            "file": "source/js/app/controls.js",
+            "line": 14,
+            "description": "Defines keyboard and mouse controls for interacting with the solar system.",
+            "is_constructor": 1
+        },
+        "ControlsGUI": {
+            "name": "ControlsGUI",
+            "shortname": "ControlsGUI",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "ControlsGUI",
+            "namespace": "",
+            "file": "source/js/app/controls__gui.js",
+            "line": 334
+        },
+        "GL": {
+            "name": "GL",
+            "shortname": "GL",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "GL",
+            "namespace": "",
+            "file": "source/js/app/gl.js",
+            "line": 9,
+            "description": "Does some initial checking for WebGL support, before defining the cross-module variable `gl`.",
+            "is_constructor": 1,
+            "itemtype": "method",
+            "params": [
+                {
+                    "name": "canvas",
+                    "description": "The canvas to get the context of.",
+                    "type": "DOMElement"
+                }
+            ]
+        },
+        "Lighting": {
+            "name": "Lighting",
+            "shortname": "Lighting",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Lighting",
+            "namespace": "",
+            "file": "source/js/app/lighting.js",
+            "line": 49,
+            "is_constructor": 1
+        },
+        "Shaders": {
+            "name": "Shaders",
+            "shortname": "Shaders",
+            "classitems": [],
+            "plugins": [],
+            "extensions": [],
+            "plugin_for": [],
+            "extension_for": [],
+            "module": "Shaders",
+            "namespace": "",
+            "file": "source/js/app/shaders.js",
+            "line": 6,
+            "description": "Initialises the shaders.",
+            "is_constructor": 1,
+            "return": {
+                "description": "The shader program containing the compiled shaders.",
+                "type": "Object"
+            }
+        }
+    },
+    "classitems": [
+        {
+            "file": "source/js/app/app.js",
+            "line": 19,
+            "description": "Waits until each Astronomical Object has declared it is ready to be rendered, i.e. texture images have been downloaded.",
+            "itemtype": "method",
+            "name": "waitUntilAssetsDownloadedThen",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "The function to call once all assets are downloaded.",
+                    "type": "Function"
+                }
+            ],
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/app.js",
+            "line": 43,
+            "description": "Provides a handle to the external host by adding a class to the body, telling the host the application is ready. Then initialises the controls and starts the animation.",
+            "itemtype": "method",
+            "name": "startTheApp",
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/app.js",
+            "line": 55,
+            "description": "Runs on every animation frame.",
+            "itemtype": "method",
+            "name": "run",
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/app.js",
+            "line": 71,
+            "description": "Draws to the canvas.",
+            "itemtype": "method",
+            "name": "draw",
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/app.js",
+            "line": 84,
+            "description": "Cleans the canvas.",
+            "itemtype": "method",
+            "name": "cleanCanvas",
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/app.js",
+            "line": 95,
+            "description": "Animates the objects in the Solar System.",
+            "itemtype": "method",
+            "name": "animate",
+            "params": [
+                {
+                    "name": "millisecondsPerDay",
+                    "description": "Determines the speed at which objects spin and orbit.",
+                    "type": "Float"
+                }
+            ],
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/app.js",
+            "line": 107,
+            "description": "Returns the number of milliseconds since the last frame.",
+            "itemtype": "method",
+            "name": "millisecondsSinceLastFrame",
+            "return": {
+                "description": "Number of milliseconds since the last frame.",
+                "type": "Int"
+            },
+            "class": "App",
+            "module": "App"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 38,
+            "description": "Sets the attributes of the object instance based on the passed config object.",
+            "itemtype": "method",
+            "name": "setAttributes",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "The config object.",
+                    "type": "Object"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 62,
+            "description": "Sets the origin of the object, using the passed value if there is one, or calculating based on the orbited object if there isn't.",
+            "itemtype": "method",
+            "name": "setOrigin",
+            "params": [
+                {
+                    "name": "origin",
+                    "description": "Three-value array representing the origin, or null.",
+                    "type": "Array"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 82,
+            "description": "Called on initialisation - this moves the object to a position in its orbit, randomised to prevent all objects starting off in a long straight line.",
+            "itemtype": "method",
+            "name": "setRandomStartingOrbit",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 107,
+            "description": "Initialises the model view matrix.",
+            "itemtype": "method",
+            "name": "initMatrix",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 123,
+            "description": "Initialises the textures for the object.",
+            "itemtype": "method",
+            "name": "initTextures",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 136,
+            "description": "Initialises a texture for the object.",
+            "itemtype": "method",
+            "name": "initTexture",
+            "params": [
+                {
+                    "name": "imageSrc",
+                    "description": "URL pointing to the texture image.",
+                    "type": "String"
+                },
+                {
+                    "name": "imageProperty",
+                    "description": "The property to set texture to on this object.",
+                    "type": "String"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 156,
+            "description": "Handle the image texture once it has downloaded.",
+            "itemtype": "method",
+            "name": "handleLoadedTexture",
+            "params": [
+                {
+                    "name": "texture",
+                    "description": "A WebGL TEXTURE_2D object.",
+                    "type": "Object"
+                },
+                {
+                    "name": "imageProperty",
+                    "description": "The property to set texture to on this object.",
+                    "type": "String"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 174,
+            "description": "False until all assets for the Astronomical Object have been downloaded (i.e. the texture maps).",
+            "itemtype": "property",
+            "name": "isReady",
+            "type": "{Boolean}",
+            "default": "false",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 182,
+            "description": "Sets the axis of the object.",
+            "itemtype": "method",
+            "name": "setAxis",
+            "params": [
+                {
+                    "name": "axis",
+                    "description": "Axis (in degrees) that the object rotates on.",
+                    "type": "Int"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 197,
+            "description": "Adjusts the scales and radiuses for aesthetic reasons.",
+            "itemtype": "method",
+            "name": "normalise",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 206,
+            "description": "Executes code specific to individual entities, e.g. the Sun/Saturn's Rings. In future, this could be extracted out into a subclass.",
+            "itemtype": "method",
+            "name": "prepareSpecialCases",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 226,
+            "description": "Converts degrees to radians.",
+            "itemtype": "method",
+            "name": "degreesToRadians",
+            "params": [
+                {
+                    "name": "celsius",
+                    "description": "Value in degrees.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Converted value in radians.",
+                "type": "Float"
+            },
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 236,
+            "description": "Converts the given value into a boolean.",
+            "itemtype": "method",
+            "name": "getBoolean",
+            "params": [
+                {
+                    "name": "attribute",
+                    "description": "Value to convert (typically a boolean or null)",
+                    "type": "Object"
+                },
+                {
+                    "name": "defaultValue",
+                    "description": "Value to default to if one is not specified.",
+                    "type": "Boolean"
+                }
+            ],
+            "return": {
+                "description": "The boolean value.",
+                "type": "Boolean"
+            },
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 250,
+            "description": "Draws the object, relative to a projection matrix handles by the Camera object.",
+            "itemtype": "method",
+            "name": "draw",
+            "params": [
+                {
+                    "name": "projectionMatrix",
+                    "description": "glMatrix object (mat4) representing projection of the camera.",
+                    "type": "Array"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 261,
+            "description": "Initialises the shader variables for lighting.",
+            "itemtype": "method",
+            "name": "setupLighting",
+            "params": [
+                {
+                    "name": "projectionMatrix",
+                    "description": "glMatrix object (mat4) representing projection of the camera.",
+                    "type": "Array"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 276,
+            "description": "Sets up the texture.",
+            "itemtype": "method",
+            "name": "setupTexture",
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 295,
+            "description": "Performs the calculations necessary for the object to orbit and spin on its axis, if applicable.",
+            "itemtype": "method",
+            "name": "animate",
+            "params": [
+                {
+                    "name": "millisecondsPerDay",
+                    "description": "The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.",
+                    "type": "Float"
+                },
+                {
+                    "name": "millisecondsSinceLastFrame",
+                    "description": "The number of milliseconds since the last frame was rendered.",
+                    "type": "Float"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 358,
+            "description": "Rotation to perform before orbit.",
+            "itemtype": "method",
+            "name": "beforeOrbit",
+            "params": [
+                {
+                    "name": "translationMatrix",
+                    "description": "glMatrix to multiply by modelViewMatrix",
+                    "type": "Object"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 372,
+            "description": "Rotation to perform after orbit.",
+            "itemtype": "method",
+            "name": "afterOrbit",
+            "params": [
+                {
+                    "name": "spinAmount",
+                    "description": "Spin amount to take into account.",
+                    "type": "Float"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 385,
+            "description": "Calculates the portion of a given attribute, based on the number of milliseconds since the last frame and the number of milliseconds which represents a day.",
+            "itemtype": "method",
+            "name": "calculatePortionOf",
+            "params": [
+                {
+                    "name": "attribute",
+                    "description": "A property of the current object, e.g. orbitalPeriod",
+                    "type": "Int"
+                },
+                {
+                    "name": "millisecondsSinceLastFrame",
+                    "description": "Number of milliseconds since last frame.",
+                    "type": "Float"
+                },
+                {
+                    "name": "millisecondsPerDay",
+                    "description": "The number of milliseconds that represent a day - this is integral in some of the calculations of the animation.",
+                    "type": "Float"
+                }
+            ],
+            "return": {
+                "description": "Angle (in radians) that should be moved by.",
+                "type": "Float"
+            },
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/astronomical_object.js",
+            "line": 399,
+            "description": "Updates the object's attributes concerning angles.",
+            "itemtype": "method",
+            "name": "updateAttributes",
+            "params": [
+                {
+                    "name": "orbitAmount",
+                    "description": "Last orbit amount travelled",
+                    "type": "Float"
+                },
+                {
+                    "name": "spinAmount",
+                    "description": "Last spin amount spun",
+                    "type": "Float"
+                }
+            ],
+            "class": "AstronomicalObject",
+            "module": "AstronomicalObject"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 11,
+            "description": "Initialises the buffers.",
+            "itemtype": "method",
+            "name": "initBuffers",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The object for which we're initialising buffers.",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 24,
+            "description": "Draws the necessary elements of the object onto the canvas.",
+            "itemtype": "method",
+            "name": "drawElements",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The object which needs to be drawn.",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 37,
+            "description": "Called by initBuffers(), this initialises the buffers for spherical objects, e.g. planets, the moon, the Sun.",
+            "itemtype": "method",
+            "name": "initSphericalBuffers",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The spherical object we're initialising buffers for.",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 104,
+            "description": "A private method called by initSphericalBuffers, which calculates index data used by gl.ELEMENT_ARRAY_BUFFER.",
+            "itemtype": "method",
+            "name": "_getIndexData",
+            "params": [
+                {
+                    "name": "latitudeBands",
+                    "description": "Latitude bands of the sphere",
+                    "type": "Int"
+                },
+                {
+                    "name": "longitudeBands",
+                    "description": "Longitude bands of the sphere",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Index data.",
+                "type": "Array"
+            },
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 129,
+            "description": "Called by initBuffers(), this initialises the buffers for cuboidal objects, e.g. Saturn's rings",
+            "itemtype": "method",
+            "name": "initCuboidalBuffers",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The cuboidal object we're initialising buffers for.",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 230,
+            "description": "Called by drawElements(), this draws the elements that comprise spherical objects.",
+            "itemtype": "method",
+            "name": "drawSphericalElements",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The spherical object we're drawing",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/buffers.js",
+            "line": 255,
+            "description": "Called by drawElements(), this draws the elements that comprise cuboidal objects.",
+            "itemtype": "method",
+            "name": "drawCuboidalElements",
+            "params": [
+                {
+                    "name": "obj",
+                    "description": "The cuboidal object we're drawing",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Buffers",
+            "module": "Buffers"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 23,
+            "description": "Resets camera to its starting position - which is the origin of the solar system, set back by a certain distance so as not to be stuck \"inside\" the Sun.",
+            "itemtype": "method",
+            "name": "moveCameraToStartingPosition",
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 32,
+            "description": "Sets the size of the canvas and informs the necessary objects/matrices of the change.",
+            "itemtype": "method",
+            "name": "setCanvasSize",
+            "params": [
+                {
+                    "name": "width",
+                    "description": "Width of the canvas.",
+                    "type": "Int"
+                },
+                {
+                    "name": "height",
+                    "description": "Height of the canvas.",
+                    "type": "Int"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 45,
+            "description": "Updates the projection view matrix.",
+            "itemtype": "method",
+            "name": "updateProjectionMatrix",
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 63,
+            "description": "Toggles full screen mode. When full screen, the canvas is set to the size of the viewport, otherwise it is set to the default height and width, defined in this class.",
+            "itemtype": "method",
+            "name": "toggleFullScreen",
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 79,
+            "description": "Returns the projection view matrix of the camera. This is used by the AstronomicalObject class.",
+            "itemtype": "method",
+            "name": "getProjectionViewMatrix",
+            "return": {
+                "description": "Projection view matrix of the camera.",
+                "type": "[array]"
+            },
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 90,
+            "description": "Calculates the movement speed of the camera, given the number of frames the movement key has been held down for.",
+            "itemtype": "method",
+            "name": "calculateMovementSpeed",
+            "params": [
+                {
+                    "name": "acceleration",
+                    "description": "In this case, this is the number of frames that the movement key has been held down for.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "A number representing the distance in the 3D world that we should move by in the next frame.",
+                "type": "Int"
+            },
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 100,
+            "description": "Rotates the camera by the given rotation matrix.",
+            "itemtype": "method",
+            "name": "rotateView",
+            "params": [
+                {
+                    "name": "rotationMatrix",
+                    "description": "Rotation matrix to merge with the camera matrix.",
+                    "type": "Array"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 109,
+            "description": "Moves the camera forwards in 3D space.",
+            "itemtype": "method",
+            "name": "goForwards",
+            "params": [
+                {
+                    "name": "acceleration",
+                    "description": "The number of frames the movement key has been held down for.",
+                    "type": "Int"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 118,
+            "description": "Moves the camera backwards in 3D space.",
+            "itemtype": "method",
+            "name": "goBackwards",
+            "params": [
+                {
+                    "name": "acceleration",
+                    "description": "The number of frames the movement key has been held down for.",
+                    "type": "Int"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 127,
+            "description": "Strafes the camera to the left in 3D space.",
+            "itemtype": "method",
+            "name": "goLeft",
+            "params": [
+                {
+                    "name": "acceleration",
+                    "description": "The number of frames the movement key has been held down for.",
+                    "type": "Int"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 136,
+            "description": "Strafes the camera to the right in 3D space.",
+            "itemtype": "method",
+            "name": "goRight",
+            "params": [
+                {
+                    "name": "acceleration",
+                    "description": "The number of frames the movement key has been held down for.",
+                    "type": "Int"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 145,
+            "description": "Resets the camera to its original position.",
+            "itemtype": "method",
+            "name": "resetPosition",
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/camera.js",
+            "line": 151,
+            "description": "Snaps the camera to the given planet.",
+            "itemtype": "method",
+            "name": "snapTo",
+            "params": [
+                {
+                    "name": "planet",
+                    "description": "The planet object to snap to.",
+                    "type": "AstronomicalObject"
+                }
+            ],
+            "class": "Camera",
+            "module": "Camera"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 26,
+            "description": "Binds the mouse events to handler functions.",
+            "itemtype": "method",
+            "name": "bindMouseControls",
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 36,
+            "description": "Handles binding certain key presses to calling the camera snapTo() function.",
+            "itemtype": "method",
+            "name": "bindKeysToPlanets",
+            "return": {
+                "description": "Associative array where key is keyboard shortcut, value is Astronomical Object linked to that shortcut.",
+                "type": "JSON"
+            },
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 63,
+            "description": "Binds some key events to handler functions.",
+            "itemtype": "method",
+            "name": "bindKeyboardControls",
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 116,
+            "description": "Handles the mouse down event. In this case, we cache the position of the mouse so it can be used in rotation calculations later.",
+            "itemtype": "method",
+            "name": "handleMouseDown",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The mouse event.",
+                    "type": "Event"
+                }
+            ],
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 127,
+            "description": "Handles the mouse up event.",
+            "itemtype": "method",
+            "name": "handleMouseUp",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The mouse event.",
+                    "type": "Event"
+                }
+            ],
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 136,
+            "description": "Handles the mouse move event. In this case, we rotate the camera if the mouse button is down at the same time.",
+            "itemtype": "method",
+            "name": "handleMouseMove",
+            "params": [
+                {
+                    "name": "event",
+                    "description": "The mouse event.",
+                    "type": "Event"
+                }
+            ],
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 164,
+            "description": "Converts degrees to radians. @TODO - this is a duplicate of degToRad in AstronomicalObject. Should remove the duplication.",
+            "itemtype": "method",
+            "name": "degToRad",
+            "params": [
+                {
+                    "name": "celsius",
+                    "description": "Value in degrees.",
+                    "type": "Int"
+                }
+            ],
+            "return": {
+                "description": "Converted value in radians.",
+                "type": "Float"
+            },
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 175,
+            "description": "Provides a hook for app.js to call functions after we've manually triggered animation. i.e. If we update the view in controls.js we can trigger the callback and ensure that the changes are drawn immediately (useful if the solar system animation is paused).",
+            "itemtype": "method",
+            "name": "bindToAnimation",
+            "params": [
+                {
+                    "name": "callback",
+                    "description": "Function to call when we want to trigger the animation.",
+                    "type": "Function"
+                }
+            ],
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 185,
+            "description": "Other modules can tell if the animation is paused by querying this.",
+            "itemtype": "method",
+            "name": "paused",
+            "return": {
+                "description": "True if animation is paused, false if not.",
+                "type": "Boolean"
+            },
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls.js",
+            "line": 194,
+            "description": "Grabs the milliseconds per dsy from the GUI form input.",
+            "itemtype": "method",
+            "name": "millisecondsPerDay",
+            "return": {
+                "description": "Milliseconds per day.",
+                "type": "Float"
+            },
+            "class": "Controls",
+            "module": "Controls"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 8,
+            "description": "Creates the GUI.",
+            "itemtype": "method",
+            "name": "createGUI",
+            "params": [
+                {
+                    "name": "planetShortcuts",
+                    "description": "Array of planet names and the keyboard shortcut to use to snap to them.",
+                    "type": "Object"
+                },
+                {
+                    "name": "triggerAnimationParameter",
+                    "description": "Provides a hook for updating animation after changing input values (@TODO - this is a code smell. Should decouple the animation from the GUI inputs.)",
+                    "type": "Function"
+                }
+            ],
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 30,
+            "itemtype": "method",
+            "name": "createInstructions",
+            "params": [
+                {
+                    "name": "instructionsContainer",
+                    "description": "The DIV we need to populate with instructions.",
+                    "type": "DOMElement"
+                },
+                {
+                    "name": "planetShortcuts",
+                    "description": "Array of planet names and the keyboard shortcut to use to snap to them.",
+                    "type": "Object"
+                }
+            ],
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 42,
+            "description": "Creates a DIV and appends to the given DOMElement container.",
+            "itemtype": "method",
+            "name": "createDiv",
+            "params": [
+                {
+                    "name": "guiContainer",
+                    "description": "The container to append the DIV to.",
+                    "type": "DOMElement"
+                },
+                {
+                    "name": "classes",
+                    "description": "The classname to give the DIV.",
+                    "type": "String"
+                },
+                {
+                    "name": "callback",
+                    "description": "Optional callback function.",
+                    "type": "Function"
+                }
+            ],
+            "return": {
+                "description": "The newly created DIV.",
+                "type": "DOMElement"
+            },
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 63,
+            "description": "Creates the sliders in the GUI.",
+            "itemtype": "method",
+            "name": "createSliders",
+            "params": [
+                {
+                    "name": "guiContainer",
+                    "description": "Document element to insert the sliders in.",
+                    "type": "DOMElement"
+                }
+            ],
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 261,
+            "description": "Creates a slider.",
+            "itemtype": "method",
+            "name": "createSlider",
+            "params": [
+                {
+                    "name": "config",
+                    "description": "Configuration object.",
+                    "type": "Object"
+                }
+            ],
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 297,
+            "description": "Updates the value displayed to users when they change the number of milliseconds per day.",
+            "itemtype": "method",
+            "name": "updateMillisecondsPerDay",
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 318,
+            "description": "Updates the value of all the given sliders. This way we can have one 'master' slider that controls all the others.",
+            "itemtype": "method",
+            "name": "updateValueOfSliders",
+            "params": [
+                {
+                    "name": "globalSlider",
+                    "description": "ID of the master slider.",
+                    "type": "String"
+                },
+                {
+                    "name": "slidersToUpdate",
+                    "description": "Array of IDs of the sliders that should be updated when the master is updated.",
+                    "type": "Array"
+                }
+            ],
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/controls__gui.js",
+            "line": 338,
+            "description": "Initialises the GUI.",
+            "itemtype": "method",
+            "name": "init",
+            "is_constructor": 1,
+            "class": "ControlsGUI",
+            "module": "ControlsGUI"
+        },
+        {
+            "file": "source/js/app/lighting.js",
+            "line": 6,
+            "description": "Prepares the canvas for drawing lighting by grabbing the lighting parameters from the GUI.",
+            "itemtype": "method",
+            "name": "prepareLighting",
+            "class": "Lighting",
+            "module": "Lighting"
+        },
+        {
+            "file": "source/js/app/lighting.js",
+            "line": 39,
+            "description": "Gets a float value from a DOMElement Input.",
+            "itemtype": "method",
+            "name": "getInput",
+            "params": [
+                {
+                    "name": "id",
+                    "description": "ID of the DOMElement whose value we want.",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The parsed float value of that input.",
+                "type": "Float"
+            },
+            "class": "Lighting",
+            "module": "Lighting"
+        },
+        {
+            "file": "source/js/app/lighting.js",
+            "line": 54,
+            "description": "Alias for prepareLighting().",
+            "itemtype": "method",
+            "name": "prepare",
+            "class": "Lighting",
+            "module": "Lighting"
+        },
+        {
+            "file": "source/js/app/lighting.js",
+            "line": 60,
+            "description": "Gets the shininess parameter from the GUI (used for Phong shading)",
+            "itemtype": "method",
+            "name": "getShininess",
+            "return": {
+                "description": "Planet shininess (between 0 and 100).",
+                "type": "Float"
+            },
+            "class": "Lighting",
+            "module": "Lighting"
+        },
+        {
+            "file": "source/js/app/shaders.js",
+            "line": 59,
+            "description": "Compiles an OpenGL shader from raw shader code.",
+            "itemtype": "method",
+            "name": "compileShader",
+            "params": [
+                {
+                    "name": "code",
+                    "description": "The uncompiled shader program.",
+                    "type": "String"
+                },
+                {
+                    "name": "type",
+                    "description": "The type of shader to compiled (fragment or vertex).",
+                    "type": "String"
+                }
+            ],
+            "return": {
+                "description": "The compiled gl shader.",
+                "type": "Object"
+            },
+            "class": "Shaders",
+            "module": "Shaders"
+        }
+    ],
+    "warnings": []
+}
